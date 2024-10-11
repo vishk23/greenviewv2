@@ -6,6 +6,7 @@ module.exports = override(
     '@features': path.resolve(__dirname, 'src/features'),
     '@components': path.resolve(__dirname, 'src/components'),
     '@contexts': path.resolve(__dirname, 'src/contexts'),
-    '@public': path.resolve(__dirname, 'public')
+    '@public': path.resolve(__dirname, 'public'),
+    '@services': path.resolve(__dirname, 'src/services'),
   })
 );

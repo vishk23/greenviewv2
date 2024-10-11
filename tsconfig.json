@@ -6,7 +6,8 @@
         "@features/*": ["features/*"],
         "@components/*": ["components/*"],
         "@contexts/*": ["contexts/*"],
-        "@public/*": ["../public/*"]
+        "@public/*": ["../public/*"],
+        "@services/*": ["services/*"]
       },
       "esModuleInterop": true,
       "forceConsistentCasingInFileNames": true,

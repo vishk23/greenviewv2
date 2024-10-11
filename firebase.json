@@ -21,7 +21,8 @@
     }
   ],
   "hosting": {
-    "public": "public",
+    "site": "greenviewv2",
+    "public": "build",
     "ignore": [
       "firebase.json",
       "**/.*",
