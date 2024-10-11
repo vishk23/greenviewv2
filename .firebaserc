@@ -1,0 +1,8 @@
+{
+  "projects": {
+    "default": "greenviewxc",
+    "dev": "greenviewv2"
+  },
+  "targets": {},
+  "etags": {}
+}

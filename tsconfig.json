@@ -1,0 +1,17 @@
+{
+    "compilerOptions": {
+      "baseUrl": "src",
+      "jsx": "react-jsx",
+      "paths": {
+        "@features/*": ["features/*"],
+        "@components/*": ["components/*"],
+        "@contexts/*": ["contexts/*"],
+        "@public/*": ["../public/*"]
+      },
+      "esModuleInterop": true,
+      "forceConsistentCasingInFileNames": true,
+      "strict": true,
+      "skipLibCheck": true
+    },
+    "include": ["src"]
+  }
