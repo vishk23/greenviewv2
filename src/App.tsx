@@ -1,14 +1,17 @@
-// /src/App.tsx
-import React from 'react';
-import NavBar from '@components/NavBar/NavBar';
-import CalendarPage from '@features/Calendar/CalendarPage';
+import { Routes, Route } from "react-router-dom";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Calendar from "./pages/Calendar";
 
-const App: React.FC = () => {
+const App = () => {
   return (
-    <div>
-      <NavBar />
-      <CalendarPage />
-    </div>
+    <>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/calendar" element={<Calendar />} />
+        <Route path="/about" element={<About />} />
+      </Routes>
+    </>
   );
 };
 
