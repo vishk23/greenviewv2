@@ -10,21 +10,27 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      
       - name: Install Node.js
         uses: actions/setup-node@v3
         with:
           node-version: '16'  # Adjust if needed
+
       - name: Install dependencies
         run: npm install
+
       - name: Build your app
         run: npm run build  # Replace with your build command
+
       - name: Login to Firebase
-        uses: firebase/action-gcp-auth@v0
+        uses: google-github-actions/auth@v1
         with:
-          serviceAccountKey: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          credentials_json: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+
       - name: Deploy to Firebase Hosting
-        uses: firebase/action-hosting-deploy@v0
+        uses: FirebaseExtended/action-hosting-deploy@v0
         with:
-          site: https://greenviewv2.firebaseapp.com  # Replace with your Firebase site name
-          context: ./build  # Replace with your build output directory
-          public: 'public'  # Replace if your build output directory is different
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT_KEY }}
+          channelId: live  # Replace 'live' if you are deploying to a preview channel
+          projectId: greenviewv2  # Replace with your Firebase project ID
