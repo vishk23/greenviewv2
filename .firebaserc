@@ -1,6 +1,6 @@
 {
   "projects": {
-    "default": "greenviewxc",
+    "default": "greenviewv2",
     "dev": "greenviewv2"
   },
   "targets": {},
