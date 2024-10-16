@@ -16,10 +16,6 @@ npm install
 
 It will create `node_module` folder in this all dependency files will be install with this command.
 
-## Available Scripts
-
-In the project directory, you can run:
-
 ## Run Project in development mode:
 
 ```
