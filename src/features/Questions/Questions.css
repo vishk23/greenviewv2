@@ -1,0 +1,116 @@
+/* Questions.css */
+
+.questions-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; /* Full viewport height */
+    background-color: #f8f4e1; /* Light grey background */
+    background-image: url('/public/QuestionsBackground.png'); /* Path to your image */
+    background-size: cover; /* Ensure the image covers the entire container */
+    background-position: center; /* Center the image */
+    background-repeat: no-repeat; /* Prevent the image from repeating */
+}
+
+.white-box {
+    background-color: rgba(255, 250, 241, 1); /* Same background color as score box */
+    border-radius: 8px;
+    padding: 20px;
+    width: 800px; /* Fixed width for large screens */
+    height: 400px; /* Fixed height for large screens */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center; /* Center contents vertically */
+    align-items: center; /* Center contents horizontally */
+    text-align: center;
+    overflow: hidden; /* Prevents scrolling */
+}
+
+/* Question number styling */
+.question-number {
+    font-size: 1.2rem;
+    font-weight: 200;
+    margin-bottom: 10px; /* Reduced margin */
+    color: #28a745;
+}
+
+/* Adjusting header for questions */
+h2 {
+    margin-bottom: 10px; /* Reduced margin */
+    font-size: 1.6rem; /* Adjusted font size */
+    font-weight: 100;
+}
+
+/* Container for answer buttons */
+.answers-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column; /* Stack buttons vertically */
+    width: 100%; /* Ensure buttons take full width */
+    gap: 5px; /* Reduced gap between buttons */
+}
+
+/* Buttons container for Next and Previous buttons */
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px; /* Reduced margin */
+    width: 70%; /* Make buttons take the full width */
+}
+
+/* Styling for Next and Previous buttons */
+button {
+    background-color: rgba(159, 195, 123, 1); /* Green color */
+    color: white;
+    border: none;
+    padding: 8px 16px; /* Padding for button */
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease; /* Smooth transition for hover */
+}
+
+button:hover {
+    background-color: rgba(138, 170, 107, 1); /* Slightly darker green on hover */
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+    .white-box {
+        width: 600px; /* Same as score box */
+        height: 300px; /* Adjust height for medium screens */
+    }
+
+    h2 {
+        font-size: 1.6rem; /* Adjust font size */
+    }
+}
+
+@media (max-width: 768px) {
+    .white-box {
+        width: 500px; /* Further reduce width for small screens */
+        height: 250px; /* Adjust height */
+    }
+
+    h2 {
+        font-size: 1.4rem; /* Adjust font size */
+    }
+}
+
+@media (max-width: 480px) {
+    .white-box {
+        width: 95%; /* Almost full width for very small screens */
+        height: auto; /* Let height adjust dynamically */
+        padding: 10px;
+    }
+
+    h2 {
+        font-size: 1.3rem; /* Adjust font size */
+    }
+}

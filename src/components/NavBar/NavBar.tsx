@@ -18,6 +18,10 @@ const links = [
     name: "Calendar",
     path: "/calendar",
   },
+  {
+    name: "Score",
+    path: "/score",
+  },
 ];
 
 const NavBar: React.FC = () => {
