@@ -11,6 +11,7 @@ interface ScoreProps {
 }
 
 const Score: React.FC<ScoreProps> = ({ score, totalQuestions }) => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [previousScore, setPreviousScore] = useState<number | null>(null);
   const [message, setMessage] = useState<string>('Great start! This is your first time taking the quiz.');
   const [user] = useAuthState(auth); // Firebase authentication hook
