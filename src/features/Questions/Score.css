@@ -1,0 +1,123 @@
+@import url('https://fonts.googleapis.com/css2?family=Glacial+Indifference:wght@400;700&display=swap');
+
+.score-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: rgba(255, 250, 241, 1); /* Light background color */
+}
+
+.score-box {
+    background-color: rgba(255, 250, 241, 1);
+    border-radius: 8px;
+    padding: 20px;
+    width: 800px; /* Fixed width for large screens */
+    height: 400px; /* Fixed height for large screens */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center; /* Center everything horizontally */
+    text-align: center; /* Center text */
+}
+
+/* Wrapper to position the progress bar */
+.progress-bar-wrapper {
+    display: flex;
+    justify-content: center; /* Center the progress bar horizontally */
+    width: 50%; /* Ensure the wrapper takes up full width */
+    margin-top: 50px; /* Adjust margin to space it above the score */
+}
+/* Center the progress bar */
+.progress-bar-container {
+    width: 90%; /* You can adjust this width based on the desired size */
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 20px;
+}
+
+/* Center the score number and display it properly */
+.score-display {
+    font-family: 'Glacial Indifference', sans-serif;
+    display: flex;
+    flex-direction: column; /* Ensure the score and message are stacked vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    margin-top: -50px;
+    gap: 60px; /* Adds space between score number and the message */
+}
+
+.score-number {
+    font-size: 5rem; /* Large font for large screens */
+    color: #333;
+    font-weight: 200;
+}
+
+/* Smaller font for the message */
+.job {
+    font-weight: 100;
+    font-size: 1.5rem; /* Smaller font size for the message */
+    color:  rgba(159, 195, 123, 1);
+    margin-top: 10px; /* Add spacing above the message */
+}
+
+
+
+.progress-bar {
+    height: 100%;
+    background-color: #f2745f; /* Color for the completed portion */
+    border-radius: 10px;
+    transition: width 0.5s ease; /* Smooth transition */
+}
+
+/* Media queries for responsiveness */
+@media (max-width: 1024px) {
+    .score-box {
+        width: 600px; /* Reduce width for medium-sized screens */
+        height: 300px; /* Reduce height */
+    }
+
+    .score-number {
+        font-size: 4rem; /* Slightly smaller font size */
+    }
+
+    .progress-bar-container {
+        width: 85%; /* Adjust width for smaller screens */
+    }
+}
+
+@media (max-width: 768px) {
+    .score-box {
+        width: 500px; /* Further reduce for small screens */
+        height: 250px;
+    }
+
+    .score-number {
+        font-size: 3.5rem; /* Adjust font size */
+    }
+
+    .progress-bar-container {
+        width: 80%; /* Make the progress bar smaller to fit */
+    }
+}
+
+@media (max-width: 480px) {
+    .score-box {
+        width: 95%; /* Almost full width for very small screens */
+        height: auto; /* Let height adjust dynamically */
+        padding: 10px;
+    }
+
+    .score-number {
+        font-size: 2.5rem; /* Smaller font for mobile */
+    }
+
+    .progress-bar-container {
+        width: 95%; /* Full width for very small screens */
+    }
+}
+
