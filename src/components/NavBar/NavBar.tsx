@@ -19,7 +19,7 @@ const links = [
     path: "/calendar",
   },
   {
-    name: "Score",
+    name: "Sustainability Score",
     path: "/score",
   },
 ];
