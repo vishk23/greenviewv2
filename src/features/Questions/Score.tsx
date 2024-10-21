@@ -12,7 +12,7 @@ interface ScoreProps {
 
 const Score: React.FC<ScoreProps> = ({ score, totalQuestions }) => {
   const [previousScore, setPreviousScore] = useState<number | null>(null);
-  const [message, setMessage] = useState<string>('Please login to see past score improvement');
+  const [message, setMessage] = useState<string>('Great start! This is your first time taking the quiz.');
   const [user] = useAuthState(auth); // Firebase authentication hook
 
   const maxScore = totalQuestions * 10; // Calculate max score
