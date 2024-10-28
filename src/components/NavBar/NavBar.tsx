@@ -22,6 +22,10 @@ const links = [
     name: "Sustainability Score",
     path: "/score",
   },
+  {
+    name: "Chat",
+    path: "/chat",
+  },
 ];
 
 const NavBar: React.FC = () => {
