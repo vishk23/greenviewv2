@@ -65,7 +65,7 @@ const NavBar: React.FC = () => {
 
   return (
     <div>
-      <nav className="navbar">
+      <nav className="navbar-main">
         <div className="navbar-left">
           <NavLink to="/" className="logo">
             Logo
