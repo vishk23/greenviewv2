@@ -6,7 +6,7 @@
     align-items: center;
     height: 100vh; /* Full viewport height */
     background-color: #f8f4e1; /* Light grey background */
-    background-image: url('/public/QuestionsBackground.png'); /* Path to your image */
+    background-image: url('/public/Background.gif'); /* Path to your image */
     background-size: cover; /* Ensure the image covers the entire container */
     background-position: center; /* Center the image */
     background-repeat: no-repeat; /* Prevent the image from repeating */
