@@ -6,14 +6,14 @@ This is a web application for the Boston University Spark! course XC475. GreenVi
 
 # Team
 
-| Name  | Role | Contact Info
-| ------------- | ------------- |
-| Maidha Salman  | Product Owner, UX/UI Lead  |
-| Ana Ramirez Moreno  | Scrum Master, SWE  |
-| Wesley Choi  | SWE  |
-| Sadiq Alhumood  | SWE  |
-| Vishnu Kchitti  | SWE  |
-| Abdullah Alajmi  | SWE  |
+| Name  | Role | Contact Info |
+| ------------- | ------------- | ------------- |
+| Maidha Salman  | Product Owner, UX/UI Lead  | |
+| Ana Ramirez Moreno  | Scrum Master, SWE  | |
+| Wesley Choi  | SWE  | |
+| Sadiq Alhumood  | SWE  | |
+| Vishnu Kchitti  | SWE  | |
+| Abdullah Alajmi  | SWE  | |
 
 # Tech Stack
 Greenview is built using React for webapp development and Firebase for backend services
