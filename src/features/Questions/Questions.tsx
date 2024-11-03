@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Button from "@components/Button/Button"; // Import your reusable Button component
 import Score from "./Score"; // Import the Score component
-import "./Questions.css"; // Import the CSS for the Questions container
+import "./Consolidated.css"; // Use consolidated CSS
 
 const Questions: React.FC = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -119,15 +119,12 @@ const Questions: React.FC = () => {
       totalScore += questions[questionIndex].points[answerIndex];
     });
 
-    // Round the total score to 2 decimal places
     totalScore = Math.round(totalScore * 100) / 100;
-
-    // If the score exceeds 100, set it to 100
     if (totalScore > 100) {
       totalScore = 100;
     }
 
-    setScore(totalScore); // Set the final score
+    setScore(totalScore);
   };
 
   // Handle "Next" button click
@@ -246,7 +243,12 @@ const Questions: React.FC = () => {
           </div>
         </div>
       ) : (
-        <Score score={score} totalQuestions={questions.length} />
+        <Score
+          score={score}
+          totalQuestions={questions.length}
+          answers={answers}
+          questions={questions} // Pass questions to Score component
+        />
       )}
     </div>
   );

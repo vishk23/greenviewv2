@@ -1,12 +1,12 @@
 import React from 'react';
-import './ProgressBar.css';
+import './Consolidated.css';
 
 interface ProgressBarProps {
-  points: number; // the score from 0 to 100
+  points: number;
 }
 
 const ProgressBar: React.FC<ProgressBarProps> = ({ points }) => {
-  const progressPercentage = Math.min(points, 100); // Ensures it does not exceed 100
+  const progressPercentage = Math.min(points, 100);
 
   return (
     <div className="progress-bar-container">
