@@ -1,24 +1,35 @@
-import React, { useState } from 'react';
+/* eslint-disable react-hooks/exhaustive-deps */
+import React, { useState, useEffect } from 'react';
 import { model } from '@services/firebase';
+import { useLocation } from 'react-router-dom';
 
 function Chatbot() {
   const [messages, setMessages] = useState<{ sender: string; text: string }[]>([]);
   const [input, setInput] = useState('');
   const [isRequestPending, setIsRequestPending] = useState(false);
+  const location = useLocation();
 
-  const handleSend = async () => {
-    if (!input.trim() || isRequestPending) return;
+  useEffect(() => {
+    // Check if there's a prefilled message from the URL
+    const params = new URLSearchParams(location.search);
+    const prefilledMessage = params.get('message');
+    if (prefilledMessage) {
+      setMessages([{ sender: 'user', text: prefilledMessage }]);
+      handleSend(prefilledMessage);
+    }
+  }, [location]);
+
+  const handleSend = async (messageText = input) => {
+    if (!messageText.trim() || isRequestPending) return;
 
     setIsRequestPending(true);
 
     // Add user message to chat history
-    const newMessages = [...messages, { sender: 'user', text: input }];
-    setMessages(newMessages); // No need for 'await' here
-
-    console.log("Chat History:", newMessages);
+    const newMessages = [...messages, { sender: 'user', text: messageText }];
+    setMessages(newMessages);
 
     // Fetch response from the AI model
-    const response = await fetchAIResponse(input, newMessages);
+    const response = await fetchAIResponse(messageText, newMessages);
     setMessages([...newMessages, { sender: 'bot', text: response }]);
 
     setInput(''); // Clear input field
@@ -37,19 +48,11 @@ function Chatbot() {
         },
       });
 
-      // Send the user's input to the model and wait for a complete response
       const result = await chat.sendMessage(userInput);
       const response = await result.response;
       const botResponse = await response.text();
 
-      console.log("Bot Response:", botResponse);
-
-      if (!botResponse) {
-        console.error("Received empty response from AI model.");
-        return 'Sorry, I didn’t receive a response. Please try again.';
-      }
-
-      return botResponse;
+      return botResponse || 'Sorry, I didn’t receive a response. Please try again.';
     } catch (error) {
       console.error('Error fetching AI response:', error);
       return 'Sorry, something went wrong.';
@@ -69,9 +72,9 @@ function Chatbot() {
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        onKeyPress={(e) => e.key === 'Enter' && handleSend()}
+        onKeyPress={(e) => e.key === 'Enter' && handleSend(undefined)}
       />
-      <button onClick={handleSend}>Send</button>
+      <button onClick={(e) => handleSend(undefined)}>Send</button>
     </div>
   );
 }
