@@ -179,6 +179,7 @@ const Questions: React.FC = () => {
         spawnObject(false); // Spawn on the right side
       }
     }
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score]);
 
   return (
