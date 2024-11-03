@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@services/firebase";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
@@ -13,7 +14,6 @@ interface ScoreProps {
 }
 
 const Score: React.FC<ScoreProps> = ({ score, totalQuestions, answers, questions }) => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [previousScore, setPreviousScore] = useState<number | null>(null);
   const [message, setMessage] = useState<string>(
     "Great start! This is your first time taking the quiz."
@@ -47,7 +47,7 @@ const Score: React.FC<ScoreProps> = ({ score, totalQuestions, answers, questions
           await updateDoc(userDocRef, {
             score: score,
             lastUpdated: new Date(),
-            answers: answers,
+            answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
             questions: questions.map(q => q.question),
           });
         } else {
@@ -55,7 +55,7 @@ const Score: React.FC<ScoreProps> = ({ score, totalQuestions, answers, questions
             userId: user.uid,
             score: score,
             lastUpdated: new Date(),
-            answers: answers,
+            answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
             questions: questions.map(q => q.question),
           });
           setMessage("Great start! This is your first time taking the quiz.");
