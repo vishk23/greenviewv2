@@ -11,8 +11,12 @@ import "./NavBar.css";
 
 const links = [
   {
-    name: "About Us",
-    path: "/about",
+    name: "Home",
+    path: "/home",
+  },
+  {
+    name: "Main",
+    path:"/main"
   },
   {
     name: "Calendar",
