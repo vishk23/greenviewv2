@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Button from "@components/Button/Button";
@@ -169,7 +170,6 @@ const Questions: React.FC = () => {
         spawnObject(false);
       }
     }
-  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [score]);
 
   return (

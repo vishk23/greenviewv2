@@ -1,25 +1,31 @@
 @import url('https://fonts.googleapis.com/css2?family=Glacial+Indifference:wght@400;700&display=swap');
 
-/* Common styles */
-.container {
+/* Score and Questions common styles */
+.score-container, .questions-container {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: rgba(255, 250, 241, 1);
-    text-align: center;
+    height: 100vh;
+    background-color: #f8f4e1;
+    background-image: url('/public/Background.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
-/* Score styles */
 .score-box, .white-box {
+    background-color: rgba(255, 250, 241, 1);
     border-radius: 8px;
     padding: 20px;
     width: 800px;
     height: 400px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
+    display: flex;
     flex-direction: column;
     justify-content: center;
     align-items: center;
+    text-align: center;
     overflow: hidden;
 }
 
@@ -36,28 +42,76 @@
     margin-top: 10px;
 }
 
-/* ProgressBar styles */
-.progress-bar-container {
+.progress-bar-wrapper {
+    display: flex;
+    justify-content: center;
     width: 50%;
-    height: 25px;
-    background-color: #fff8e7;
-    border-radius: 20px;
-    box-shadow: inset 0 2px 5px rgba(0, 0, 0, 0.1);
+    margin-top: 50px;
+}
+
+.progress-bar-container {
+    width: 90%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 10px;
-    border: 1px solid #ccc;
-    position: relative;
+    margin-bottom: 20px;
 }
 
 .progress-bar {
     height: 100%;
     background-color: #f2745f;
-    border-radius: 20px 0 0 20px;
-    transition: width 0.6s ease;
-    position: relative;
+    border-radius: 10px;
+    transition: width 0.5s ease;
 }
 
-/* Media queries for responsiveness */
+.question-number {
+    font-size: 1.2rem;
+    font-weight: 200;
+    margin-bottom: 10px;
+    color: #28a745;
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-size: 1.6rem;
+    font-weight: 100;
+}
+
+.answers-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 70%;
+}
+
+button {
+    background-color: rgba(159, 195, 123, 1);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: rgba(138, 170, 107, 1);
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
 @media (max-width: 1024px) {
     .score-box, .white-box {
         width: 600px;

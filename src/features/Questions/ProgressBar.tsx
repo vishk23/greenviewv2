@@ -14,6 +14,7 @@ const ProgressBar: React.FC<ProgressBarProps> = ({ points }) => {
         className="progress-bar"
         style={{
           width: `${progressPercentage}%`,
+          background: `linear-gradient(to right,  #f2745f, #9fc37b)`, // Green to Red gradient
         }}
       ></div>
       <p>{points}/100 points</p>
