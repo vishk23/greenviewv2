@@ -31,7 +31,16 @@ const MainPage: React.FC = () => {
             end: data.end.toDate(),
           } as Event;
         });
-        setEvents(eventsList);
+
+        // Get current date
+        const now = new Date();
+
+        // Filter and sort events by start date
+        const futureEvents = eventsList
+          .filter(event => event.start > now) // Only future events
+          .sort((a, b) => a.start.getTime() - b.start.getTime());
+
+        setEvents(futureEvents);
       } catch (error) {
         console.error("Error fetching events: ", error);
       }
