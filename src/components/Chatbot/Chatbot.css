@@ -1,0 +1,138 @@
+.chat-container {
+  position: absolute;
+  bottom: 0px;
+  right: 0px;
+  height: 50vh;
+  padding-left: 1rem;
+  padding-right: 1rem;
+  padding-top: 4rem;
+  background-color: #f8f4e1;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+  width: 300px;
+  overflow-y: auto;
+  z-index: 100;
+}
+
+.chat-history {
+  display: flex;
+  flex-direction: column;
+}
+
+.empty-chat-message {
+  text-align: center;
+  font-size: x-large;
+  padding: 100px;
+  margin-top: 20px; /* Adjust as necessary */
+  color: #000; /* Optional color for a softer look */
+}
+
+.message {
+  max-width: 75%;
+  padding: 15px;
+  border-radius: 15px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.message-bot {
+  position: relative;
+  width: auto;
+  margin-right: calc(2.5%);
+  margin-left: 20px;
+  margin-bottom: 10px;
+  padding: 10px;
+  background-color: #9fc37b;
+  text-align: left;
+  border: 1px solid #afc47c;
+  border-radius: 10px;
+  width: fit-content; /* Adjusts width based on text length */
+}
+
+.message-user {
+  position: relative;
+  width: auto;
+  margin-left: auto; /* Move the user message to the right */
+  margin-bottom: 10px;
+  margin-right: calc(2.5%);
+  padding: 10px;
+  background-color: #ffffff;
+  text-align: left;
+  border: 1px solid #dfd087;
+  border-radius: 10px;
+  width: fit-content; /* Adjusts width based on text length */
+}
+
+.message-input {
+  display: flex;
+  align-items: center;
+  position: sticky;
+  bottom: 0;
+  width: 100%;
+}
+
+.message-input input {
+  margin-top: auto;
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 20px;
+  font-size: 16px;
+}
+
+.send-button {
+  background-color: #98c379;
+  border: none;
+  border-radius: 50%;
+  width: 35px;
+  height: 35px;
+  margin-left: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+}
+
+.popup-button{
+  width: 128px;
+  padding: 0.5rem;
+  background-color: #91b494;
+  color: white;
+  border: none;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.open-chat-button{
+  position: fixed;
+  bottom: 1rem;
+  right: 1rem;
+  background-color: #98c379;
+  border: none;
+  border-radius: 50%;
+  width: 4rem;
+  height: 4rem;
+  margin-left: 10px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 18px;
+  z-index: 100;
+}
+
+.close-button {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background-color: #98c379;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  padding: 0.3rem 0.7rem;
+  cursor: pointer;
+}
