@@ -33,6 +33,7 @@ const EventDetailsStyles: Record<string, CSSProperties> = {
     padding: '10px',
     backgroundColor: '#FFF8EB',
     borderRadius: '5px',
+    color: '#000000',
   },
   confirmButton: {
     marginTop: '10px',
