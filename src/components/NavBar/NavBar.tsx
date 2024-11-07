@@ -16,7 +16,7 @@ const links = [
   },
   {
     name: "Main",
-    path:"/main"
+    path: "/main",
   },
   {
     name: "Calendar",
@@ -25,10 +25,6 @@ const links = [
   {
     name: "Sustainability Score",
     path: "/score",
-  },
-  {
-    name: "Chat",
-    path: "/chat",
   },
 ];
 
