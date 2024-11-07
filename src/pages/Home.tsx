@@ -1,12 +1,12 @@
 import React from "react";
 import NavBar from "@components/NavBar/NavBar";
-import AnimationFrame from "@features/Animation/AnimationFrame";
+import Main from "@features/Main/Main";
 
 const App: React.FC = () => {
   return (
     <div>
       <NavBar />
-      <AnimationFrame/>
+      <Main />
 
     </div>
   );

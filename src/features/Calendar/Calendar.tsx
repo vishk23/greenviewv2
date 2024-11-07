@@ -55,6 +55,17 @@ const MyCalendar: React.FC = () => {
   const handleEventClick = (event: MyEvent) => {
     setSelectedEvent(event);
   };
+  const eventPropGetter = (event: MyEvent) => {
+    const isSelected = selectedEvent && event.id === selectedEvent.id;
+    return {
+      style: {
+        backgroundColor: isSelected ? '#F15824' : '#9FC37B', // White for selected, green otherwise
+        color: isSelected ? '#000000' : 'rgba(255, 248, 235, 1)', // Black text on white background, otherwise light text
+        borderRadius: '8px',
+        padding: '5px',
+      },
+    };
+  };
 
   return (
     <div style={CalendarStyles.pageContainer}>
@@ -70,6 +81,7 @@ const MyCalendar: React.FC = () => {
             endAccessor="end"
             style={{ height: '100%' }}
             onSelectEvent={handleEventClick}
+            eventPropGetter={eventPropGetter}
             views={['month']}
             defaultView="month"
             components={{ toolbar: CustomToolbar }}
