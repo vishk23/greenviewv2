@@ -72,6 +72,9 @@ function Chatbot() {
     <div>
       {showPopup ? (
         <div className="chat-container">
+          <button className="close-button" onClick={() => setShowPopup(false)}>
+            <img src="/icons/close.png" width="32px" />
+          </button>
           <div className="chat-history">
             {messages.length === 0 ? (
               <div className="empty-chat-message">
@@ -101,16 +104,13 @@ function Chatbot() {
               className="send-button"
               onClick={() => handleSend(undefined)}
             >
-              ^
+              <img src="/icons/arrow.png" width="16px" />
             </button>
           </div>
-          <button className="close-button" onClick={() => setShowPopup(false)}>
-            Close
-          </button>
         </div>
       ) : (
         <button className="open-chat-button" onClick={() => setShowPopup(true)}>
-          Open Chat
+          <img src="/icons/chat.png" width="32px" />
         </button>
       )}
     </div>

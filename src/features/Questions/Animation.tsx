@@ -9,15 +9,14 @@ interface AnimationProps {
     x: number;
     y: number;
     path: string;
+    duration: number;
+    times: number[];
+    oscillation: number[];
   }[];
 }
 
 const Animation: React.FC<AnimationProps> = ({ objects }) => {
   const screenWidth = window.innerWidth;
-
-  function getRandomDuration(): number {
-    return Math.floor(Math.random() * (13 - 7 + 1)) + 7;
-  }
 
   return (
     <div className="animation-container">
@@ -27,12 +26,16 @@ const Animation: React.FC<AnimationProps> = ({ objects }) => {
             initial={{
               x: obj.x,
               y: obj.y,
+              clipPath: "inset(100% 0% 0% 0%)",
+              opacity: 1,
             }} // Start with clipping the entire image
+            animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
+            transition={{ duration: 5, ease: "easeOut" }}
           >
             <img
               src={obj.path}
               alt=""
-              style={{ width: "100%", height: "auto" }} // Set width to fill the container
+              style={{ width: "700px", height: "auto" }} // Set width to fill the container
             />
           </motion.div>
         ) : (
@@ -41,14 +44,14 @@ const Animation: React.FC<AnimationProps> = ({ objects }) => {
             initial={{ x: obj.x, y: obj.y }} // Start from left off-screen
             animate={{
               x: screenWidth - obj.x + 200, // Move to right off-screen
-              y: [0, -75, 0, 100, 0], // Oscillate up and down
+              y: obj.oscillation, // Oscillate up and down
             }}
             transition={{
-              duration: getRandomDuration(), // Adjust the speed of movement
+              duration: obj.duration, // Adjust the speed of movement
               ease: "linear", // Linear movement for smooth constant speed
               repeat: Infinity,
               repeatType: "loop",
-              times: [0, 0.25, 0.5, 0.75, 1], // Specify times for oscillation
+              times: obj.times, // Specify times for oscillation
             }}
             style={{ position: "absolute", top: obj.y }} // You can adjust this based on your design
           >
