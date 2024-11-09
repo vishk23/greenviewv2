@@ -4,7 +4,7 @@ import Score from "./pages/Score";
 import Main from "./pages/Home";
 import Summary from "./pages/Summary";
 import Leaderboard from "./features/Leaderboard/Leaderboard";
-
+import Educational from "./pages/Educational";
 const App = () => {
   return (
     <>
@@ -15,6 +15,7 @@ const App = () => {
         <Route path="/score" element={<Score />} />
         <Route path="/summary" element={<Summary />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/educational" element={<Educational />} />
       </Routes>
     </>
   );
