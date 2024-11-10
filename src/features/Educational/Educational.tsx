@@ -16,12 +16,12 @@ const Educational: React.FC = () => {
           <div className="resource-card">
             <h3>Article Title</h3>
             <p>Brief description of the article or resource...</p>
-            <a href="#" target="_blank" rel="noopener noreferrer">Read More</a>
+            <a href="/" target="_blank" rel="noopener noreferrer">Read More</a>
           </div>
           <div className="resource-card">
             <h3>Video Title</h3>
             <p>Brief description of the video...</p>
-            <a href="#" target="_blank" rel="noopener noreferrer">Watch Now</a>
+            <a href="/" target="_blank" rel="noopener noreferrer">Watch Now</a>
           </div>
         </div>
       </section>
