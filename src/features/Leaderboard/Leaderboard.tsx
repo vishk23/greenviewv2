@@ -25,7 +25,7 @@ const Leaderboard: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; // You can style this or use a spinner component
+    return <div>Loading...</div>; 
   }
 
   return (
