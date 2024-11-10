@@ -1,5 +1,9 @@
 /* MainPage.css */
 
+@import "~slick-carousel/slick/slick.css";
+@import "~slick-carousel/slick/slick-theme.css";
+
+
 .main-page {
     display: flex;
     flex-direction: column;
@@ -138,4 +142,51 @@
     .overlay-text p {
         font-size: 0.9rem;
     }
+}
+
+
+/* Carousel container adjustments */
+.events-section {
+    max-width: 1200px;
+    margin: 20px auto;
+    
+    padding: 20px 100px;
+}
+
+/* Center the current event and make it stand out */
+.event-card {
+    padding: 20px;
+    background-color: #9FCB7B;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    color: #FFF8EB;
+    transition: transform 0.3s ease; /* Add a smooth transition */
+}
+
+/* Scale the center card slightly larger */
+.slick-center .event-card {
+    transform: scale(1.1); /* Makes the center card larger */
+}
+
+/* Optional: Position the dots below the carousel */
+.slick-dots {
+    bottom: -20px; /* Adjust the position of the dots if needed */
+}
+
+/* Styling for the carousel buttons */
+.slick-prev, .slick-next {
+    color: #9FCB7B;
+    font-size: 24px;
+    z-index: 1;
+    opacity: 0.8;
+}
+
+/* Position the arrows closer to the carousel */
+.slick-prev {
+    left: -30px;
+}
+
+.slick-next {
+    right: -30px;
 }

@@ -2,7 +2,9 @@ import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '@services/firebase';
 import { collection, getDocs } from 'firebase/firestore';
+import Slider from 'react-slick';
 import './Main.css';
+import { sliderSettings } from './SliderSetting';
 
 interface Event {
   id: string;
@@ -53,6 +55,8 @@ const MainPage: React.FC = () => {
     navigate('/score');
   };
 
+
+
   return (
     <div className="main-page">
       {/* Image Container with Text Overlay */}
@@ -69,15 +73,18 @@ const MainPage: React.FC = () => {
       {/* Upcoming Events Section */}
       <div className="events-section">
         <h2 className="events-title">Upcoming Events on Campus</h2>
-        <div className="events-grid">
-          {events.slice(0, 3).map((event) => (
+        <Slider {...sliderSettings}>
+          {events.map((event) => (
             <div key={event.id} className="event-card">
               <h3>{event.title}</h3>
               <p>{event.location}</p>
-              <p>{event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - {event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}</p>
+              <p>
+                {event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} -{' '}
+                {event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+              </p>
             </div>
           ))}
-        </div>
+        </Slider>
         <p className="calendar-text">Take a look at our calendar for more events happening around you!</p>
         <button onClick={() => navigate('/calendar')} className="calendar-button">
           Go to Calendar

@@ -41,13 +41,13 @@ const Score: React.FC<ScoreProps> = ({
     if (user) {
       const fetchScore = async () => {
         const userDocRef = doc(db, "scores", user.uid);
-
+  
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const userData = userDoc.data();
           const previous = userData.score;
           setPreviousScore(previous);
-
+  
           if (score > previous) {
             setMessage(
               `Great Job! Your score improved by ${score - previous} points!`
@@ -57,18 +57,22 @@ const Score: React.FC<ScoreProps> = ({
           } else {
             setMessage("Keep going! You can improve your score!");
           }
-
+  
+          // Update the document, including the email field
           await updateDoc(userDocRef, {
             score: score,
             lastUpdated: new Date(),
+            email: user.email, // Add email here
             answers: answers.map(
               (answerIndex, i) => questions[i].answers[answerIndex]
             ),
             questions: questions.map((q) => q.question),
           });
         } else {
+          // Create the document with email when it doesn't exist
           await setDoc(userDocRef, {
             userId: user.uid,
+            email: user.email, // Add email here
             score: score,
             lastUpdated: new Date(),
             answers: answers.map(
@@ -79,12 +83,13 @@ const Score: React.FC<ScoreProps> = ({
           setMessage("Great start! This is your first time taking the quiz.");
         }
       };
-
+  
       fetchScore().catch((error) =>
         console.error("Error fetching score:", error)
       );
     }
   }, [user, score, answers, questions]);
+  
 
   useEffect(() => {
     const generateAISummary = async () => {
