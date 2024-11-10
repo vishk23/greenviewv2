@@ -49,6 +49,7 @@ const CalendarStyles: Record<string, CSSProperties> = {
     flexDirection: 'column' as const, // explicitly setting 'column'
     alignItems: 'flex-start',
     padding: '20px',
+    backgroundColor: '#FFF8EB',
   },
 };
 

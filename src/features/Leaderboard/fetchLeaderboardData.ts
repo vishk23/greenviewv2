@@ -10,8 +10,8 @@ export interface LeaderboardEntry {
 
 const calculateBadge = (score: number): string => {
   if (score >= 90) return '★★★';
-  if (score >= 70) return '★★';
-  if (score >= 50) return '★';
+  if (score >= 65) return '★★';
+  if (score >= 40) return '★';
   return '☆';
 };
 
@@ -23,7 +23,7 @@ export const fetchLeaderboardData = async (): Promise<LeaderboardEntry[]> => {
 
     const fetchedData: LeaderboardEntry[] = querySnapshot.docs.map((doc, index) => ({
       rank: index + 1,
-      name: doc.data().email || `User ${index + 1}`, // Now using the email field from Firestore
+      name: doc.data().email,
       score: doc.data().score,
       badge: calculateBadge(doc.data().score),
     }));

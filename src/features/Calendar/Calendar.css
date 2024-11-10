@@ -1,9 +1,9 @@
 body {
-    background-color: rgba(255, 248, 235, 1);
+    background-color: #FFF8EB;
   }
   
   .rbc-toolbar {
-    background-color: rgba(255, 248, 235, 1);
+    background-color: #FFF8EB;
     color: #9FC37B;
   }
   
@@ -17,7 +17,7 @@ body {
 
   
   button {
-    background-color: rgba(255, 248, 235, 1);
+    background-color: #FFF8EB;
     color: black;
     padding: 10px;
     border: none;
