@@ -1,3 +1,4 @@
+/* eslint-disable jsx-a11y/anchor-is-valid */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, model } from "@services/firebase";
