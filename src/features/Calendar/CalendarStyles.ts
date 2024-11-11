@@ -27,8 +27,8 @@ const CalendarStyles: Record<string, CSSProperties> = {
   button: {
     width: '750px',
     padding: '10px 20px',
-    backgroundColor: '#8bc995',
-    color: 'white',
+    backgroundColor: '#9FC37B',
+    color: '#FFF8EB',
     border: 'none',
     borderRadius: '5px',
     fontSize: '16px',
@@ -41,7 +41,7 @@ const CalendarStyles: Record<string, CSSProperties> = {
   headerText: {
     fontSize: '48px',
     fontWeight: 'bold',
-    color: '#3a5f3f',
+    color: '#9FC37B',
     margin: '0',
   },
   pageContainer: {
@@ -49,6 +49,7 @@ const CalendarStyles: Record<string, CSSProperties> = {
     flexDirection: 'column' as const, // explicitly setting 'column'
     alignItems: 'flex-start',
     padding: '20px',
+    backgroundColor: '#FFF8EB',
   },
 };
 

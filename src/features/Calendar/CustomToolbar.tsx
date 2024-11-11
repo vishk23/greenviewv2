@@ -22,20 +22,20 @@ const CustomToolbar = (toolbar: any) => {
   };
 
   return (
-    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', backgroundColor: '#c2d6c1', color: '#3a5f3f' }}>
+    <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', padding: '10px', backgroundColor: '#9FC37B', color: '#FFF8EB' }}>
       <span style={{ fontSize: '18px', fontWeight: 'bold' }}>
         {label()}
       </span>
 
 
       <div>
-        <button onClick={goToBack} style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: '#8bc995', color: 'white', borderRadius: '4px', border: 'none' }}>
+        <button onClick={goToBack} style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: '#9FC37B', color: '#FFF8EB', borderRadius: '4px', border: 'none' }}>
           Back
         </button>
-        <button onClick={goToToday} style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: '#8bc995', color: 'white', borderRadius: '4px', border: 'none' }}>
+        <button onClick={goToToday} style={{ marginRight: '10px', padding: '5px 10px', backgroundColor: '#9FC37B', color: '#FFF8EB', borderRadius: '4px', border: 'none' }}>
           Today
         </button>
-        <button onClick={goToNext} style={{ padding: '5px 10px', backgroundColor: '#8bc995', color: 'white', borderRadius: '4px', border: 'none' }}>
+        <button onClick={goToNext} style={{ padding: '5px 10px', backgroundColor: '#9FC37B', color: '#FFF8EB', borderRadius: '4px', border: 'none' }}>
           Next
         </button>
       </div>

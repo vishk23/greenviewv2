@@ -1,17 +1,21 @@
 import { Routes, Route } from "react-router-dom";
-import Home from "./pages/Home";
-import About from "./pages/About";
 import Calendar from "./pages/Calendar";
 import Score from "./pages/Score";
-
+import Main from "./pages/Home";
+import Summary from "./pages/Summary";
+import Leaderboard from "./features/Leaderboard/Leaderboard";
+import Educational from "./pages/Educational";
 const App = () => {
   return (
     <>
       <Routes>
-        <Route path="/" element={<Home />} />
+        <Route path="/" element={<Main />} />
         <Route path="/calendar" element={<Calendar />} />
-        <Route path="/about" element={<About />} />
+        <Route path="/home" element={<Main />} />
         <Route path="/score" element={<Score />} />
+        <Route path="/summary" element={<Summary />} />
+        <Route path="/leaderboard" element={<Leaderboard />} />
+        <Route path="/educational" element={<Educational />} />
       </Routes>
     </>
   );

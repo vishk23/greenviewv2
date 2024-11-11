@@ -1,0 +1,255 @@
+@import url('https://fonts.googleapis.com/css2?family=Glacial+Indifference:wght@400;700&display=swap');
+
+/* Score and Questions common styles */
+.questions-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background-color: #f8f4e1;
+    background-image: url('/public/questions_background.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+}
+
+.white-box {
+    background-color: rgba(255, 250, 241, 1);
+    border-radius: 8px;
+    padding: 20px;
+    width: 800px;
+    height: 400px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    z-index: 10; /* Ensure it stays in front of animations */
+}
+
+.score-box {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    overflow: hidden;
+    z-index: 10; /* Ensure it stays in front of animations */
+}
+
+.score-number {
+    font-size: 5rem;
+    color: #333;
+    font-weight: 200;
+}
+
+.job {
+    font-weight: 100;
+    font-size: 1.5rem;
+    color: rgba(159, 195, 123, 1);
+    margin-top: 10px;
+}
+
+.progress-bar-wrapper {
+    width: 60%;
+    margin: 0 auto;
+    padding-bottom: 10px;
+}
+
+.progress-bar-container {
+    width: 90%;
+    height: 20px;
+    background-color: #e0e0e0;
+    border-radius: 10px;
+    overflow: hidden;
+    margin-bottom: 0px;
+}
+
+.progress-bar {
+    height: 100%;
+    background-color: #f2745f;
+    border-radius: 10px;
+    transition: width 0.5s ease;
+}
+
+.score-display {
+    font-family: 'Glacial Indifference', sans-serif;
+    display: flex;
+    flex-direction: column; /* Ensure the score and message are stacked vertically */
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    gap: 0px; /* Adds space between score number and the message */
+}
+
+.score-number {
+    padding: 15px;
+    font-size: 72px; /* Large font size for main score */
+    color: #3a5a40;
+}
+
+.job {
+    padding: 15px;
+    font-size: 24px;
+    color: #28a745;
+    font-weight: bold;
+    margin-top: 10px;
+}
+
+.question-number {
+    font-size: 1.2rem;
+    font-weight: 200;
+    margin-bottom: 10px;
+    color: #28a745;
+}
+
+h2 {
+    margin-bottom: 10px;
+    font-size: 1.6rem;
+    font-weight: 100;
+}
+
+.answers-container {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    width: 100%;
+    gap: 5px;
+}
+
+.buttons {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 70%;
+}
+
+button {
+    background-color: rgba(159, 195, 123, 1);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+    background-color: rgba(138, 170, 107, 1);
+}
+
+button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+@media (max-width: 1024px) {
+    .score-box, .white-box {
+        width: 600px;
+        height: 300px;
+    }
+
+    .score-number {
+        font-size: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .score-box, .white-box {
+        width: 500px;
+        height: 250px;
+    }
+
+    .score-number {
+        font-size: 3.5rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .score-box, .white-box {
+        width: 95%;
+        height: auto;
+        padding: 10px;
+    }
+
+    .score-number {
+        font-size: 2.5rem;
+    }
+}
+
+/* Consolidated.css */
+
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow-y: auto; /* Enable vertical scrolling */
+}
+
+.score-container {
+    width: 100%;
+    text-align: center;
+    max-height: 1000px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+}
+
+.score-box, .ai-box {
+    width: 80%;
+}
+
+.score-box p {
+    display: inline;
+  }
+  
+  .score-box a {
+    display: inline;
+  }
+
+.ai-box {
+    padding-left: 10px; /* Increased padding for better spacing */
+    padding-right: 10px; /* Increased padding for better spacing */
+    padding-bottom: 20px; /* Increased padding for better spacing */
+    margin-top: 40px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    background-color: #f9f9f9; /* Light background for contrast */
+    height: 400px;
+    overflow-y: auto; /* Enable scrolling within the AI box */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+    transition: all 0.3s ease; /* Smooth transition for hover effects */
+    z-index: 10;
+}
+
+.ai-box h3 {
+    font-size: 1.8rem; /* Slightly larger heading */
+    color: #3a5a40; /* Darker color for the title */
+}
+
+.ai-box h4 {
+    font-size: 1.5rem; /* Adjusted size for subheading */
+    color: #28a745; /* Matching color for subheading */
+}
+
+.ai-box p {
+    font-size: 1rem; /* Font size for the response text */
+    color: #555; /* Softer text color for readability */
+    line-height: 1.6; /* Improved line height for readability */
+    white-space: pre-wrap; /* Corrected property for wrapping text */
+    overflow-wrap: break-word; /* Corrected property for breaking long words */
+}
+
+.link {
+    color: red;
+    text-decoration: none;
+    font-size: 18px;
+  }
+  
+  .link:hover {
+    text-decoration: underline;
+  }

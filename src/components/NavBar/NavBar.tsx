@@ -11,8 +11,8 @@ import "./NavBar.css";
 
 const links = [
   {
-    name: "About Us",
-    path: "/about",
+    name: "Home",
+    path: "/home",
   },
   {
     name: "Calendar",
@@ -22,6 +22,11 @@ const links = [
     name: "Sustainability Score",
     path: "/score",
   },
+  {
+    name: "Educational Resources",
+    path: "/educational",
+  },
+
 ];
 
 const NavBar: React.FC = () => {
@@ -61,10 +66,10 @@ const NavBar: React.FC = () => {
 
   return (
     <div>
-      <nav className="navbar">
+      <nav className="navbar-main">
         <div className="navbar-left">
           <NavLink to="/" className="logo">
-            Logo
+          <img src="/full_logo.png" alt="LOGO" style={{ width: '200px', height: 'auto' }} />
           </NavLink>
         </div>
         <div className="navbar-center">

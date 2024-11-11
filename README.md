@@ -4,7 +4,22 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 This is a web application for the Boston University Spark! course XC475. GreenView is a webapp that helps students on campus who want to see a significant environmental impact by helping bridge the gap between their intentions and actions.
 
-# Installation
+# Team
+
+| Name  | Role | Contact Info |
+| ------------- | ------------- | ------------- |
+| Maidha Salman  | Product Owner, UX/UI Lead  | |
+| Ana Ramirez Moreno  | Scrum Master, SWE  | |
+| Wesley Choi  | SWE  | |
+| Sadiq Alhumood  | SWE  | |
+| Vishnu Kchitti  | SWE  | |
+| Abdullah Alajmi  | SWE  | |
+
+# Tech Stack
+Greenview is built using React for webapp development and Firebase for backend services
+
+
+# Getting Started
 
 First, Make sure if NODEJS is installed on your computer.
 

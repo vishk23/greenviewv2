@@ -3,19 +3,23 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@firebase/vertexai": "^1.0.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^13.5.0",
     "class-variance-authority": "^0.7.0",
     "date-fns": "^4.1.0",
-    "firebase": "^10.14.1",
+    "firebase": "^11.0.1",
     "firebase-admin": "^12.6.0",
+    "framer-motion": "^11.11.10",
     "radix-ui": "^1.0.1",
     "react": "^18.3.1",
     "react-big-calendar": "^1.15.0",
     "react-dom": "^18.3.1",
     "react-firebase-hooks": "^5.1.1",
     "react-scripts": "5.0.1",
+    "react-slick": "^0.30.2",
+    "slick-carousel": "^1.8.1",
     "tailwind-merge": "^2.5.3",
     "web-vitals": "^2.1.4"
   },
@@ -44,6 +48,7 @@
   },
   "devDependencies": {
     "@types/react-big-calendar": "^1.8.12",
+    "@types/react-slick": "^0.23.13",
     "customize-cra": "^1.0.0",
     "react-app-rewired": "^2.2.1",
     "react-router-dom": "^6.27.0"

@@ -1,0 +1,62 @@
+.leaderboard {
+    width: 90%; /* Adjusted for smaller size */
+    max-width: 500px; /* Change to desired max width */
+    margin: 20px auto; /* Centered with margin */
+    background-color: #FFF8EB; /* Fresh starts Comfort */
+    border-radius: 12px;
+    padding: 16px;
+    font-family: Arial, sans-serif;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+  }
+  
+  .leaderboard-header,
+  .leaderboard-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 16px; /* Reduced padding */
+    border-radius: 8px;
+  }
+  
+  .leaderboard-header {
+    background-color: #9FC37B; /* Sustainability color */
+    color: #000000; /* Sophistication Reliability Intelligence */
+    font-weight: bold;
+  }
+  
+  .leaderboard-row {
+    background-color: #F15824; /* Fresh starts Comfort */
+    color: #000000; /* Text color */
+    margin: 8px; /* Reduced margin */
+    transition: background-color 0.3s ease;
+    border-radius: 32px;
+  }
+  
+
+  .header-item,
+  .row-item {
+    flex: 1;
+    text-align: center;
+    font-size: 14px; /* Adjusted font size */
+    
+  }
+  
+  .rank {
+    font-weight: bold;
+  }
+  
+  .name {
+    text-transform: uppercase;
+  }
+  
+  .score,
+  .badge {
+    font-weight: bold;
+  }
+  
+  .badge {
+    font-size: 1em; /* Adjust size for badges */
+  }
+  
+  .show-more-button:hover {
+    background-color: #F15824; /* Darker shade on hover */
+  }
