@@ -7,7 +7,7 @@ const App: React.FC = () => {
   return (
     <div>
       <Educational />
-      <Map />
+   
     </div>
   );
 };

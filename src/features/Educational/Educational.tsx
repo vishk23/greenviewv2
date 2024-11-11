@@ -1,43 +1,49 @@
 import React from 'react';
+import { useNavigate } from 'react-router-dom';
+import Map from '@features/Map/Map';
 import './Educational.css';
 
 const Educational: React.FC = () => {
+  const navigate = useNavigate();
+
+  const modules = [
+    { id: '1', title: 'Sustainability Basics', description: 'Learn the fundamentals of sustainability and its importance.' },
+    { id: '2', title: 'Energy Conservation', description: 'Discover ways to reduce energy consumption in daily life.' },
+    { id: '3', title: 'Waste Reduction', description: 'Explore strategies to minimize waste and recycle effectively.' },
+  ];
+
+  const handleModuleClick = (moduleId: string) => {
+    navigate(`/module/${moduleId}`);
+  };
+
   return (
     <div className="educational-page">
       <header className="header">
         <h1>Educational Resources</h1>
-        <p>Learn more about sustainability and how you can make a difference.</p>
+        <p>Explore interactive modules to enhance your sustainability knowledge.</p>
       </header>
-
-      <section className="resources-section">
-        <h2>Top Resources</h2>
-        <div className="resources-grid">
-          {/* Example of resource cards */}
-          <div className="resource-card">
-            <h3>Article Title</h3>
-            <p>Brief description of the article or resource...</p>
-            <a href="/" target="_blank" rel="noopener noreferrer">Read More</a>
-          </div>
-          <div className="resource-card">
-            <h3>Video Title</h3>
-            <p>Brief description of the video...</p>
-            <a href="/" target="_blank" rel="noopener noreferrer">Watch Now</a>
-          </div>
-        </div>
-      </section>
 
       <section className="learning-modules-section">
         <h2>Learning Modules</h2>
-        <p>Interactive lessons to deepen your knowledge.</p>
         <div className="modules-grid">
-          <div className="module-card">
-            <h3>Module 1: Introduction to Sustainability</h3>
-            <button>Start Module</button>
-          </div>
-          <div className="module-card">
-            <h3>Module 2: Reducing Carbon Footprint</h3>
-            <button>Start Module</button>
-          </div>
+          {modules.map((module) => (
+            <div
+              key={module.id}
+              className="module-card"
+              onClick={() => handleModuleClick(module.id)} // Handle click to navigate
+            >
+              <h3>{module.title}</h3>
+              <p>{module.description}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      <section className="map-section">
+        <h2>Have your own water bottle but don't know where to refill it?</h2>
+        <p>Use the map below to explore BU's refill stations!</p>
+        <div className="map-container">
+          <Map />
         </div>
       </section>
     </div>
@@ -45,3 +51,4 @@ const Educational: React.FC = () => {
 };
 
 export default Educational;
+
