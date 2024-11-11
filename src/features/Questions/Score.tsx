@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, model } from "@services/firebase";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, collection, addDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,7 @@ const Score: React.FC<ScoreProps> = ({
   const [potentialQuestions, setPotentialQuestions] = useState<string[]>([]);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   const maxScore = totalQuestions * 10;
   const percentageScore = (score / maxScore) * 100;
@@ -41,55 +42,61 @@ const Score: React.FC<ScoreProps> = ({
   useEffect(() => {
     if (user) {
       const fetchScore = async () => {
-        const userDocRef = doc(db, "scores", user.uid);
-
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const previous = userData.score;
-          setPreviousScore(previous);
-
-          if (score > previous) {
-            setMessage(
-              `Great Job! Your score improved by ${score - previous} points!`
-            );
-          } else if (score === previous) {
-            setMessage("Your score remains the same. Keep going!");
+        try {
+          const userDocRef = doc(db, "scores", user.uid);
+          const userDoc = await getDoc(userDocRef);
+  
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const previous = userData.score;
+            setPreviousScore(previous);
+  
+            if (score > previous) {
+              setMessage(`Great Job! Your score improved by ${score - previous} points!`);
+            } else if (score === previous) {
+              setMessage("Your score remains the same. Keep going!");
+            } else {
+              setMessage("Keep going! You can improve your score!");
+            }
+  
+            // Update the document, including the email field
+            await updateDoc(userDocRef, {
+              score,
+              lastUpdated: new Date(),
+              email: user.email,
+              answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
+              questions: questions.map((q) => q.question),
+            });
+  
+            // Add a document to the messages collection to trigger the Twilio extension
+            const phoneNumber = userData.phoneNumber;
+            if (phoneNumber) {
+              await addDoc(collection(db, "messages"), {
+                to: phoneNumber,
+                body: `Your current score is ${score}. Stay tuned for more updates and fun facts!`,
+              });
+            }
           } else {
-            setMessage("Keep going! You can improve your score!");
+            // Create the document with email when it doesn't exist
+            await setDoc(userDocRef, {
+              userId: user.uid,
+              email: user.email,
+              score,
+              lastUpdated: new Date(),
+              answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
+              questions: questions.map((q) => q.question),
+            });
+            setMessage("Great start! This is your first time taking the quiz.");
           }
-
-          // Update the document, including the email field
-          await updateDoc(userDocRef, {
-            score: score,
-            lastUpdated: new Date(),
-            email: user.email, // Add email here
-            answers: answers.map(
-              (answerIndex, i) => questions[i].answers[answerIndex]
-            ),
-            questions: questions.map((q) => q.question),
-          });
-        } else {
-          // Create the document with email when it doesn't exist
-          await setDoc(userDocRef, {
-            userId: user.uid,
-            email: user.email, // Add email here
-            score: score,
-            lastUpdated: new Date(),
-            answers: answers.map(
-              (answerIndex, i) => questions[i].answers[answerIndex]
-            ),
-            questions: questions.map((q) => q.question),
-          });
-          setMessage("Great start! This is your first time taking the quiz.");
+        } catch (error) {
+          console.error("Error fetching score:", error);
         }
       };
-
-      fetchScore().catch((error) =>
-        console.error("Error fetching score:", error)
-      );
+  
+      fetchScore();
     }
   }, [user, score, answers, questions]);
+  
 
   useEffect(() => {
     const generateAISummary = async () => {
@@ -155,7 +162,75 @@ const Score: React.FC<ScoreProps> = ({
     generateAISummary();
   }, [answers, questions]);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          setNotificationsEnabled(userDoc.data().notificationsEnabled || false);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+  const handleEnableNotifications = async () => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, { notificationsEnabled: true });
+      setNotificationsEnabled(true);
+
+      // Add a document to the messages collection to trigger the Twilio extension
+      const userDoc = await getDoc(userDocRef);
+      const phoneNumber = userDoc.data()?.phoneNumber;
+      if (phoneNumber) {
+        await addDoc(collection(db, "messages"), {
+          to: phoneNumber,
+          body: `Your current score is ${score}. Stay tuned for more updates and fun facts!`,
+        });
+      }
+    }
+  };
+
   const handleSendToChatbot = (question: string) => {};
+
+  useEffect(() => {
+    if (user) {
+      const updateScoreAndSendSMS = async () => {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const previousScore = userData.score || 0;
+
+          // Update the user's score in Firestore
+          await updateDoc(userDocRef, {
+            score: score,
+            lastUpdated: new Date(),
+            answers: answers.map(
+              (answerIndex, i) => questions[i].answers[answerIndex]
+            ),
+            questions: questions.map((q) => q.question),
+          });
+
+          // Send SMS with the updated score
+          const phoneNumber = userData.phoneNumber;
+          if (phoneNumber) {
+            await addDoc(collection(db, "messages"), {
+              to: phoneNumber,
+              body: `Your current score is ${score}. Stay tuned for more updates and fun facts!`,
+            });
+          }
+        }
+      };
+
+      updateScoreAndSendSMS().catch((error) =>
+        console.error("Error updating score and sending SMS:", error)
+      );
+    }
+  }, [user, score, answers, questions]);
 
   return (
     <div className="score-container">
@@ -174,6 +249,34 @@ const Score: React.FC<ScoreProps> = ({
           &nbsp; to see how to improve!
         </span>
       </div>
+
+      <div
+        className="ai-box"
+        style={{ visibility: isAIBoxVisible ? "visible" : "hidden" }}
+      >
+        <h3>Sustainability Summary</h3>
+        <p>{aiResponse}</p>
+        <h4>Potential Questions</h4>
+        <div className="potential-questions">
+          {potentialQuestions.map((question, index) => (
+            <button
+              key={index}
+              onClick={() => handleSendToChatbot(question)}
+              style={{ marginTop: "10px" }}
+            >
+              {question}
+            </button>
+          ))}
+        </div>
+      </div>
+
+      {!notificationsEnabled ? (
+        <button onClick={handleEnableNotifications}>
+          Enable Notifications for Updates and Fun Facts
+        </button>
+      ) : (
+        <p>Notifications Enabled</p>
+      )}
     </div>
   );
 };
