@@ -270,7 +270,7 @@ const Score: React.FC<ScoreProps> = ({
       </div>
 
       {!notificationsEnabled ? (
-        <button onClick={handleEnableNotifications}>
+        <button onClick={handleEnableNotifications} style={{ zIndex: 10 }}>
           Enable Notifications for Updates and Fun Facts
         </button>
       ) : (
