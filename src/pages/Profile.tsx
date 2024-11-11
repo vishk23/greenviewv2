@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "@components/NavBar/NavBar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@services/firebase";
 import { doc, getDoc } from "firebase/firestore";
