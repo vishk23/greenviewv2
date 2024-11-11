@@ -33,17 +33,14 @@ const Profile: React.FC = () => {
   }
 
   return (
-    <div>
-      <NavBar />
       <div className="profile-page">
         <h1>Profile</h1>
         <div className="profile-info">
-          <p><strong>Name:</strong> {profileData.name}</p>
-          <p><strong>Email:</strong> {profileData.email}</p>
+          <p><strong>Name:</strong> {profileData.name || "Not set"}</p>
+          <p><strong>Email:</strong> {profileData.email || "Not set"}</p>
           <p><strong>Phone Number:</strong> {profileData.phoneNumber || "Not set"}</p>
-          <p><strong>Bio:</strong> {profileData.bio}</p>
-        </div>
-      </div>
+          <p><strong>Bio:</strong> {profileData.bio || "Not set"}</p>
+        </div> 
     </div>
   );
 };
