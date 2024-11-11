@@ -1,3 +1,4 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { auth, db, model } from "@services/firebase";
 import { useEffect, useState } from "react";
