@@ -5,7 +5,12 @@ import { doc, getDoc } from "firebase/firestore";
 
 const Profile: React.FC = () => {
   const [user] = useAuthState(auth);
-  const [profileData, setProfileData] = useState<{ name: string; email: string; bio: string; phoneNumber?: string } | null>(null);
+  const [profileData, setProfileData] = useState<{
+    name: string;
+    email: string;
+    bio: string;
+    phoneNumber?: string;
+  } | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -14,7 +19,14 @@ const Profile: React.FC = () => {
           const userDocRef = doc(db, "users", user.uid);
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists()) {
-            setProfileData(userDoc.data() as { name: string; email: string; bio: string; phoneNumber?: string });
+            setProfileData(
+              userDoc.data() as {
+                name: string;
+                email: string;
+                bio: string;
+                phoneNumber?: string;
+              }
+            );
           } else {
             console.log("No such document!");
           }
@@ -32,14 +44,22 @@ const Profile: React.FC = () => {
   }
 
   return (
-      <div className="profile-page">
-        <h1>Profile</h1>
-        <div className="profile-info">
-          <p><strong>Name:</strong> {profileData.name || "Not set"}</p>
-          <p><strong>Email:</strong> {profileData.email || "Not set"}</p>
-          <p><strong>Phone Number:</strong> {profileData.phoneNumber || "Not set"}</p>
-          <p><strong>Bio:</strong> {profileData.bio || "Not set"}</p>
-        </div> 
+    <div className="profile-page">
+      <h1>Profile</h1>
+      <div className="profile-info">
+        <p>
+          <strong>Name:</strong> {profileData.name || "Not set"}
+        </p>
+        <p>
+          <strong>Email:</strong> {profileData.email || "Not set"}
+        </p>
+        <p>
+          <strong>Phone Number:</strong> {profileData.phoneNumber || "Not set"}
+        </p>
+        <p>
+          <strong>Bio:</strong> {profileData.bio || "Not set"}
+        </p>
+      </div>
     </div>
   );
 };
