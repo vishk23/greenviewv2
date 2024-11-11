@@ -7,6 +7,7 @@ import Main from "./pages/Home";
 import Summary from "./pages/Summary";
 import Leaderboard from "./features/Leaderboard/Leaderboard";
 import Educational from "./pages/Educational";
+import SustainabilityBasicsModule from '@features/Educational/SustainabilityBasicsModule';
 import Profile from "./pages/Profile";
 import { ChatProvider } from "./contexts/ChatContext"; // Import ChatProvider
 
@@ -23,7 +24,9 @@ const App = () => {
         <Route path="/summary" element={<Summary />} />
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/educational" element={<Educational />} />
+        <Route path="/module/1" element={<SustainabilityBasicsModule />} />
         <Route path="/profile" element={<Profile />} />
+
       </Routes>
     </ChatProvider>
   );

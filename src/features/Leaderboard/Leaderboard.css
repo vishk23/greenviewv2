@@ -48,6 +48,7 @@
   
   .name {
     text-transform: uppercase;
+    overflow-x: scroll;
   }
   
   .score,

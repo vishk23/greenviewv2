@@ -1,104 +1,55 @@
-/* Variables */
-:root {
-  --primary-color: #3d5a40;
-  --secondary-color: #8bc995;
-  --background-color: #f4f4f4;
-  --text-color: #333;
-  --accent-color: #ffd54f;
-  --card-background: #ffffff;
-  --card-shadow: rgba(0, 0, 0, 0.1);
-}
-
-/* Global */
-body {
-  font-family: 'Arial', sans-serif;
-  background-color: var(--background-color);
-  color: var(--text-color);
-  margin: 0;
-  padding: 0;
-}
-
-/* Educational Page Styling */
 .educational-page {
-  padding: 40px 10%;
-  max-width: 1200px;
-  margin: auto;
+  font-family: Arial, sans-serif;
+  color: #333;
+  margin: 20px;
 }
 
-.educational-header {
-  background-color: var(--primary-color);
-  color: white;
-  padding: 30px;
-  border-radius: 8px;
+.header {
   text-align: center;
+  margin-bottom: 30px;
 }
 
-.educational-header h1 {
-  margin: 0;
+.header h1 {
   font-size: 2.5rem;
+  color: rgba(159, 195, 123, 1);
 }
 
-.educational-header p {
-  margin-top: 8px;
-  font-size: 1.1rem;
+.header p {
+  font-size: 1.2rem;
+  color: #666;
 }
 
-.resources-section, 
 .learning-modules-section {
   margin: 40px 0;
-}
-
-.resources-grid, 
-.modules-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-  gap: 20px;
-}
-
-.resource-card, 
-.module-card {
-  background-color: var(--card-background);
-  padding: 20px;
-  border-radius: 10px;
-  box-shadow: 0 4px 8px var(--card-shadow);
-  transition: transform 0.3s ease;
-}
-
-.resource-card:hover, 
-.module-card:hover {
-  transform: translateY(-5px);
-}
-
-.resource-card h3, 
-.module-card h3 {
-  margin: 0 0 10px 0;
-  font-size: 1.2rem;
-  color: var(--primary-color);
-}
-
-.resource-card p, 
-.module-card p {
-  font-size: 1rem;
-  color: #555;
-}
-
-.resource-card a, 
-.module-card button {
-  display: inline-block;
-  margin-top: 10px;
-  color: white;
-  background-color: var(--secondary-color);
-  padding: 10px 15px;
-  font-weight: bold;
   text-align: center;
-  text-decoration: none;
-  border-radius: 5px;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
 }
 
-.resource-card a:hover, 
-.module-card button:hover {
-  background-color: #6ea87e;
-  color: white;
+.modules-grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: center;
+}
+
+.module-card {
+  background-color: rgba(159, 195, 123, 1);
+  color: rgba(255, 248, 235, 1);
+  padding: 20px;
+  border-radius: 8px;
+  width: 300px;
+  text-align: center;
+}
+
+.map-section {
+  margin-top: 40px;
+  text-align: center;
+}
+
+.map-container {
+  margin: 20px auto;
+  width: 80%;
+  height: 400px;
+  border: 2px solid rgba(159, 195, 123, 1);
+  border-radius: 8px;
+  overflow: hidden;
 }

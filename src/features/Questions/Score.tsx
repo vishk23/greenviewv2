@@ -179,6 +179,7 @@ const Score: React.FC<ScoreProps> = ({
         </div>
         <div className="score-display">
           <span className="score-number">{getFeedback()}</span>
+          <span className="score-number">{getFeedback()}</span>
           <span className="job">{message}</span>
         </div>
         <button onClick={toggleAIBoxVisibility} className="link">
