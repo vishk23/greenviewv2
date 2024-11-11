@@ -4,15 +4,14 @@ import './Educational.css';
 const Educational: React.FC = () => {
   return (
     <div className="educational-page">
-      <header className="header">
+      <header className="educational-header">
         <h1>Educational Resources</h1>
-        <p>Learn more about sustainability and how you can make a difference.</p>
+        <p>Discover insights on sustainability and learn how to contribute to a healthier planet.</p>
       </header>
 
       <section className="resources-section">
         <h2>Top Resources</h2>
         <div className="resources-grid">
-          {/* Example of resource cards */}
           <div className="resource-card">
             <h3>Article Title</h3>
             <p>Brief description of the article or resource...</p>
@@ -28,7 +27,7 @@ const Educational: React.FC = () => {
 
       <section className="learning-modules-section">
         <h2>Learning Modules</h2>
-        <p>Interactive lessons to deepen your knowledge.</p>
+        <p>Interactive lessons designed to expand your sustainability knowledge.</p>
         <div className="modules-grid">
           <div className="module-card">
             <h3>Module 1: Introduction to Sustainability</h3>

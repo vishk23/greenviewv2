@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import "./Animation.css";
 
@@ -16,51 +16,65 @@ interface AnimationProps {
 }
 
 const Animation: React.FC<AnimationProps> = ({ objects }) => {
-  const screenWidth = window.innerWidth;
+  // State to handle dynamic screen width
+  const [screenWidth, setScreenWidth] = useState(window.innerWidth);
+
+  // Update screen width on window resize
+  useEffect(() => {
+    const handleResize = () => setScreenWidth(window.innerWidth);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
   return (
     <div className="animation-container">
       {objects.map((obj, index) =>
         obj.group === 1 ? (
           <motion.div
+            key={obj.id} // Added missing key prop
             initial={{
               x: obj.x,
               y: obj.y,
               clipPath: "inset(100% 0% 0% 0%)",
               opacity: 1,
-            }} // Start with clipping the entire image
-            animate={{ clipPath: "inset(0% 0% 0% 0%)", opacity: 1 }}
+            }}
+            animate={{
+              clipPath: "inset(0% 0% 0% 0%)",
+              opacity: 1,
+            }}
             transition={{ duration: 5, ease: "easeOut" }}
+            style={{ position: "absolute", top: obj.y }}
           >
             <img
               src={obj.path}
               alt=""
-              style={{ width: "700px", height: "auto" }} // Set width to fill the container
+              style={{ width: "700px", height: "auto" }}
             />
           </motion.div>
         ) : (
           <motion.div
-            key={index}
-            initial={{ x: obj.x, y: obj.y }} // Start from left off-screen
+            key={obj.id}
+            initial={{ x: obj.x, y: obj.y }}
             animate={{
-              x: screenWidth - obj.x + 200, // Move to right off-screen
-              y: obj.oscillation, // Oscillate up and down
+              x: screenWidth + 200,
+              y: obj.oscillation,
             }}
             transition={{
-              duration: obj.duration, // Adjust the speed of movement
-              ease: "linear", // Linear movement for smooth constant speed
+              duration: obj.duration,
+              ease: "linear",
               repeat: Infinity,
               repeatType: "loop",
-              times: obj.times, // Specify times for oscillation
+              times: obj.times,
             }}
-            style={{ position: "absolute", top: obj.y }} // You can adjust this based on your design
+            style={{ position: "absolute", top: obj.y }}
           >
             <motion.img
               src={obj.path}
+              alt=""
               style={{ width: 100, height: 100 }}
               initial={{ rotate: 0 }}
               animate={{ rotate: [-15, 15, -15] }}
-              transition={{ duration: 3, repeat: Infinity, ease: "easeIn" }}
+              transition={{ duration: 3, repeat: Infinity, ease: "easeInOut" }}
             />
           </motion.div>
         )

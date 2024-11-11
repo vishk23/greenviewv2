@@ -1,39 +1,12 @@
-// /src/components/Calendar/CalendarStyles.ts
 import { CSSProperties } from 'react';
 
 const CalendarStyles: Record<string, CSSProperties> = {
-  container: {
+  pageContainer: {
     display: 'flex',
-    justifyContent: 'space-between',
-    alignItems: 'stretch',
-    height: '80vh',
-    margin: '50px auto',
-    maxWidth: '900px',
-    width: '100%',
-  },
-  calendarContainer: {
-    flex: 3,
-    height: '100%',
-    minWidth: '700px',
-    width: '100%',
-  },
-  buttonContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    position: 'relative',
-    bottom: '20px',
-    width: '100%',
-  },
-  button: {
-    width: '750px',
-    padding: '10px 20px',
-    backgroundColor: '#9FC37B',
-    color: '#FFF8EB',
-    border: 'none',
-    borderRadius: '5px',
-    fontSize: '16px',
-    textAlign: 'center',
-    margin: '64px auto',
+    flexDirection: 'column',
+    alignItems: 'center',
+    padding: '20px',
+    backgroundColor: '#FFF8EB',
   },
   header: {
     marginBottom: '20px',
@@ -44,12 +17,46 @@ const CalendarStyles: Record<string, CSSProperties> = {
     color: '#9FC37B',
     margin: '0',
   },
-  pageContainer: {
+  container: {
     display: 'flex',
-    flexDirection: 'column' as const, // explicitly setting 'column'
-    alignItems: 'flex-start',
+    alignItems: 'stretch',
+    height: '80vh',
+    maxWidth: '1200px',
+    width: '100%',
+    gap: '20px',
+  },
+  calendarContainer: {
+    flex: 2,
+    minWidth: '700px',
+    width: '100%',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+    backgroundColor: '#FFF',
+    borderRadius: '8px',
+  },
+  eventDetailsContainer: {
+    flex: 1,
+    maxWidth: '350px',
     padding: '20px',
-    backgroundColor: '#FFF8EB',
+    backgroundColor: '#9FC37B',
+    color: '#FFF8EB',
+    borderRadius: '8px',
+    boxShadow: '0 4px 8px rgba(0, 0, 0, 0.1)',
+  },
+  buttonContainer: {
+    display: 'flex',
+    justifyContent: 'center',
+    width: '100%',
+    marginTop: '20px',
+  },
+  button: {
+    padding: '12px 24px',
+    backgroundColor: '#9FC37B',
+    color: '#FFF8EB',
+    border: 'none',
+    borderRadius: '5px',
+    fontSize: '16px',
+    cursor: 'pointer',
+    transition: 'background-color 0.3s ease',
   },
 };
 

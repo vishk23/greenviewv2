@@ -1,46 +1,148 @@
 import React, { useEffect, useState } from "react";
-import NavBar from "@components/NavBar/NavBar";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@services/firebase";
-import { doc, getDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
+import "./Profile.css";
+
+interface ScoreEntry {
+  score: number;
+  date: any;
+  answers: string[];
+  questions: string[];
+}
+
+interface ProfileData {
+  name: string;
+  email: string;
+  bio: string;
+  phoneNumber?: string;
+  notificationsEnabled?: boolean;
+}
+
+interface ScoreData {
+  score?: number;
+  scoreHistory?: ScoreEntry[];
+}
 
 const Profile: React.FC = () => {
   const [user] = useAuthState(auth);
-  const [profileData, setProfileData] = useState<{ name: string; email: string; bio: string; phoneNumber?: string } | null>(null);
+  const [profileData, setProfileData] = useState<ProfileData | null>(null);
+  const [scoreData, setScoreData] = useState<ScoreData | null>(null);
+  const [isEditing, setIsEditing] = useState(false);
+  const [showHistory, setShowHistory] = useState(false);
+
+  const [name, setName] = useState("");
+  const [bio, setBio] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
-    const fetchUserData = async () => {
+    const fetchProfileData = async () => {
       if (user) {
-        try {
-          const userDocRef = doc(db, "users", user.uid);
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists()) {
-            setProfileData(userDoc.data() as { name: string; email: string; bio: string; phoneNumber?: string });
-          } else {
-            console.log("No such document!");
-          }
-        } catch (error) {
-          console.error("Error fetching user data: ", error);
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const data = userDoc.data() as ProfileData;
+          setProfileData(data);
+          setName(data.name);
+          setBio(data.bio);
+          setPhoneNumber(data.phoneNumber || "");
         }
       }
     };
 
-    fetchUserData();
+    fetchProfileData();
   }, [user]);
 
-  if (!profileData) {
-    return <div>Loading...</div>;
-  }
+  useEffect(() => {
+    const fetchScoreData = async () => {
+      if (user) {
+        const scoreDocRef = doc(db, "scores", user.uid);
+        const scoreDoc = await getDoc(scoreDocRef);
+        if (scoreDoc.exists()) {
+          setScoreData(scoreDoc.data() as ScoreData);
+        }
+      }
+    };
+
+    fetchScoreData();
+  }, [user]);
+
+  const handleSaveProfile = async () => {
+    if (user && profileData) {
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        name,
+        bio,
+        phoneNumber,
+        email: profileData.email,
+        notificationsEnabled: profileData.notificationsEnabled || false,
+      });
+
+      setProfileData({ ...profileData, name, bio, phoneNumber });
+      setIsEditing(false);
+    }
+  };
+
+  const getGreenViewStatus = (score: number | undefined) => {
+    if (score === undefined) return "";
+    if (score >= 80) return "Your GreenView is Clear 🌍🌱";
+    if (score >= 60) return "Your GreenView is Clouded ☁️☁️";
+    if (score >= 40) return "Your GreenView is Hazy 🌫️🌫️";
+    if (score >= 20) return "Your GreenView is Smoky 💨🏭";
+    return "Your GreenView is Polluted ☣️⚠️";
+  };
+
+  const renderScoreHistory = (history: ScoreEntry[]) => (
+    <div className={`score-history ${showHistory ? 'visible' : 'hidden'}`}>
+      {history.map((entry, index) => (
+        <div key={index} className="history-entry">
+          <p><strong>Date:</strong> {entry.date.toDate().toLocaleDateString()}</p>
+          <p><strong>Score:</strong> {entry.score}</p>
+          <p><strong>Questions:</strong> {entry.questions.join(", ")}</p>
+          <p><strong>Answers:</strong> {entry.answers.join(", ")}</p>
+        </div>
+      ))}
+    </div>
+  );
 
   return (
-      <div className="profile-page">
-        <h1>Profile</h1>
+    <div className="profile-page">
+      <h1 className="profile-title">Your Profile</h1>
+
+      <div className="profile-card">
         <div className="profile-info">
-          <p><strong>Name:</strong> {profileData.name || "Not set"}</p>
-          <p><strong>Email:</strong> {profileData.email || "Not set"}</p>
-          <p><strong>Phone Number:</strong> {profileData.phoneNumber || "Not set"}</p>
-          <p><strong>Bio:</strong> {profileData.bio || "Not set"}</p>
-        </div> 
+          {isEditing ? (
+            <>
+              <label>Name: <input value={name} onChange={(e) => setName(e.target.value)} /></label>
+              <label>Bio: <input value={bio} onChange={(e) => setBio(e.target.value)} /></label>
+              <label>Phone: <input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} /></label>
+              <button className="save-btn" onClick={handleSaveProfile}>Save</button>
+              <button className="cancel-btn" onClick={() => setIsEditing(false)}>Cancel</button>
+            </>
+          ) : (
+            <>
+              <p><strong>Name:</strong> {profileData?.name || "Not set"}</p>
+              <p><strong>Email:</strong> {profileData?.email || "Not set"}</p>
+              <p><strong>Bio:</strong> {profileData?.bio || "Not set"}</p>
+              <p><strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}</p>
+              <button className="edit-btn" onClick={() => setIsEditing(true)}>Edit Profile</button>
+            </>
+          )}
+        </div>
+      </div>
+
+      <div className="score-section">
+        <h2>{getGreenViewStatus(scoreData?.score)}</h2>
+        <button className="toggle-history-btn" onClick={() => setShowHistory(!showHistory)}>
+          {showHistory ? "Hide Score History" : "Show Score History"}
+        </button>
+        {showHistory && scoreData?.scoreHistory && renderScoreHistory(scoreData.scoreHistory)}
+      </div>
+
+      <div className="badges-section">
+        <h2>Badges</h2>
+        <div className="badges-placeholder">Coming soon...</div>
+      </div>
     </div>
   );
 };

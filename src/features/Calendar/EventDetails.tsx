@@ -1,4 +1,3 @@
-// /src/components/Calendar/EventDetails.tsx
 import React, { useState } from 'react';
 import { db } from '@services/firebase';
 import { doc, updateDoc } from 'firebase/firestore';
@@ -54,7 +53,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event, onClose }) => {
 
   return (
     <div style={EventDetailsStyles.eventDetails}>
-      <h2 style={{ color: '#FFF8EB' }}>{event.title}</h2>
+      <h2 style={EventDetailsStyles.eventTitle}>{event.title}</h2>
       <p>
         <strong>Date:</strong> {event.start.toLocaleDateString()} 
         {event.allDay ? '' : ` from ${event.start.toLocaleTimeString()} to ${event.end.toLocaleTimeString()}`}

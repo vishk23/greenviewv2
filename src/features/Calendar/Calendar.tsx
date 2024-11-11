@@ -1,4 +1,3 @@
-// MyCalendar.tsx
 import React, { useEffect, useState } from 'react';
 import { Calendar as BigCalendar, dateFnsLocalizer } from 'react-big-calendar';
 import { format, parse, startOfWeek, getDay } from 'date-fns';
@@ -55,12 +54,13 @@ const MyCalendar: React.FC = () => {
   const handleEventClick = (event: MyEvent) => {
     setSelectedEvent(event);
   };
+
   const eventPropGetter = (event: MyEvent) => {
     const isSelected = selectedEvent && event.id === selectedEvent.id;
     return {
       style: {
-        backgroundColor: isSelected ? '#F15824' : '#9FC37B', // White for selected, green otherwise
-        color: isSelected ? '#000000' : 'rgba(255, 248, 235, 1)', // Black text on white background, otherwise light text
+        backgroundColor: isSelected ? '#F15824' : '#9FC37B',
+        color: isSelected ? '#000000' : 'rgba(255, 248, 235, 1)',
         borderRadius: '8px',
         padding: '5px',
       },
@@ -95,10 +95,12 @@ const MyCalendar: React.FC = () => {
           </div>
         </div>
         {selectedEvent && (
-          <EventDetails
-            event={selectedEvent}
-            onClose={() => setSelectedEvent(null)}
-          />
+          <div style={CalendarStyles.eventDetailsContainer}>
+            <EventDetails
+              event={selectedEvent}
+              onClose={() => setSelectedEvent(null)}
+            />
+          </div>
         )}
       </div>
     </div>

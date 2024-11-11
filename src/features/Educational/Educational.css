@@ -1,74 +1,104 @@
+/* Variables */
 :root {
-    --primary-color: #2e7d32; /* Green */
-    --secondary-color: #81c784; /* Light Green */
-    --background-color: #f4f4f4; /* Light Gray */
-    --text-color: #333; /* Dark Text */
-    --accent-color: #ffd54f; /* Yellow */
-  }
-  
-  body {
-    font-family: 'Arial', sans-serif;
-    background-color: var(--background-color);
-    color: var(--text-color);
-    margin: 0;
-    padding: 0;
-  }
-  
-  .educational-page {
-    padding: 20px;
-  }
-  
-  .header {
-    background-color: var(--primary-color);
-    color: white;
-    padding: 20px;
-    text-align: center;
-  }
-  
-  .header h1 {
-    margin: 0;
-    font-size: 2.5rem;
-  }
-  
-  .header p {
-    margin-top: 10px;
-  }
-  
-  .resources-section, .learning-modules-section {
-    margin: 20px 0;
-  }
-  
-  .resources-grid, .modules-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    gap: 20px;
-  }
-  
-  .resource-card, .module-card {
-    background-color: white;
-    padding: 15px;
-    border: 1px solid #ddd;
-    border-radius: 5px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-  }
-  
-  .resource-card h3, .module-card h3 {
-    margin: 0 0 10px 0;
-  }
-  
-  .resource-card a, .module-card button {
-    display: inline-block;
-    margin-top: 10px;
-    color: var(--primary-color);
-    text-decoration: none;
-    font-weight: bold;
-    background-color: var(--accent-color);
-    padding: 8px 12px;
-    border-radius: 3px;
-  }
-  
-  .resource-card a:hover, .module-card button:hover {
-    background-color: var(--secondary-color);
-    color: white;
-  }
-  
+  --primary-color: #3d5a40;
+  --secondary-color: #8bc995;
+  --background-color: #f4f4f4;
+  --text-color: #333;
+  --accent-color: #ffd54f;
+  --card-background: #ffffff;
+  --card-shadow: rgba(0, 0, 0, 0.1);
+}
+
+/* Global */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: var(--background-color);
+  color: var(--text-color);
+  margin: 0;
+  padding: 0;
+}
+
+/* Educational Page Styling */
+.educational-page {
+  padding: 40px 10%;
+  max-width: 1200px;
+  margin: auto;
+}
+
+.educational-header {
+  background-color: var(--primary-color);
+  color: white;
+  padding: 30px;
+  border-radius: 8px;
+  text-align: center;
+}
+
+.educational-header h1 {
+  margin: 0;
+  font-size: 2.5rem;
+}
+
+.educational-header p {
+  margin-top: 8px;
+  font-size: 1.1rem;
+}
+
+.resources-section, 
+.learning-modules-section {
+  margin: 40px 0;
+}
+
+.resources-grid, 
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 20px;
+}
+
+.resource-card, 
+.module-card {
+  background-color: var(--card-background);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px var(--card-shadow);
+  transition: transform 0.3s ease;
+}
+
+.resource-card:hover, 
+.module-card:hover {
+  transform: translateY(-5px);
+}
+
+.resource-card h3, 
+.module-card h3 {
+  margin: 0 0 10px 0;
+  font-size: 1.2rem;
+  color: var(--primary-color);
+}
+
+.resource-card p, 
+.module-card p {
+  font-size: 1rem;
+  color: #555;
+}
+
+.resource-card a, 
+.module-card button {
+  display: inline-block;
+  margin-top: 10px;
+  color: white;
+  background-color: var(--secondary-color);
+  padding: 10px 15px;
+  font-weight: bold;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.resource-card a:hover, 
+.module-card button:hover {
+  background-color: #6ea87e;
+  color: white;
+}

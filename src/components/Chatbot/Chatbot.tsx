@@ -1,94 +1,87 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
+import ReactMarkdown from "react-markdown";
+import { useChatContext } from "../../contexts/ChatContext";
 import { model } from "@services/firebase";
-import { useLocation } from "react-router-dom";
 import "./Chatbot.css";
 
+type Role = "user" | "model" | "system" | "function";
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
+type Content = {
+  role: Role;
+  parts: { text: string }[];
+};
+
 function Chatbot() {
-  const [messages, setMessages] = useState<{ sender: string; text: string }[]>(
-    []
-  );
+  const { messages, addMessage, isVisible, setIsVisible } = useChatContext();
   const [input, setInput] = useState("");
   const [isRequestPending, setIsRequestPending] = useState(false);
-  const location = useLocation();
-  const [showPopup, setShowPopup] = useState(false);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   useEffect(() => {
-    // Check if there's a prefilled message from the URL
-    const params = new URLSearchParams(location.search);
-    const prefilledMessage = params.get("message");
-    if (prefilledMessage) {
-      setMessages([{ sender: "user", text: prefilledMessage }]);
-      handleSend(prefilledMessage);
-    }
-  }, [location]);
+    const handleNewMessage = async () => {
+      if (messages.length > 0 && !isRequestPending) {
+        const lastMessage = messages[messages.length - 1];
+        if (lastMessage.sender === "user" && lastMessage.needsResponse) {
+          await handleSend(lastMessage.text, true);
+        }
+      }
+    };
+    handleNewMessage();
+  }, [messages, isRequestPending]);
 
-  const handleSend = async (messageText = input) => {
+  const handleSend = async (messageText = input, isAutoResponse = false) => {
     if (!messageText.trim() || isRequestPending) return;
 
-    setIsRequestPending(true);
-
-    // Add user message to chat history
-    const newMessages = [...messages, { sender: "user", text: messageText }];
-    setMessages(newMessages);
-
-    // Fetch response from the AI model
-    const response = await fetchAIResponse(messageText, newMessages);
-    setMessages([...newMessages, { sender: "bot", text: response }]);
-
-    setInput(""); // Clear input field
-    setIsRequestPending(false); // Reset request status
-  };
-
-  const fetchAIResponse = async (
-    userInput: string,
-    chatHistory: { sender: string; text: string }[]
-  ): Promise<string> => {
     try {
+      setIsRequestPending(true);
+
+      if (!isAutoResponse) {
+        addMessage({ sender: "user", text: messageText, needsResponse: true });
+        return;
+      }
+
       const chat = model.startChat({
-        history: chatHistory.map((msg) => ({
+        history: messages.map(msg => ({
           role: msg.sender === "user" ? "user" : "model",
-          parts: [{ text: msg.text }],
+          parts: [{ text: msg.text }]
         })),
-        generationConfig: {
-          maxOutputTokens: 8192,
-        },
+        generationConfig: { maxOutputTokens: 8192 }
       });
 
-      const result = await chat.sendMessage(userInput);
+      const result = await chat.sendMessage(messageText);
       const response = await result.response;
       const botResponse = await response.text();
 
-      return (
-        botResponse || "Sorry, I didn’t receive a response. Please try again."
-      );
+      addMessage({ sender: "bot", text: botResponse, needsResponse: false });
+      setInput("");
     } catch (error) {
-      console.error("Error fetching AI response:", error);
-      return "Sorry, something went wrong.";
+      console.error("Error:", error);
+      addMessage({ sender: "bot", text: "Sorry, something went wrong.", needsResponse: false });
+    } finally {
+      setIsRequestPending(false);
     }
   };
 
   return (
     <div>
-      {showPopup ? (
-        <div className="chat-container">
-          <button className="close-button" onClick={() => setShowPopup(false)}>
-            <img src="/icons/close.png" width="32px" alt="close" />
+      {isVisible ? (
+        <div className={`chat-container ${isExpanded ? "expanded" : ""}`}>
+          <button className="close-button" onClick={() => setIsVisible(false)}>
+            ✖
+          </button>
+          <button className="expand-button" onClick={() => setIsExpanded(!isExpanded)}>
+            {isExpanded ? "🔽" : "🔼"}
           </button>
           <div className="chat-history">
             {messages.length === 0 ? (
-              <div className="empty-chat-message">
-                Hey There! <br /> How can I help you today?
-              </div>
+              <div className="empty-chat-message">Hey There! How can I help you today?</div>
             ) : (
               messages.map((msg, index) => (
                 <div
                   key={index}
-                  className={
-                    msg.sender === "bot" ? "message-bot" : "message-user"
-                  }
+                  className={msg.sender === "bot" ? "message-bot" : "message-user"}
                 >
-                  {msg.text}
+                  <ReactMarkdown>{msg.text}</ReactMarkdown>
                 </div>
               ))
             )}
@@ -98,19 +91,17 @@ function Chatbot() {
               type="text"
               value={input}
               onChange={(e) => setInput(e.target.value)}
-              onKeyPress={(e) => e.key === "Enter" && handleSend(undefined)}
+              onKeyPress={(e) => e.key === "Enter" && handleSend()}
+              placeholder="Type your message..."
             />
-            <button
-              className="send-button"
-              onClick={() => handleSend(undefined)}
-            >
-              <img src="/icons/arrow.png" width="16px" alt="send" />
+            <button className="send-button" onClick={() => handleSend()} disabled={isRequestPending}>
+              ➤
             </button>
           </div>
         </div>
       ) : (
-        <button className="open-chat-button" onClick={() => setShowPopup(true)}>
-          <img src="/icons/chat.png" width="32px" alt="chat" />
+        <button className="open-chat-button" onClick={() => setIsVisible(true)}>
+          💬
         </button>
       )}
     </div>

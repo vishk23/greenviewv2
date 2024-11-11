@@ -1,17 +1,64 @@
 .profile-page {
-  padding: 20px;
-  max-width: 600px;
-  margin: 0 auto;
+  max-width: 900px;
+  margin: 20px auto;
+  padding: 30px;
+  background-color: #f7f6f2;
+  border-radius: 15px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
 }
 
-.profile-info {
-  background-color: #f8f4e1;
-  padding: 20px;
-  border-radius: 8px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+.profile-title {
+  font-size: 2.5rem;
+  text-align: center;
+  margin-bottom: 20px;
+  color: #3d5a40;
 }
 
-.profile-info p {
+.profile-card {
+  background: linear-gradient(135deg, #e3f2e1, #d0e9d4);
+  padding: 20px;
+  border-radius: 12px;
+  margin-bottom: 20px;
+}
+
+.profile-info p, label {
   font-size: 1.2rem;
   margin: 10px 0;
-} 
+}
+
+input {
+  width: 100%;
+  padding: 10px;
+  border-radius: 8px;
+  border: 1px solid #cfcfcf;
+}
+
+button {
+  background-color: #5ca36a;
+  color: white;
+  padding: 12px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-top: 15px;
+}
+
+button:hover {
+  background-color: #4e9358;
+}
+
+.badges-placeholder {
+  text-align: center;
+  font-style: italic;
+  color: #888;
+  padding: 20px;
+  background-color: #eef7ee;
+  border-radius: 10px;
+}
+
+.history-entry {
+  background-color: #f1f8f2;
+  padding: 15px;
+  margin-bottom: 10px;
+  border-radius: 10px;
+}

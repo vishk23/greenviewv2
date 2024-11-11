@@ -8,9 +8,11 @@ import Summary from "./pages/Summary";
 import Leaderboard from "./features/Leaderboard/Leaderboard";
 import Educational from "./pages/Educational";
 import Profile from "./pages/Profile";
+import { ChatProvider } from "./contexts/ChatContext"; // Import ChatProvider
+
 const App = () => {
   return (
-    <>
+    <ChatProvider> {/* Wrap everything in ChatProvider */}
       <NavBar />
       <Chatbot />
       <Routes>
@@ -23,7 +25,7 @@ const App = () => {
         <Route path="/educational" element={<Educational />} />
         <Route path="/profile" element={<Profile />} />
       </Routes>
-    </>
+    </ChatProvider>
   );
 };
 
