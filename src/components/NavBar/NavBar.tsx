@@ -26,7 +26,10 @@ const links = [
     name: "Educational Resources",
     path: "/educational",
   },
-
+  {
+    name: "Profile",
+    path: "/profile",
+  },
 ];
 
 const NavBar: React.FC = () => {
@@ -36,6 +39,8 @@ const NavBar: React.FC = () => {
   const [showPopup, setShowPopup] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
   const [errorMessage, setErrorMessage] = useState("");
+  const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -55,7 +60,7 @@ const NavBar: React.FC = () => {
 
   const handleSignUp = async () => {
     try {
-      await registerWithEmail(email, password);
+      await registerWithEmail(email, password, username, phoneNumber);
       setShowPopup(false);
     } catch (error) {
       setErrorMessage("Sign-up failed. Please try again.");
@@ -103,6 +108,22 @@ const NavBar: React.FC = () => {
             <div className="auth-popup" id="auth-popup">
               <h3>{isSignUp ? "Sign Up" : "Login"}</h3>
               {errorMessage && <p className="error-message">{errorMessage}</p>}
+              {isSignUp && (
+                <>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="Username"
+                  />
+                  <input
+                    type="tel"
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                    placeholder="Phone Number"
+                  />
+                </>
+              )}
               <input
                 type="email"
                 value={email}
@@ -125,9 +146,7 @@ const NavBar: React.FC = () => {
                 onClick={() => setIsSignUp(!isSignUp)}
                 className="toggle-signup"
               >
-                {isSignUp
-                  ? "Already have an account? Login"
-                  : "Don't have an account? Sign Up"}
+                {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
               </button>
             </div>
           )}
