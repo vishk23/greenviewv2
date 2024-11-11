@@ -74,7 +74,7 @@ const NavBar: React.FC = () => {
       <nav className="navbar-main">
         <div className="navbar-left">
           <NavLink to="/" className="logo">
-          <img src="/full_logo.png" alt="LOGO" style={{ width: '200px', height: 'auto' }} />
+            <img src="/full_logo.png" alt="LOGO" style={{ width: '200px', height: 'auto' }} />
           </NavLink>
         </div>
         <div className="navbar-center">

@@ -42,55 +42,61 @@ const Score: React.FC<ScoreProps> = ({
   useEffect(() => {
     if (user) {
       const fetchScore = async () => {
-        const userDocRef = doc(db, "scores", user.uid);
+        try {
+          const userDocRef = doc(db, "scores", user.uid);
+          const userDoc = await getDoc(userDocRef);
   
-        const userDoc = await getDoc(userDocRef);
-        if (userDoc.exists()) {
-          const userData = userDoc.data();
-          const previous = userData.score;
-          setPreviousScore(previous);
+          if (userDoc.exists()) {
+            const userData = userDoc.data();
+            const previous = userData.score;
+            setPreviousScore(previous);
   
-          if (score > previous) {
-            setMessage(
-              `Great Job! Your score improved by ${score - previous} points!`
-            );
-          } else if (score === previous) {
-            setMessage("Your score remains the same. Keep going!");
+            if (score > previous) {
+              setMessage(`Great Job! Your score improved by ${score - previous} points!`);
+            } else if (score === previous) {
+              setMessage("Your score remains the same. Keep going!");
+            } else {
+              setMessage("Keep going! You can improve your score!");
+            }
+  
+            // Update the document, including the email field
+            await updateDoc(userDocRef, {
+              score,
+              lastUpdated: new Date(),
+              email: user.email,
+              answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
+              questions: questions.map((q) => q.question),
+            });
+  
+            // Add a document to the messages collection to trigger the Twilio extension
+            const phoneNumber = userData.phoneNumber;
+            if (phoneNumber) {
+              await addDoc(collection(db, "messages"), {
+                to: phoneNumber,
+                body: `Your current score is ${score}. Stay tuned for more updates and fun facts!`,
+              });
+            }
           } else {
-            setMessage("Keep going! You can improve your score!");
+            // Create the document with email when it doesn't exist
+            await setDoc(userDocRef, {
+              userId: user.uid,
+              email: user.email,
+              score,
+              lastUpdated: new Date(),
+              answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
+              questions: questions.map((q) => q.question),
+            });
+            setMessage("Great start! This is your first time taking the quiz.");
           }
-  
-          // Update the document, including the email field
-          await updateDoc(userDocRef, {
-            score: score,
-            lastUpdated: new Date(),
-            email: user.email, // Add email here
-            answers: answers.map(
-              (answerIndex, i) => questions[i].answers[answerIndex]
-            ),
-            questions: questions.map((q) => q.question),
-          });
-        } else {
-          // Create the document with email when it doesn't exist
-          await setDoc(userDocRef, {
-            userId: user.uid,
-            email: user.email, // Add email here
-            score: score,
-            lastUpdated: new Date(),
-            answers: answers.map(
-              (answerIndex, i) => questions[i].answers[answerIndex]
-            ),
-            questions: questions.map((q) => q.question),
-          });
-          setMessage("Great start! This is your first time taking the quiz.");
+        } catch (error) {
+          console.error("Error fetching score:", error);
         }
       };
   
-      fetchScore().catch((error) =>
-        console.error("Error fetching score:", error)
-      );
+      fetchScore();
     }
   }, [user, score, answers, questions]);
+  
   
 
   useEffect(() => {
@@ -190,6 +196,42 @@ const Score: React.FC<ScoreProps> = ({
   };
 
   const handleSendToChatbot = (question: string) => {};
+
+  useEffect(() => {
+    if (user) {
+      const updateScoreAndSendSMS = async () => {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          const previousScore = userData.score || 0;
+
+          // Update the user's score in Firestore
+          await updateDoc(userDocRef, {
+            score: score,
+            lastUpdated: new Date(),
+            answers: answers.map(
+              (answerIndex, i) => questions[i].answers[answerIndex]
+            ),
+            questions: questions.map((q) => q.question),
+          });
+
+          // Send SMS with the updated score
+          const phoneNumber = userData.phoneNumber;
+          if (phoneNumber) {
+            await addDoc(collection(db, "messages"), {
+              to: phoneNumber,
+              body: `Your current score is ${score}. Stay tuned for more updates and fun facts!`,
+            });
+          }
+        }
+      };
+
+      updateScoreAndSendSMS().catch((error) =>
+        console.error("Error updating score and sending SMS:", error)
+      );
+    }
+  }, [user, score, answers, questions]);
 
   return (
     <div className="score-container">
