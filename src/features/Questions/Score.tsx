@@ -97,7 +97,6 @@ const Score: React.FC<ScoreProps> = ({
     }
   }, [user, score, answers, questions]);
   
-  
 
   useEffect(() => {
     const generateAISummary = async () => {
@@ -244,7 +243,7 @@ const Score: React.FC<ScoreProps> = ({
           <span className="job">{message}</span>
         </div>
         <span>
-          <a href="#" onClick={toggleAIBoxVisibility} className="link">
+          <a href="/summary" onClick={toggleAIBoxVisibility} className="link">
             Click here
           </a>
           &nbsp; to see how to improve!
