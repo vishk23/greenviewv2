@@ -6,7 +6,7 @@ import { doc, getDoc } from "firebase/firestore";
 
 const Profile: React.FC = () => {
   const [user] = useAuthState(auth);
-  const [profileData, setProfileData] = useState<{ name: string; email: string; bio: string } | null>(null);
+  const [profileData, setProfileData] = useState<{ name: string; email: string; bio: string; phoneNumber?: string } | null>(null);
 
   useEffect(() => {
     const fetchUserData = async () => {
@@ -15,7 +15,7 @@ const Profile: React.FC = () => {
           const userDocRef = doc(db, "users", user.uid);
           const userDoc = await getDoc(userDocRef);
           if (userDoc.exists()) {
-            setProfileData(userDoc.data() as { name: string; email: string; bio: string });
+            setProfileData(userDoc.data() as { name: string; email: string; bio: string; phoneNumber?: string });
           } else {
             console.log("No such document!");
           }
@@ -40,6 +40,7 @@ const Profile: React.FC = () => {
         <div className="profile-info">
           <p><strong>Name:</strong> {profileData.name}</p>
           <p><strong>Email:</strong> {profileData.email}</p>
+          <p><strong>Phone Number:</strong> {profileData.phoneNumber || "Not set"}</p>
           <p><strong>Bio:</strong> {profileData.bio}</p>
         </div>
       </div>

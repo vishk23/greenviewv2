@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, model } from "@services/firebase";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, setDoc, updateDoc, collection, addDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
@@ -30,6 +30,7 @@ const Score: React.FC<ScoreProps> = ({
   const [potentialQuestions, setPotentialQuestions] = useState<string[]>([]);
   const [user] = useAuthState(auth);
   const navigate = useNavigate();
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   const maxScore = totalQuestions * 10;
   const percentageScore = (score / maxScore) * 100;
@@ -156,6 +157,38 @@ const Score: React.FC<ScoreProps> = ({
     generateAISummary();
   }, [answers, questions]);
 
+  useEffect(() => {
+    const fetchUserData = async () => {
+      if (user) {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          setNotificationsEnabled(userDoc.data().notificationsEnabled || false);
+        }
+      }
+    };
+
+    fetchUserData();
+  }, [user]);
+
+  const handleEnableNotifications = async () => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, { notificationsEnabled: true });
+      setNotificationsEnabled(true);
+
+      // Add a document to the messages collection to trigger the Twilio extension
+      const userDoc = await getDoc(userDocRef);
+      const phoneNumber = userDoc.data()?.phoneNumber;
+      if (phoneNumber) {
+        await addDoc(collection(db, "messages"), {
+          to: phoneNumber,
+          body: `Your current score is ${score}. Stay tuned for more updates and fun facts!`,
+        });
+      }
+    }
+  };
+
   const handleSendToChatbot = (question: string) => {};
 
   return (
@@ -195,6 +228,14 @@ const Score: React.FC<ScoreProps> = ({
           ))}
         </div>
       </div>
+
+      {!notificationsEnabled ? (
+        <button onClick={handleEnableNotifications}>
+          Enable Notifications for Updates and Fun Facts
+        </button>
+      ) : (
+        <p>Notifications Enabled</p>
+      )}
     </div>
   );
 };
