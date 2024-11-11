@@ -5,7 +5,6 @@ import { useEffect, useState } from "react";
 import { collection, getDocs } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { MyScore } from "./Scores";
-import Leaderboard from "@features/Leaderboard/Leaderboard";
 import "./Summary.css";
 
 const Summary: React.FC = () => {
@@ -113,19 +112,16 @@ const Summary: React.FC = () => {
   }, [scores]);
 
   return (
-    <div className="container">
-      <Leaderboard />
-      <div className="ai-box">
-        <h3>Sustainability Summary</h3>
-        <p>{aiResponse}</p>
-        <h4>Potential Questions</h4>
-        <div className="potential-questions">
-          {potentialQuestions.map((question, index) => (
-            <button key={index} style={{ marginTop: "10px" }}>
-              {question}
-            </button>
-          ))}
-        </div>
+    <div className="ai-box">
+      <h3>Sustainability Summary</h3>
+      <p>{aiResponse}</p>
+      <h4>Potential Questions</h4>
+      <div className="potential-questions">
+        {potentialQuestions.map((question, index) => (
+          <button key={index} style={{ marginTop: "10px" }}>
+            {question}
+          </button>
+        ))}
       </div>
     </div>
   );

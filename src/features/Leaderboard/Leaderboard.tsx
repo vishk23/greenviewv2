@@ -1,9 +1,12 @@
-import React, { useState, useEffect } from 'react';
-import { fetchLeaderboardData, LeaderboardEntry } from './fetchLeaderboardData';
-import './Leaderboard.css';
+import React, { useState, useEffect } from "react";
+import { fetchLeaderboardData, LeaderboardEntry } from "./fetchLeaderboardData";
+import { motion, AnimatePresence } from "framer-motion";
+import "./Leaderboard.css";
 
 const Leaderboard: React.FC = () => {
-  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>([]);
+  const [leaderboardData, setLeaderboardData] = useState<LeaderboardEntry[]>(
+    []
+  );
   const [showAll, setShowAll] = useState(false);
   const [loading, setLoading] = useState(true);
 
@@ -25,29 +28,45 @@ const Leaderboard: React.FC = () => {
   };
 
   if (loading) {
-    return <div>Loading...</div>; 
+    return <div>Loading...</div>;
   }
 
   return (
-    <div className="leaderboard">
+    <motion.div
+      className="leaderboard"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+    >
       <div className="leaderboard-header">
         <div className="header-item">RANK</div>
         <div className="header-item">NAME</div>
         <div className="header-item">SCORE</div>
         <div className="header-item">BADGE/TIER</div>
       </div>
-      {displayedData.map((entry) => (
-        <div key={entry.rank} className="leaderboard-row">
-          <div className="row-item rank">#{entry.rank}</div>
-          <div className="row-item name">{entry.name}</div>
-          <div className="row-item score">{entry.score}</div>
-          <div className="row-item badge">{entry.badge}</div>
-        </div>
-      ))}
+
+      <AnimatePresence>
+        {displayedData.map((entry, index) => (
+          <motion.div
+            key={entry.rank}
+            className="leaderboard-row"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ delay: showAll ? 0 : index * 0.1 }} // Delay staggered for each item
+          >
+            <div className="row-item rank">#{entry.rank}</div>
+            <div className="row-item name">{entry.name}</div>
+            <div className="row-item score">{entry.score}</div>
+            <div className="row-item badge">{entry.badge}</div>
+          </motion.div>
+        ))}
+      </AnimatePresence>
+
       <button onClick={toggleShowAll} className="show-more-button">
         {showAll ? "Show Less" : "Show More"}
       </button>
-    </div>
+    </motion.div>
   );
 };
 

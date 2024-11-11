@@ -2,7 +2,14 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db, model } from "@services/firebase";
-import { doc, getDoc, setDoc, updateDoc, collection, addDoc } from "firebase/firestore";
+import {
+  doc,
+  getDoc,
+  setDoc,
+  updateDoc,
+  collection,
+  addDoc,
+} from "firebase/firestore";
 import { useEffect, useState } from "react";
 import ProgressBar from "./ProgressBar";
 import { useNavigate } from "react-router-dom";
@@ -21,7 +28,6 @@ const Score: React.FC<ScoreProps> = ({
   answers,
   questions,
 }) => {
-  const [isAIBoxVisible, setIsAIBoxVisible] = useState(false);
   const [previousScore, setPreviousScore] = useState<number | null>(null);
   const [message, setMessage] = useState<string>(
     "Great start! This is your first time taking the quiz."
@@ -35,39 +41,39 @@ const Score: React.FC<ScoreProps> = ({
   const maxScore = totalQuestions * 10;
   const percentageScore = (score / maxScore) * 100;
 
-  const toggleAIBoxVisibility = () => {
-    setIsAIBoxVisible((prev) => !prev);
-  };
-
   useEffect(() => {
     if (user) {
       const fetchScore = async () => {
         try {
           const userDocRef = doc(db, "scores", user.uid);
           const userDoc = await getDoc(userDocRef);
-  
+
           if (userDoc.exists()) {
             const userData = userDoc.data();
             const previous = userData.score;
             setPreviousScore(previous);
-  
+
             if (score > previous) {
-              setMessage(`Great Job! Your score improved by ${score - previous} points!`);
+              setMessage(
+                `Great Job! Your score improved by ${score - previous} points!`
+              );
             } else if (score === previous) {
               setMessage("Your score remains the same. Keep going!");
             } else {
               setMessage("Keep going! You can improve your score!");
             }
-  
+
             // Update the document, including the email field
             await updateDoc(userDocRef, {
               score,
               lastUpdated: new Date(),
               email: user.email,
-              answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
+              answers: answers.map(
+                (answerIndex, i) => questions[i].answers[answerIndex]
+              ),
               questions: questions.map((q) => q.question),
             });
-  
+
             // Add a document to the messages collection to trigger the Twilio extension
             const phoneNumber = userData.phoneNumber;
             if (phoneNumber) {
@@ -83,7 +89,9 @@ const Score: React.FC<ScoreProps> = ({
               email: user.email,
               score,
               lastUpdated: new Date(),
-              answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
+              answers: answers.map(
+                (answerIndex, i) => questions[i].answers[answerIndex]
+              ),
               questions: questions.map((q) => q.question),
             });
             setMessage("Great start! This is your first time taking the quiz.");
@@ -92,11 +100,10 @@ const Score: React.FC<ScoreProps> = ({
           console.error("Error fetching score:", error);
         }
       };
-  
+
       fetchScore();
     }
   }, [user, score, answers, questions]);
-  
 
   useEffect(() => {
     const generateAISummary = async () => {
@@ -194,8 +201,6 @@ const Score: React.FC<ScoreProps> = ({
     }
   };
 
-  const handleSendToChatbot = (question: string) => {};
-
   useEffect(() => {
     if (user) {
       const updateScoreAndSendSMS = async () => {
@@ -253,35 +258,15 @@ const Score: React.FC<ScoreProps> = ({
           <ProgressBar points={percentageScore} />
         </div>
         <div className="score-display">
-        <span className="score-number">{getFeedback()}</span>
+          <span className="score-number">{getFeedback()}</span>
           <span className="job">{message}</span>
         </div>
         <span>
-          <a href="/summary" onClick={toggleAIBoxVisibility} className="link">
+          <a href="/summary" className="link">
             Click here
           </a>
           &nbsp; to see how to improve!
         </span>
-      </div>
-
-      <div
-        className="ai-box"
-        style={{ visibility: isAIBoxVisible ? "visible" : "hidden" }}
-      >
-        <h3>Sustainability Summary</h3>
-        <p>{aiResponse}</p>
-        <h4>Potential Questions</h4>
-        <div className="potential-questions">
-          {potentialQuestions.map((question, index) => (
-            <button
-              key={index}
-              onClick={() => handleSendToChatbot(question)}
-              style={{ marginTop: "10px" }}
-            >
-              {question}
-            </button>
-          ))}
-        </div>
       </div>
 
       {!notificationsEnabled ? (

@@ -1,0 +1,32 @@
+
+.container {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f4e1;
+  background-image: url('/public/questions_background.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+.component-container1 {
+  margin-top: 100px;
+  height: 100%;
+  width: 100%;
+}
+.component-container2 {
+  margin-left: 200px;
+  margin-top: 50px;
+  height: 100%;
+  width: 100%;
+}
+
+.show {
+  display: block;
+}
+
+.hide {
+  display: none;
+}

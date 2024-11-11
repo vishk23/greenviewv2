@@ -1,0 +1,30 @@
+/* Sidebar.css */
+.sidebar {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  justify-content: space-evenly; /* Vertically space out or center items in the flex container */
+  align-items: center; /* Horizontally center items in the container */
+  width: 50px; /* Set a fixed width for the sidebar */
+  height: 25vh; /* Full viewport height */
+  padding: 15px;
+  background-color: #9fc37b;
+  border: 1px solid transparent;
+  border-radius: 50px;
+  left: 16px; /* Align to the left edge of the screen */
+  top: 50%; /* Position at the middle of the viewport */
+  transform: translateY(-50%); /* Center vertically */
+}
+
+.sidebar h2 {
+  margin-top: 0;
+}
+
+.sidebar ul {
+  list-style: none;
+  padding: 0;
+}
+
+.sidebar ul li {
+  margin: 15px 0;
+}
