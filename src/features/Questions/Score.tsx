@@ -42,13 +42,13 @@ const Score: React.FC<ScoreProps> = ({
     if (user) {
       const fetchScore = async () => {
         const userDocRef = doc(db, "scores", user.uid);
-  
+
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const userData = userDoc.data();
           const previous = userData.score;
           setPreviousScore(previous);
-  
+
           if (score > previous) {
             setMessage(
               `Great Job! Your score improved by ${score - previous} points!`
@@ -58,7 +58,7 @@ const Score: React.FC<ScoreProps> = ({
           } else {
             setMessage("Keep going! You can improve your score!");
           }
-  
+
           // Update the document, including the email field
           await updateDoc(userDocRef, {
             score: score,
@@ -84,13 +84,12 @@ const Score: React.FC<ScoreProps> = ({
           setMessage("Great start! This is your first time taking the quiz.");
         }
       };
-  
+
       fetchScore().catch((error) =>
         console.error("Error fetching score:", error)
       );
     }
   }, [user, score, answers, questions]);
-  
 
   useEffect(() => {
     const generateAISummary = async () => {
@@ -169,31 +168,11 @@ const Score: React.FC<ScoreProps> = ({
           <span className="job">{message}</span>
         </div>
         <span>
-          <a href="#" onClick={toggleAIBoxVisibility} className="link">
+          <a href="/summary" onClick={toggleAIBoxVisibility} className="link">
             Click here
           </a>
           &nbsp; to see how to improve!
         </span>
-      </div>
-
-      <div
-        className="ai-box"
-        style={{ visibility: isAIBoxVisible ? "visible" : "hidden" }}
-      >
-        <h3>Sustainability Summary</h3>
-        <p>{aiResponse}</p>
-        <h4>Potential Questions</h4>
-        <div className="potential-questions">
-          {potentialQuestions.map((question, index) => (
-            <button
-              key={index}
-              onClick={() => handleSendToChatbot(question)}
-              style={{ marginTop: "10px" }}
-            >
-              {question}
-            </button>
-          ))}
-        </div>
       </div>
     </div>
   );

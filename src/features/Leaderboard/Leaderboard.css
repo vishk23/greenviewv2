@@ -1,6 +1,6 @@
 .leaderboard {
     width: 90%; /* Adjusted for smaller size */
-    max-width: 500px; /* Change to desired max width */
+    max-width: 600px; /* Change to desired max width */
     margin: 20px auto; /* Centered with margin */
     background-color: #FFF8EB; /* Fresh starts Comfort */
     border-radius: 12px;
@@ -13,6 +13,7 @@
   .leaderboard-row {
     display: flex;
     justify-content: space-between;
+    align-items: center; /* Vertically center the content */
     padding: 8px 16px; /* Reduced padding */
     border-radius: 8px;
   }

@@ -1,4 +1,6 @@
 import { Routes, Route } from "react-router-dom";
+import NavBar from "@components/NavBar/NavBar";
+import Chatbot from "@components/Chatbot/Chatbot";
 import Calendar from "./pages/Calendar";
 import Score from "./pages/Score";
 import Main from "./pages/Home";
@@ -8,6 +10,8 @@ import Educational from "./pages/Educational";
 const App = () => {
   return (
     <>
+      <NavBar />
+      <Chatbot />
       <Routes>
         <Route path="/" element={<Main />} />
         <Route path="/calendar" element={<Calendar />} />
