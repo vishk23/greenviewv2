@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-import NavBar from "@components/NavBar/NavBar";
-import Chatbot from "@components/Chatbot/Chatbot";
 import Questions from "@features/Questions/Questions";
 import Animation from "@features/Questions/Animation";
 
@@ -112,12 +110,10 @@ const App: React.FC = () => {
 
   return (
     <div>
-      <NavBar />
       <div style={{ position: "relative" }}>
         <Animation objects={objects} />
         <Questions spawnObject={spawnObject} />
       </div>
-      <Chatbot />
     </div>
   );
 };

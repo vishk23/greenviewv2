@@ -97,7 +97,6 @@ const Score: React.FC<ScoreProps> = ({
     }
   }, [user, score, answers, questions]);
   
-  
 
   useEffect(() => {
     const generateAISummary = async () => {
@@ -233,6 +232,20 @@ const Score: React.FC<ScoreProps> = ({
     }
   }, [user, score, answers, questions]);
 
+  const getFeedback = () => {
+    if (percentageScore >= 80) {
+      return "Your Greenview is Clear 🌍🌱";
+    } else if (percentageScore >= 60) {
+      return "Your Greenview is Clouded ☁️☁️";
+    } else if (percentageScore >= 40) {
+      return "Your Greenview is Hazy 🌫️🌫️";
+    } else if (percentageScore >= 20) {
+      return "Your Greenview is Smoky 💨🏭";
+    } else {
+      return "Your Greenview is Polluted ☣️⚠️";
+    }
+  };
+
   return (
     <div className="score-container">
       <div className="score-box">
@@ -240,11 +253,11 @@ const Score: React.FC<ScoreProps> = ({
           <ProgressBar points={percentageScore} />
         </div>
         <div className="score-display">
-          <span className="score-number">{score}</span>
+        <span className="score-number">{getFeedback()}</span>
           <span className="job">{message}</span>
         </div>
         <span>
-          <a href="#" onClick={toggleAIBoxVisibility} className="link">
+          <a href="/summary" onClick={toggleAIBoxVisibility} className="link">
             Click here
           </a>
           &nbsp; to see how to improve!

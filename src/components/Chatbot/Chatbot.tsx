@@ -73,7 +73,7 @@ function Chatbot() {
       {showPopup ? (
         <div className="chat-container">
           <button className="close-button" onClick={() => setShowPopup(false)}>
-            <img src="/icons/close.png" width="32px" alt="close"/>
+            <img src="/icons/close.png" width="32px" alt="close" />
           </button>
           <div className="chat-history">
             {messages.length === 0 ? (
@@ -88,7 +88,7 @@ function Chatbot() {
                     msg.sender === "bot" ? "message-bot" : "message-user"
                   }
                 >
-                  <strong>{msg.sender}:</strong> {msg.text}
+                  {msg.text}
                 </div>
               ))
             )}

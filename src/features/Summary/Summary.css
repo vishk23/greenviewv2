@@ -1,0 +1,48 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background-color: #f8f4e1;
+  background-image: url('/public/questions_background.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+.ai-box {
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  padding-left: 10px; /* Increased padding for better spacing */
+  padding-right: 10px; /* Increased padding for better spacing */
+  padding-bottom: 20px; /* Increased padding for better spacing */
+  margin-top: 40px;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9; /* Light background for contrast */
+  height: 400px;
+  overflow-y: auto; /* Enable scrolling within the AI box */
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
+  transition: all 0.3s ease; /* Smooth transition for hover effects */
+  z-index: 10;
+}
+
+.ai-box h3 {
+  font-size: 1.8rem; /* Slightly larger heading */
+  color: #3a5a40; /* Darker color for the title */
+}
+
+.ai-box h4 {
+  font-size: 1.5rem; /* Adjusted size for subheading */
+  color: #28a745; /* Matching color for subheading */
+}
+
+.ai-box p {
+  font-size: 1rem; /* Font size for the response text */
+  color: #555; /* Softer text color for readability */
+  line-height: 1.6; /* Improved line height for readability */
+  white-space: pre-wrap; /* Corrected property for wrapping text */
+  overflow-wrap: break-word; /* Corrected property for breaking long words */
+}
