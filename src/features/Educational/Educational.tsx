@@ -5,11 +5,29 @@ import './Educational.css';
 
 const Educational: React.FC = () => {
   const navigate = useNavigate();
+  
 
   const modules = [
-    { id: '1', title: 'Sustainability Basics', description: 'Learn the fundamentals of sustainability and its importance.' },
-    { id: '2', title: 'Energy Conservation', description: 'Discover ways to reduce energy consumption in daily life.' },
-    { id: '3', title: 'Waste Reduction', description: 'Explore strategies to minimize waste and recycle effectively.' },
+    { 
+      id: '1', 
+      title: 'Sustainability Basics', 
+      description: 'Learn the fundamentals of sustainability and its importance in everyday life.' 
+    },
+    { 
+      id: '2', 
+      title: 'Energy Conservation in Dorms', 
+      description: 'Learn simple ways to conserve energy in your residence hall, such as efficient use of heating, cooling, and lighting.' 
+    },
+    { 
+      id: '3', 
+      title: 'Waste Reduction While on Campus', 
+      description: 'Understand how to properly recycle, compost, and reduce waste across BU’s campus.' 
+    },
+    { 
+      id: '4', 
+      title: 'Get Involved: BU Sustainability Programs', 
+      description: 'Discover ways to actively participate in BU’s sustainability initiatives, such as joining student-led eco clubs, attending events, or volunteering for campus-wide sustainability projects.' 
+    },
   ];
 
   const handleModuleClick = (moduleId: string) => {
@@ -20,7 +38,7 @@ const Educational: React.FC = () => {
     <div className="educational-page">
       <header className="educational-header">
         <h1>Educational Resources</h1>
-        <p>Explore interactive modules to enhance your sustainability knowledge.</p>
+        <p>Understanding sustainability is the first step towards a greener future. This section offers a range of resources to help you deepen your knowledge and take actionable steps towards a sustainable lifestyle.</p>
       </header>
 
       <section className="learning-modules-section">
@@ -30,7 +48,7 @@ const Educational: React.FC = () => {
             <div
               key={module.id}
               className="module-card"
-              onClick={() => handleModuleClick(module.id)} // Handle click to navigate
+              onClick={() => handleModuleClick(module.id)}
             >
               <h3>{module.title}</h3>
               <p>{module.description}</p>
@@ -39,12 +57,29 @@ const Educational: React.FC = () => {
         </div>
       </section>
 
+      <section className="featured-video-section">
+        <h2>What is sustainability?</h2>
+        <iframe
+          width="560"
+          height="315"
+          src="https://www.youtube.com/embed/zx04Kl8y4dE"
+          title="YouTube video player"
+
+          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+        
+        ></iframe>
+        <p>
+          Want to explore more?{' '}
+          <span className="link" onClick={() => navigate('/video-library')}>
+            Check out our Video Library.
+          </span>
+        </p>
+      </section>
+
       <section className="map-section">
-        <h2>Have your own water bottle but don't know where to refill it?</h2>
+        <h1>Have your own water bottle but don't know where to refill it?</h1>
         <p>Use the map below to explore BU's refill stations!</p>
-        <div className="map-container">
-          <Map />
-        </div>
+        <Map />
       </section>
     </div>
   );

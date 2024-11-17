@@ -8,6 +8,10 @@ import Summary from "./pages/Summary";
 import Leaderboard from "./features/Leaderboard/Leaderboard";
 import Educational from "./pages/Educational";
 import SustainabilityBasicsModule from '@features/Educational/SustainabilityBasicsModule';
+import VideoLibrary from "@features/Educational/VideoLibrary";
+import GetInvolved from "@features/Educational/GetInvolved";
+import Energy from "@features/Educational/Energy";
+import Waste from "@features/Educational/Waste";
 import Profile from "./pages/Profile";
 import { ChatProvider } from "./contexts/ChatContext"; // Import ChatProvider
 
@@ -25,7 +29,12 @@ const App = () => {
         <Route path="/leaderboard" element={<Leaderboard />} />
         <Route path="/educational" element={<Educational />} />
         <Route path="/module/1" element={<SustainabilityBasicsModule />} />
+        <Route path="/module/2" element={<Energy />} />
+        <Route path="/module/3" element={<Waste />} />
+        <Route path="/module/4" element={<GetInvolved />} />
         <Route path="/profile" element={<Profile />} />
+        <Route path="/video-library" element={<VideoLibrary />} />
+      
 
       </Routes>
     </ChatProvider>

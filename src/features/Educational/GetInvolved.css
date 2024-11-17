@@ -1,0 +1,70 @@
+.get-involved-page {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  header h1 {
+    color: rgba(159, 195, 123, 1); /* Consistent green theme */
+    font-size: 2em;
+    margin-bottom: 10px;
+  }
+  
+  header p {
+    font-size: 1em;
+    color: #333;
+    margin-bottom: 20px;
+  }
+  
+  .organizations-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+  }
+  
+  .organization-card {
+    background: rgba(159, 195, 123, 1); /* Green theme */
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    width: 300px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    text-decoration: none;
+  }
+  
+  .organization-card:hover {
+    transform: scale(1.05);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+  }
+  
+  .organization-card h3 {
+    margin-bottom: 10px;
+    font-size: 1.2em;
+  }
+  
+  .organization-card p {
+    font-size: 0.9em;
+    margin: 0;
+    color: white;
+  }
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(159, 195, 123, 1);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+  }
+  
+  .back-button:hover {
+    background-color: rgba(140, 175, 110, 1); /* Slightly darker green for hover effect */
+  }
+  
+  

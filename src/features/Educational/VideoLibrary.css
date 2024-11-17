@@ -1,0 +1,44 @@
+.video-library-page {
+    padding: 20px;
+    text-align: center;
+  }
+  
+  .videos-grid {
+    display: flex;
+    gap: 20px;
+    flex-wrap: wrap;
+    justify-content: center;
+  }
+  
+  .video-card {
+    background: #f1f8e9;
+    padding: 10px;
+    border-radius: 8px;
+    width: 300px;
+    text-align: center;
+  }
+  
+  .video-card iframe {
+    width: 100%;
+    height: 170px;
+    margin-bottom: 10px;
+  }
+  .back-button {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    background-color: rgba(159, 195, 123, 1);
+    color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1em;
+    text-decoration: none;
+  }
+  
+  .back-button:hover {
+    background-color: rgba(140, 175, 110, 1); /* Slightly darker green for hover effect */
+  }
+  
+  
