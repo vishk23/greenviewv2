@@ -1,11 +1,11 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db, model } from "@services/firebase";
+import { auth, db, model, structuredModel } from "@services/firebase";
 import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
 import ProgressBar from "./ProgressBar";
 import { useChatContext } from "../../contexts/ChatContext";
-import Leaderboard from '@features/Leaderboard/Leaderboard';
+import Leaderboard from "@features/Leaderboard/Leaderboard";
 import "./Consolidated.css";
 import ReactMarkdown from "react-markdown";
 
@@ -21,6 +21,7 @@ interface ScoreEntry {
   date: Date;
   answers: string[];
   questions: string[];
+  structuredSummary?: any;
 }
 
 const Score: React.FC<ScoreProps> = ({
@@ -31,13 +32,16 @@ const Score: React.FC<ScoreProps> = ({
 }) => {
   const [user] = useAuthState(auth);
   const [previousScore, setPreviousScore] = useState<number | null>(null);
-  const [message, setMessage] = useState<string>("Great start! This is your first time taking the quiz.");
+  const [message, setMessage] = useState<string>(
+    "Great start! This is your first time taking the quiz."
+  );
   const [isAIBoxVisible, setIsAIBoxVisible] = useState(false);
   const [aiResponse, setAiResponse] = useState<string>("");
   const [potentialQuestions, setPotentialQuestions] = useState<string[]>([]);
   const [notificationsEnabled, setNotificationsEnabled] = useState(false);
   const { addMessage, setIsVisible } = useChatContext();
   const [isSummaryLoading, setIsSummaryLoading] = useState(false);
+  const [structuredSummary, setStructuredSummary] = useState<any>(null);
 
   const maxScore = totalQuestions * 10;
   const percentageScore = (score / maxScore) * 100;
@@ -50,10 +54,62 @@ const Score: React.FC<ScoreProps> = ({
     return "Your GreenView is Polluted ☣️⚠️";
   };
 
+  const generateStructuredSummary = async (qaPairs: any) => {
+    try {
+      const chat = structuredModel.startChat({
+        history: [
+          {
+            role: "user",
+            parts: [
+              {
+                text: "Based on the following quiz questions and answers, generate a JSON summary with strengths and areas for improvement. Return it as JSON with fields 'strengths' and 'improvement'. Limit each to a maximum of 3 items.",
+              },
+            ],
+          },
+        ],
+        generationConfig: { maxOutputTokens: 300 },
+      });
+  
+      const result = await chat.sendMessage(JSON.stringify(qaPairs));
+      let structuredResponse = await result.response.text();
+  
+      console.log("Raw structured response:", structuredResponse);
+  
+      // Remove any backticks and code block markers from the response
+      if (structuredResponse.startsWith("```json")) {
+        structuredResponse = structuredResponse.replace(/```json|```/g, "").trim();
+      }
+  
+      console.log("Cleaned structured response:", structuredResponse);
+  
+      // Parse the cleaned response
+      const parsedResponse = JSON.parse(structuredResponse);
+      console.log("Parsed Structured Summary:", parsedResponse);
+  
+      // Enforce a maximum of 3 items for both strengths and improvement
+      const normalizedResponse = {
+        strengths: (parsedResponse.strengths || []).slice(0, 3),
+        improvement: (parsedResponse.improvement || []).slice(0, 3),
+      };
+  
+      console.log("Normalized Structured Summary (Max 3 items):", normalizedResponse);
+  
+      return normalizedResponse;
+    } catch (error) {
+      console.error("Error generating structured summary:", error);
+      return { strengths: [], improvement: [] };
+    }
+  };
+  
+  
+  
+  
+  
+
   const toggleAIBoxVisibility = async () => {
     const newVisibility = !isAIBoxVisible;
     setIsAIBoxVisible(newVisibility);
-    
+
     if (newVisibility && !aiResponse) {
       setIsSummaryLoading(true);
       try {
@@ -62,12 +118,17 @@ const Score: React.FC<ScoreProps> = ({
           answer: q.answers[answers[i]],
         }));
 
+        // Generate unstructured summary
         const chat = model.startChat({
           history: [
             {
               role: "user",
-              parts: [{ text: "Generate a sustainability summary and suggestions based on the following quiz questions and answers." }],
-            }
+              parts: [
+                {
+                  text: "Generate a sustainability summary and suggestions based on the following quiz questions and answers.",
+                },
+              ],
+            },
           ],
           generationConfig: { maxOutputTokens: 500 },
         });
@@ -76,18 +137,26 @@ const Score: React.FC<ScoreProps> = ({
         const aiResponseText = await result.response.text();
         setAiResponse(aiResponseText);
 
+        // Generate structured summary
+        const structuredSummary = await generateStructuredSummary(qaPairs);
+        setStructuredSummary(structuredSummary);
+
+        // Save the structured summary to Firestore
+        if (user && structuredSummary) {
+          const userDocRef = doc(db, "scores", user.uid);
+          await updateDoc(userDocRef, { structuredSummary });
+        }
+
+        // Generate potential questions
         const questionResult = await chat.sendMessage(
-          "Based on the previous context, provide three practical questions that the user might want to ask a chat bot that is a sustainability expert. Only provide the questions, nothing else."
+          "Based on the previous context, provide three practical questions that the user might want to ask a chatbot that is a sustainability expert. Only provide the questions."
         );
         const potentialQuestionsText = await questionResult.response.text();
 
         const questionsArray = potentialQuestionsText
           .split("\n")
-          .filter(q => q.trim())
-          .map(q => {
-            const questionEndIndex = q.indexOf('?') + 1;
-            return q.substring(0, questionEndIndex);
-          });
+          .filter((q) => q.trim())
+          .map((q) => q.substring(0, q.indexOf("?") + 1));
 
         setPotentialQuestions(questionsArray.slice(0, 3));
       } catch (error) {
@@ -111,7 +180,6 @@ const Score: React.FC<ScoreProps> = ({
 
         try {
           const userDoc = await getDoc(userDocRef);
-
           if (userDoc.exists()) {
             const userData = userDoc.data();
             const previous = userData?.score ?? 0;
@@ -141,7 +209,6 @@ const Score: React.FC<ScoreProps> = ({
               lastUpdated: new Date(),
               scoreHistory: [newScoreEntry],
             });
-            setMessage("Great start! This is your first time taking the quiz.");
           }
         } catch (error) {
           console.error("Error saving score:", error);
@@ -153,15 +220,10 @@ const Score: React.FC<ScoreProps> = ({
   }, [user, score, answers, questions]);
 
   const handleQuestionClick = (question: string) => {
-    addMessage({ 
-      sender: "user", 
-      text: question,
-      needsResponse: true  // Make sure this flag is set to true
-    });
+    addMessage({ sender: "user", text: question, needsResponse: true });
     setIsVisible(true);
     setIsAIBoxVisible(false);
   };
-  
 
   const handleEnableNotifications = async () => {
     if (user) {
@@ -174,62 +236,39 @@ const Score: React.FC<ScoreProps> = ({
   return (
     <div className="score-container">
       <div className="score-box">
-        <div className="progress-bar-wrapper">
-          <ProgressBar points={percentageScore} />
-        </div>
-        <div className="score-display">
-          <span className="score-number">{getFeedback()}</span>
-          <span className="job">{message}</span>
-        </div>
+        <ProgressBar points={percentageScore} />
+        <span className="score-number">{getFeedback()}</span>
+        <span className="job">{message}</span>
         <button onClick={toggleAIBoxVisibility} className="link">
           Click here to see how to improve!
         </button>
       </div>
 
-      {/* AI Summary Section */}
       {isAIBoxVisible && (
-  <>
-    {/* Backdrop for dimming the background */}
-    <div className="backdrop" onClick={toggleAIBoxVisibility}></div>
-
-    {/* AI Summary Box */}
-    <div className="ai-box">
-      <h3>Sustainability Summary</h3>
-      {isSummaryLoading ? (
-        <p>Loading summary...</p>
-      ) : (
-        <div className="markdown-content">
-          <ReactMarkdown>{aiResponse}</ReactMarkdown>
+        <div className="ai-box">
+          <h3>Sustainability Summary</h3>
+          {isSummaryLoading ? (
+            <p>Loading summary...</p>
+          ) : (
+            <ReactMarkdown>{aiResponse}</ReactMarkdown>
+          )}
+          {structuredSummary && (
+            <div className="structured-summary">
+              <h4>Strengths</h4>
+              {structuredSummary.strengths.map((item: any, index: number) => (
+                <p key={index}>{item.area}: {item.description}</p>
+              ))}
+              <h4>Improvements</h4>
+              {structuredSummary.improvement.map((item: any, index: number) => (
+                <p key={index}>{item.area}: {item.description}</p>
+              ))}
+            </div>
+          )}
         </div>
       )}
 
-      {/* Potential Questions Section */}
-      {!isSummaryLoading && (
-        <div className="questions-section">
-          <h4>Potential Questions</h4>
-          <div className="potential-questions">
-            {potentialQuestions.map((question, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  handleQuestionClick(question);
-                  toggleAIBoxVisibility(); // Close the modal when a question is clicked
-                }}
-                className="question-button"
-              >
-                {question}
-              </button>
-            ))}
-          </div>
-        </div>
-      )}
-    </div>
-  </>
-)}
-
-      {/* Enable Notifications Section */}
       {!notificationsEnabled ? (
-        <button onClick={handleEnableNotifications} className="enable-notifications-button">
+        <button onClick={handleEnableNotifications}>
           Enable Notifications
         </button>
       ) : (
@@ -240,6 +279,5 @@ const Score: React.FC<ScoreProps> = ({
     </div>
   );
 };
-
 
 export default Score;

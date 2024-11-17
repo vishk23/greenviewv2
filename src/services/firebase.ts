@@ -112,3 +112,37 @@ export const model = getGenerativeModel(vertexAI, {
   
   `
 });
+
+const structuredSummarySchema = Schema.object({
+  properties: {
+    strengths: Schema.array({
+      items: Schema.object({
+        properties: {
+          area: Schema.string(),
+          description: Schema.string(),
+        },
+        required: ["area", "description"],
+      }),
+      maxItems: 3,
+    }),
+    improvement: Schema.array({
+      items: Schema.object({
+        properties: {
+          area: Schema.string(),
+          description: Schema.string(),
+        },
+        required: ["area", "description"],
+      }),
+      maxItems: 3,
+    }),
+  },
+});
+
+export const structuredModel = getGenerativeModel(vertexAI, {
+  model: "gemini-1.5-flash",
+  systemInstruction: "You are a sustainability expert chatbot designed to help students adopt more sustainable practices. Provide advice and tips on sustainability in a friendly and informative manner" ,
+  generationConfig: {
+    responseMimeType: "application/json",
+    responseSchema: structuredSummarySchema,
+  },
+});
