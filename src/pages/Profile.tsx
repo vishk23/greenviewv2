@@ -19,19 +19,21 @@ interface ProfileData {
   notificationsEnabled?: boolean;
 }
 
+interface StructuredSummary {
+  improvement: {
+    area: string;
+    description: string;
+  }[];
+  strengths: {
+    area: string;
+    description: string;
+  }[];
+}
+
 interface ScoreData {
   score?: number;
   scoreHistory?: ScoreEntry[];
-  structuredSummary: {
-    improvement: {
-      area: string;
-      description: string;
-    }[];
-    strengths: {
-      area: string;
-      description: string;
-    }[];
-  };
+  structuredSummary: StructuredSummary;
 }
 
 const Profile: React.FC = () => {
@@ -45,6 +47,11 @@ const Profile: React.FC = () => {
   const [bio, setBio] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
+  // State for card flipping
+  const [flippedStrengths, setFlippedStrengths] = useState<boolean[]>([]);
+  const [flippedImprovements, setFlippedImprovements] = useState<boolean[]>([]);
+
+  // Fetch Profile Data
   useEffect(() => {
     const fetchProfileData = async () => {
       if (user) {
@@ -53,177 +60,95 @@ const Profile: React.FC = () => {
         if (userDoc.exists()) {
           const data = userDoc.data() as ProfileData;
           setProfileData(data);
-          setName(data.name);
-          setBio(data.bio);
+          setName(data.name || "");
+          setBio(data.bio || "");
           setPhoneNumber(data.phoneNumber || "");
         }
       }
     };
-
     fetchProfileData();
   }, [user]);
 
+  // Fetch Score Data
   useEffect(() => {
     const fetchScoreData = async () => {
       if (user) {
         const scoreDocRef = doc(db, "scores", user.uid);
         const scoreDoc = await getDoc(scoreDocRef);
-        console.log(scoreDoc);
         if (scoreDoc.exists()) {
-          setScoreData(scoreDoc.data() as ScoreData);
+          const data = scoreDoc.data() as ScoreData;
+          setScoreData(data);
+          setFlippedStrengths(Array(data.structuredSummary.strengths.length).fill(false));
+          setFlippedImprovements(Array(data.structuredSummary.improvement.length).fill(false));
         }
       }
     };
-
     fetchScoreData();
   }, [user]);
 
-  const handleSaveProfile = async () => {
-    if (user && profileData) {
-      const userDocRef = doc(db, "users", user.uid);
-      await updateDoc(userDocRef, {
-        name,
-        bio,
-        phoneNumber,
-        email: profileData.email,
-        notificationsEnabled: profileData.notificationsEnabled || false,
-      });
-
-      setProfileData({ ...profileData, name, bio, phoneNumber });
-      setIsEditing(false);
+  const handleFlipCard = (index: number, type: "strength" | "improvement") => {
+    if (type === "strength") {
+      const newFlipped = [...flippedStrengths];
+      newFlipped[index] = !newFlipped[index];
+      setFlippedStrengths(newFlipped);
+    } else {
+      const newFlipped = [...flippedImprovements];
+      newFlipped[index] = !newFlipped[index];
+      setFlippedImprovements(newFlipped);
     }
   };
 
-  const getGreenViewStatus = (score: number | undefined) => {
-    if (score === undefined) return "";
-    if (score >= 80) return "Your GreenView is Clear";
-    if (score >= 60) return "Your GreenView is Clouded ";
-    if (score >= 40) return "Your GreenView is Hazy ";
-    if (score >= 20) return "Your GreenView is Smoky ";
-    return "Your GreenView is Polluted ";
+  const renderSummaryCards = (
+    summary: { area: string; description: string }[],
+    flippedState: boolean[],
+    type: "strength" | "improvement"
+  ) => {
+    return (
+      <div className="summary-cards">
+        {summary.map((item, index) => (
+          <div
+            key={index}
+            className={`card ${flippedState[index] ? "flipped" : ""}`}
+            onClick={() => handleFlipCard(index, type)}
+          >
+            {!flippedState[index] ? (
+              <div className="front">{item.area}</div>
+            ) : (
+              <div className="back">{item.description}</div>
+            )}
+          </div>
+        ))}
+      </div>
+    );
   };
-
-  const renderScoreHistory = (history: ScoreEntry[]) => (
-    <div className={`score-history ${showHistory ? "visible" : "hidden"}`}>
-      {history.map((entry, index) => (
-        <div key={index} className="history-entry">
-          <p>
-            <strong>Date:</strong> {entry.date.toDate().toLocaleDateString()}
-          </p>
-          <p>
-            <strong>Score:</strong> {entry.score}
-          </p>
-          <p>
-            <strong>Questions:</strong> {entry.questions.join(", ")}
-          </p>
-          <p>
-            <strong>Answers:</strong> {entry.answers.join(", ")}
-          </p>
-        </div>
-      ))}
-    </div>
-  );
 
   return (
     <div className="profile-page">
       <h1 className="profile-title">Your Profile</h1>
-
       <div className="profile-card">
         <div className="profile-info">
-          {isEditing ? (
-            <>
-              <label>
-                Name:{" "}
-                <input value={name} onChange={(e) => setName(e.target.value)} />
-              </label>
-              <label>
-                Bio:{" "}
-                <input value={bio} onChange={(e) => setBio(e.target.value)} />
-              </label>
-              <label>
-                Phone:{" "}
-                <input
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-              </label>
-              <button className="save-btn" onClick={handleSaveProfile}>
-                Save
-              </button>
-              <button
-                className="cancel-btn"
-                onClick={() => setIsEditing(false)}
-              >
-                Cancel
-              </button>
-            </>
-          ) : (
-            <>
-              <p>
-                <strong>Name:</strong> {profileData?.name || "Not set"}
-              </p>
-              <p>
-                <strong>Email:</strong> {profileData?.email || "Not set"}
-              </p>
-              <p>
-                <strong>Bio:</strong> {profileData?.bio || "Not set"}
-              </p>
-              <p>
-                <strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}
-              </p>
-              <button className="edit-btn" onClick={() => setIsEditing(true)}>
-                Edit Profile
-              </button>
-            </>
-          )}
+          <p><strong>Name:</strong> {profileData?.name || "Not set"}</p>
+          <p><strong>Email:</strong> {profileData?.email || "Not set"}</p>
+          <p><strong>Bio:</strong> {profileData?.bio || "Not set"}</p>
+          <p><strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}</p>
         </div>
       </div>
 
-      <h2 className="statement">{getGreenViewStatus(scoreData?.score)}</h2>
+      <h2>Strengths</h2>
+      {scoreData?.structuredSummary.strengths &&
+        renderSummaryCards(
+          scoreData.structuredSummary.strengths,
+          flippedStrengths,
+          "strength"
+        )}
 
-      <div className="area-section">
-        <div className="strengths-section">
-          <h2 className="section-title"> Strengths </h2>
-          {scoreData?.structuredSummary.strengths.map(({ area }) => (
-            <div
-              key={area} // Use area as the unique key
-              className="rectangle"
-            >
-              <div className="front">{area}</div> {/* Front text is the area */}
-              {/* Back text is the description */}
-            </div>
-          ))}
-        </div>
-        <div className="strengths-section">
-          <h2 className="section-title"> Improvement </h2>
-          {scoreData?.structuredSummary.improvement.map(({ area }) => (
-            <div
-              key={area} // Use area as the unique key
-              className="rectangle"
-            >
-              <div className="front">{area}</div> {/* Front text is the area */}
-              {/* Back text is the description */}
-            </div>
-          ))}
-        </div>
-      </div>
-
-      <div className="badges-section">
-        <h2>Badges</h2>
-        <div className="badges-placeholder">Coming soon...</div>
-      </div>
-
-      <div className="score-section">
-        <button
-          className="toggle-history-btn"
-          onClick={() => setShowHistory(!showHistory)}
-        >
-          {showHistory ? "Hide Score History" : "Show Score History"}
-        </button>
-        {showHistory &&
-          scoreData?.scoreHistory &&
-          renderScoreHistory(scoreData.scoreHistory)}
-      </div>
+      <h2>Improvement Areas</h2>
+      {scoreData?.structuredSummary.improvement &&
+        renderSummaryCards(
+          scoreData.structuredSummary.improvement,
+          flippedImprovements,
+          "improvement"
+        )}
     </div>
   );
 };
