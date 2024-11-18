@@ -2,7 +2,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { auth, db, model, structuredModel } from "@services/firebase";
 import { useEffect, useState } from "react";
-import { collection, getDocs } from "firebase/firestore";
+import { collection, getDocs, doc, getDoc, updateDoc, addDoc } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { MyScore } from "./Scores";
 import { useChatContext } from "../../contexts/ChatContext";
@@ -16,15 +16,40 @@ const Summary: React.FC = () => {
   const userId = user?.uid;
   const [flipped, setFlipped] = useState<string | null>(null);
   const { addMessage, setIsVisible } = useChatContext();
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
 
   const handleCircleClick = (circleName: string) => {
-    setFlipped(flipped === circleName ? null : circleName); // Toggle flip
+    setFlipped(flipped === circleName ? null : circleName);
   };
 
   const handleQuestionClick = (question: string) => {
     addMessage({ sender: "user", text: question, needsResponse: true });
+    setIsVisible(true);
   };
 
+  // Function to send SMS notification
+  const sendSMSNotification = async (score: number) => {
+    if (user) {
+      try {
+        const userDocRef = doc(db, "users", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const phoneNumber = userDoc.data()?.phoneNumber;
+          if (phoneNumber) {
+            await addDoc(collection(db, "messages"), {
+              to: phoneNumber,
+              body: `Your current score is ${score}. Stay tuned for more updates and fun facts!`,
+            });
+            console.log("SMS sent successfully.");
+          }
+        }
+      } catch (error) {
+        console.error("Error sending SMS:", error);
+      }
+    }
+  };
+
+  // Fetch scores from Firestore
   useEffect(() => {
     if (user) {
       const fetchScores = async () => {
@@ -35,28 +60,28 @@ const Summary: React.FC = () => {
             const data = doc.data();
             return {
               id: doc.id,
-              score: data.score || 0, // Default value if `score` is undefined
+              score: data.score || 0,
               scoreHistory: Array.isArray(data.scoreHistory)
                 ? data.scoreHistory.map((history: any) => ({
                     answers: history.answers || [],
-                    date: new Date(history.date || Date.now()), // Default to current date if not present
+                    date: new Date(history.date || Date.now()),
                     questions: history.questions || [],
                   }))
-                : [], // Default to empty array if `scoreHistory` is undefined or not an array
+                : [],
               structuredSummary: {
                 improvement: Array.isArray(data.structuredSummary?.improvement)
                   ? data.structuredSummary.improvement
-                  : [], // Default to empty array if `improvement` is undefined or not an array
+                  : [],
                 strengths: Array.isArray(data.structuredSummary?.strengths)
                   ? data.structuredSummary.strengths
-                  : [], // Default to empty array if `strengths` is undefined or not an array
+                  : [],
               },
               userId: data.userId || "",
             } as MyScore;
           });
           setScoresList(scoresList);
         } catch (error) {
-          console.error("Error fetching events: ", error);
+          console.error("Error fetching events:", error);
         }
       };
 
@@ -66,6 +91,7 @@ const Summary: React.FC = () => {
     }
   }, [user]);
 
+  // Find the current user's score
   useEffect(() => {
     if (scoresList) {
       const userScore = scoresList.find((score) => score.id === userId);
@@ -73,6 +99,7 @@ const Summary: React.FC = () => {
     }
   }, [scoresList]);
 
+  // Generate questions using AI model
   useEffect(() => {
     const getQuestion = async () => {
       try {
@@ -80,8 +107,7 @@ const Summary: React.FC = () => {
           scores?.scoreHistory[scores.scoreHistory.length - 1].questions.map(
             (question, i) => ({
               question,
-              answer:
-                scores?.scoreHistory[scores.scoreHistory.length - 1].answers[i],
+              answer: scores?.scoreHistory[scores.scoreHistory.length - 1].answers[i],
             })
           ) || [];
 
@@ -102,17 +128,14 @@ const Summary: React.FC = () => {
         const result = await chat.sendMessage(JSON.stringify(qaPairs));
         const questionResult = await result.response.text();
 
-        console.log(questionResult);
-
         const questionsArray = questionResult
-          .split("\n") // Split by newline
-          .map((line) => line.trim()) // Trim any leading/trailing spaces
-          .filter((line) => line.includes("?")) // Keep only the lines that contain a question mark
-          .map((line) => line.replace(/^(\d+\.\s\*\*|\*\*)/g, "")) // Remove numbering and formatting
-          .map((line) => line.trim()); // Trim any remaining spaces
+          .split("\n")
+          .map((line) => line.trim())
+          .filter((line) => line.includes("?"))
+          .map((line) => line.replace(/^(\d+\.\s\*\*|\*\*)/g, ""))
+          .map((line) => line.trim());
 
         setPotentialQuestions(questionsArray);
-        console.log(questionsArray);
       } catch (error) {
         console.error("Error generating AI summary:", error);
       }
@@ -120,6 +143,24 @@ const Summary: React.FC = () => {
 
     getQuestion();
   }, [scores]);
+
+  // Handle enabling notifications
+  const handleEnableNotifications = async () => {
+    if (user) {
+      try {
+        const userDocRef = doc(db, "users", user.uid);
+        await updateDoc(userDocRef, { notificationsEnabled: true });
+        setNotificationsEnabled(true);
+
+        // Send an initial SMS notification
+        if (scores) {
+          await sendSMSNotification(scores.score);
+        }
+      } catch (error) {
+        console.error("Error enabling notifications:", error);
+      }
+    }
+  };
 
   return (
     <div className="summary-container">
@@ -129,55 +170,40 @@ const Summary: React.FC = () => {
           <h2 className="section-title"> Strengths </h2>
           {scores?.structuredSummary.strengths.map(({ area, description }) => (
             <div
-              key={area} // Use area as the unique key
+              key={area}
               className={`circle ${flipped === area ? "flipped" : ""}`}
               onClick={() => handleCircleClick(area)}
             >
-              <div className="front">{area}</div> {/* Front text is the area */}
-              {flipped === area && (
-                <div className="back">{description}</div>
-              )}{" "}
-              {/* Back text is the description */}
+              <div className="front">{area}</div>
+              {flipped === area && <div className="back">{description}</div>}
             </div>
           ))}
         </div>
 
         <div className="strengths-section">
           <h2 className="section-title"> Improvement </h2>
-          {scores?.structuredSummary.improvement.map(
-            ({ area, description }) => (
-              <div
-                key={area} // Use area as the unique key
-                className={`circle ${flipped === area ? "flipped" : ""}`}
-                onClick={() => handleCircleClick(area)}
-              >
-                <div className="front">{area}</div>{" "}
-                {/* Front text is the area */}
-                {flipped === area && (
-                  <div className="back">{description}</div>
-                )}{" "}
-                {/* Back text is the description */}
-              </div>
-            )
-          )}
+          {scores?.structuredSummary.improvement.map(({ area, description }) => (
+            <div
+              key={area}
+              className={`circle ${flipped === area ? "flipped" : ""}`}
+              onClick={() => handleCircleClick(area)}
+            >
+              <div className="front">{area}</div>
+              {flipped === area && <div className="back">{description}</div>}
+            </div>
+          ))}
         </div>
       </div>
       <div className="change-section">
         <h2 className="change-title">Ready to make a change?</h2>
         <p className="change-description">
-          Click one of our suggested questions below to get started, or ask us a
-          question through the chat!
+          Click one of our suggested questions below to get started, or ask us a question through the chat!
         </p>
-
-        {/* Question */}
         <div className="question-buttons">
           {potentialQuestions.map((question, index) => (
             <button
               key={index}
-              onClick={() => {
-                handleQuestionClick(question);
-                setIsVisible(true);
-              }}
+              onClick={() => handleQuestionClick(question)}
               className="question-button"
             >
               {question}
@@ -185,84 +211,15 @@ const Summary: React.FC = () => {
           ))}
         </div>
       </div>
+      {!notificationsEnabled ? (
+        <button onClick={handleEnableNotifications}>
+          Enable Notifications for Updates and Fun Facts
+        </button>
+      ) : (
+        <p>Notifications Enabled</p>
+      )}
     </div>
   );
-
-  // return (
-  //   <div className="summary-container">
-  //     <h1 className="summary-title">Summary</h1>
-  //     <div className="summary-content">
-  //       <div className="strengths-section">
-  //         <h2 className="section-title">Strengths</h2>
-  //         <div
-  //           className={`circle ${flipped === "electronics" ? "flipped" : ""}`}
-  //           onClick={() => handleCircleClick("electronics")}
-  //         >
-  //           <div className="front">Electronics</div>
-  //           {flipped === "electronics" && (
-  //             <div className="back">
-  //               You are efficient in managing electronics usage!
-  //             </div>
-  //           )}
-  //         </div>
-  //         <div
-  //           className={`circle ${flipped === "water" ? "flipped" : ""}`}
-  //           onClick={() => handleCircleClick("water")}
-  //         >
-  //           <div className="front">Water</div>
-  //           {flipped === "water" && (
-  //             <div className="back">
-  //               You can improve water usage and conservation!
-  //             </div>
-  //           )}
-  //         </div>
-  //         <div
-  //           className={`circle ${
-  //             flipped === "transportation" ? "flipped" : ""
-  //           }`}
-  //           onClick={() => handleCircleClick("transportation")}
-  //         >
-  //           <div className="front">Transportation</div>
-  //           {flipped === "transportation" && (
-  //             <div className="back">
-  //               Focus on sustainable transportation options!
-  //             </div>
-  //           )}
-  //         </div>
-  //       </div>
-  //       <div className="improvements-section">
-  //         <h2 className="section-title">Areas of Improvement</h2>
-  //         <ul className="improvement-list">
-  //           <li>Waste management</li>
-  //           <li>Food choices</li>
-  //           <li>Energy consumption</li>
-  //         </ul>
-  //       </div>
-  //     </div>
-  //     <div className="change-section">
-  //       <h2 className="change-title">Ready to make a change?</h2>
-  //       <p className="change-description">
-  //         Click one of our suggested questions below to get started, or ask us a
-  //         question through the chat!
-  //       </p>
-
-  //       {/* Question */}
-  //       <div className="question-buttons">
-  //         {potentialQuestions.map((question, index) => (
-  //           <button
-  //             key={index}
-  //             onClick={() => {
-  //               handleQuestionClick(question);
-  //             }}
-  //             className="question-button"
-  //           >
-  //             {question}
-  //           </button>
-  //         ))}
-  //       </div>
-  //     </div>
-  //   </div>
-  // );
 };
 
 export default Summary;
