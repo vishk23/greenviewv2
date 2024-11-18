@@ -174,7 +174,7 @@ const Score: React.FC<ScoreProps> = ({
     if (score && totalQuestions && answers.length > 0 && questions.length > 0) {
       runAIBoxLogic();
     }
-  }, [score, totalQuestions, answers, questions]);
+  }, [score, totalQuestions, answers, questions, isAIBoxVisible, aiResponse, user]);
 
   useEffect(() => {
     const saveScore = async () => {
