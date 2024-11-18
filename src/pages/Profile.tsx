@@ -125,104 +125,112 @@ const Profile: React.FC = () => {
   );
 
   return (
-    <div className="profile-page">
-      <h1 className="profile-title">Your Profile</h1>
+    <div className="background">
+      <div className="profile-page">
+        <h1 className="profile-title">Your Profile</h1>
 
-      <div className="profile-card">
-        <div className="profile-info">
-          {isEditing ? (
-            <>
-              <label>
-                Name:{" "}
-                <input value={name} onChange={(e) => setName(e.target.value)} />
-              </label>
-              <label>
-                Bio:{" "}
-                <input value={bio} onChange={(e) => setBio(e.target.value)} />
-              </label>
-              <label>
-                Phone:{" "}
-                <input
-                  value={phoneNumber}
-                  onChange={(e) => setPhoneNumber(e.target.value)}
-                />
-              </label>
-              <button className="save-btn" onClick={handleSaveProfile}>
-                Save
-              </button>
-              <button
-                className="cancel-btn"
-                onClick={() => setIsEditing(false)}
+        <div className="profile-card">
+          <div className="profile-info">
+            {isEditing ? (
+              <>
+                <label>
+                  Name:{" "}
+                  <input
+                    value={name}
+                    onChange={(e) => setName(e.target.value)}
+                  />
+                </label>
+                <label>
+                  Bio:{" "}
+                  <input value={bio} onChange={(e) => setBio(e.target.value)} />
+                </label>
+                <label>
+                  Phone:{" "}
+                  <input
+                    value={phoneNumber}
+                    onChange={(e) => setPhoneNumber(e.target.value)}
+                  />
+                </label>
+                <button className="save-btn" onClick={handleSaveProfile}>
+                  Save
+                </button>
+                <button
+                  className="cancel-btn"
+                  onClick={() => setIsEditing(false)}
+                >
+                  Cancel
+                </button>
+              </>
+            ) : (
+              <>
+                <p>
+                  <strong>Name:</strong> {profileData?.name || "Not set"}
+                </p>
+                <p>
+                  <strong>Email:</strong> {profileData?.email || "Not set"}
+                </p>
+                <p>
+                  <strong>Bio:</strong> {profileData?.bio || "Not set"}
+                </p>
+                <p>
+                  <strong>Phone:</strong>{" "}
+                  {profileData?.phoneNumber || "Not set"}
+                </p>
+                <button className="edit-btn" onClick={() => setIsEditing(true)}>
+                  Edit Profile
+                </button>
+              </>
+            )}
+          </div>
+        </div>
+
+        <h2 className="statement">{getGreenViewStatus(scoreData?.score)}</h2>
+
+        <div className="area-section">
+          <div className="strengths-section">
+            <h2 className="section-title"> Strengths </h2>
+            {scoreData?.structuredSummary.strengths.map(({ area }) => (
+              <div
+                key={area} // Use area as the unique key
+                className="rectangle"
               >
-                Cancel
-              </button>
-            </>
-          ) : (
-            <>
-              <p>
-                <strong>Name:</strong> {profileData?.name || "Not set"}
-              </p>
-              <p>
-                <strong>Email:</strong> {profileData?.email || "Not set"}
-              </p>
-              <p>
-                <strong>Bio:</strong> {profileData?.bio || "Not set"}
-              </p>
-              <p>
-                <strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}
-              </p>
-              <button className="edit-btn" onClick={() => setIsEditing(true)}>
-                Edit Profile
-              </button>
-            </>
-          )}
+                <div className="front">{area}</div>{" "}
+                {/* Front text is the area */}
+                {/* Back text is the description */}
+              </div>
+            ))}
+          </div>
+          <div className="strengths-section">
+            <h2 className="section-title"> Improvement </h2>
+            {scoreData?.structuredSummary.improvement.map(({ area }) => (
+              <div
+                key={area} // Use area as the unique key
+                className="rectangle"
+              >
+                <div className="front">{area}</div>{" "}
+                {/* Front text is the area */}
+                {/* Back text is the description */}
+              </div>
+            ))}
+          </div>
         </div>
-      </div>
 
-      <h2 className="statement">{getGreenViewStatus(scoreData?.score)}</h2>
-
-      <div className="area-section">
-        <div className="strengths-section">
-          <h2 className="section-title"> Strengths </h2>
-          {scoreData?.structuredSummary.strengths.map(({ area }) => (
-            <div
-              key={area} // Use area as the unique key
-              className="rectangle"
-            >
-              <div className="front">{area}</div> {/* Front text is the area */}
-              {/* Back text is the description */}
-            </div>
-          ))}
+        <div className="badges-section">
+          <h2>Badges</h2>
+          <div className="badges-placeholder">Coming soon...</div>
         </div>
-        <div className="strengths-section">
-          <h2 className="section-title"> Improvement </h2>
-          {scoreData?.structuredSummary.improvement.map(({ area }) => (
-            <div
-              key={area} // Use area as the unique key
-              className="rectangle"
-            >
-              <div className="front">{area}</div> {/* Front text is the area */}
-              {/* Back text is the description */}
-            </div>
-          ))}
+
+        <div className="score-section">
+          <button
+            className="toggle-history-btn"
+            onClick={() => setShowHistory(!showHistory)}
+          >
+            {showHistory ? "Hide Score History" : "Show Score History"}
+          </button>
+          {showHistory &&
+            scoreData?.scoreHistory &&
+            renderScoreHistory(scoreData.scoreHistory)}
         </div>
-      </div>
-
-      <div className="badges-section">
-        <h2>Badges</h2>
-        <div className="badges-placeholder">Coming soon...</div>
-      </div>
-
-      <div className="score-section">
-        <button
-          className="toggle-history-btn"
-          onClick={() => setShowHistory(!showHistory)}
-        >
-          {showHistory ? "Hide Score History" : "Show Score History"}
-        </button>
-        {showHistory &&
-          scoreData?.scoreHistory &&
-          renderScoreHistory(scoreData.scoreHistory)}
       </div>
     </div>
   );

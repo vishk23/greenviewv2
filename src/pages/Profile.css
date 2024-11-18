@@ -1,3 +1,12 @@
+.background {
+  height: 100vh;
+  background-color: #f8f4e1;
+  background-image: url('/public/questions_background.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .profile-page {
   max-width: 900px;
   margin: 20px auto;
