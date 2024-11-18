@@ -1,12 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import './SustainabilityBasicsModule.css';
 import { useNavigate } from 'react-router-dom';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '@services/firebase';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { ModuleCompletion } from './ModuleCompletion'; // Assuming this is where the model is defined
 
 const SustainabilityBasicsModule: React.FC = () => {
   const [quizAnswers, setQuizAnswers] = useState<{ [key: string]: string }>({});
   const [quizFeedback, setQuizFeedback] = useState<{ [key: string]: string }>({});
   const [progress, setProgress] = useState(10);
+  const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
+  const [user] = useAuthState(auth);
 
   const handleQuizSubmit = (e: React.FormEvent, questionId: string, correctAnswer: string) => {
     e.preventDefault();
@@ -21,6 +27,36 @@ const SustainabilityBasicsModule: React.FC = () => {
   const handleAnswerChange = (questionId: string, value: string) => {
     setQuizAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
+
+  const saveCompletionStatus = async () => {
+    if (user && progress === 100 && !isCompleted) {
+        try {
+            const userDocRef = doc(db, 'moduleCompletion', user.uid);
+            
+            const newCompletion: ModuleCompletion = {
+              userId: user.uid,
+              sustainabilityBasicsModule: true,
+              };
+
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          await updateDoc(userDocRef, {
+            sustainabilityBasicsModule: true,
+            });
+        } else {
+          await setDoc(userDocRef, newCompletion);
+        }
+
+        setIsCompleted(true);
+      } catch (error) {
+        console.error('Error saving module completion status:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    saveCompletionStatus();
+  }, [progress, user]);
 
   return (
     <div className="module-page">
