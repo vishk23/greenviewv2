@@ -1,34 +1,122 @@
-.ai-box {
-
-  width: 80vw;
-  padding-left: 10px; /* Increased padding for better spacing */
-  padding-right: 10px; /* Increased padding for better spacing */
-  padding-bottom: 20px; /* Increased padding for better spacing */
-  margin-top: 40px;
-  border: 1px solid #ccc;
-  border-radius: 8px;
-  background-color: #f9f9f9; /* Light background for contrast */
-  height: 600px;
-  overflow-y: auto; /* Enable scrolling within the AI box */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Soft shadow for depth */
-  transition: all 0.3s ease; /* Smooth transition for hover effects */
-  z-index: 10;
+.summary-container {
+  background-color: #f4f1e8;
+  border-radius: 15px;
+  padding: 20px;
+  width: 90%;
+  max-width: 800px;
+  margin: 0 auto;
+  font-family: Arial, sans-serif;
+  color: #627a52;
 }
 
-.ai-box h3 {
-  font-size: 1.8rem; /* Slightly larger heading */
-  color: #3a5a40; /* Darker color for the title */
+.summary-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
 }
 
-.ai-box h4 {
-  font-size: 1.5rem; /* Adjusted size for subheading */
-  color: #28a745; /* Matching color for subheading */
+.area-section {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 
-.ai-box p {
-  font-size: 1rem; /* Font size for the response text */
-  color: #555; /* Softer text color for readability */
-  line-height: 1.6; /* Improved line height for readability */
-  white-space: pre-wrap; /* Corrected property for wrapping text */
-  overflow-wrap: break-word; /* Corrected property for breaking long words */
+.strengths-section, .improvements-section {
+  display: flex;
+  flex-direction: column;
+  width: 50%;
+  padding: 10px;
+  gap: 20px;
+}
+
+.section-title {
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: auto;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.change-section {
+  text-align: center;
+  margin-top: 30px;
+}
+
+.change-title {
+  font-size: xx-large;
+  margin-bottom: 10px;
+}
+
+.change-description {
+  margin: auto;
+  text-align: center;
+  font-size: 1.2rem;
+  width: 75%;
+  margin-bottom: 20px;
+}
+
+.question-buttons button {
+  background-color: #a7c796;
+  border: none;
+  border-radius: 10px;
+  color: white;
+  padding: 10px 15px;
+  width: 75%;
+  cursor: pointer;
+}
+
+.question-buttons button:hover {
+  background-color: #90ab72;
+}
+
+.circle {
+  position: relative;
+  width: 250px;
+  height: 40px;
+  background-color: #4CAF50; /* Green background for the label */
+  color: white;
+  font-size: 16px;
+  margin-left: 40px;
+  line-height: 40px;
+  cursor: pointer;
+  transition: transform 0.6s; /* Flip transition */
+  transform-style: preserve-3d;
+}
+
+.circle .front,
+.circle .back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+}
+
+.circle .front {
+  display: flex;
+  align-items: center;
+  background-color: #4CAF50;
+  padding-left: 30px;
+}
+
+/* Triangle on the right side of the label */
+.circle::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -50px;
+  border-left: 20px solid #4CAF50;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  transform: translateY(-50%);
+}
+
+.circle::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0px; /* Position the triangle to the left */
+  border-left: 20px solid #f4f1e8; /* Create the triangle */
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  transform: translateY(-50%);
 }

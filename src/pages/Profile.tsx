@@ -22,6 +22,16 @@ interface ProfileData {
 interface ScoreData {
   score?: number;
   scoreHistory?: ScoreEntry[];
+  structuredSummary: {
+    improvement: {
+      area: string;
+      description: string;
+    }[];
+    strengths: {
+      area: string;
+      description: string;
+    }[];
+  };
 }
 
 const Profile: React.FC = () => {
@@ -58,6 +68,7 @@ const Profile: React.FC = () => {
       if (user) {
         const scoreDocRef = doc(db, "scores", user.uid);
         const scoreDoc = await getDoc(scoreDocRef);
+        console.log(scoreDoc);
         if (scoreDoc.exists()) {
           setScoreData(scoreDoc.data() as ScoreData);
         }
@@ -85,21 +96,29 @@ const Profile: React.FC = () => {
 
   const getGreenViewStatus = (score: number | undefined) => {
     if (score === undefined) return "";
-    if (score >= 80) return "Your GreenView is Clear 🌍🌱";
-    if (score >= 60) return "Your GreenView is Clouded ☁️☁️";
-    if (score >= 40) return "Your GreenView is Hazy 🌫️🌫️";
-    if (score >= 20) return "Your GreenView is Smoky 💨🏭";
-    return "Your GreenView is Polluted ☣️⚠️";
+    if (score >= 80) return "Your GreenView is Clear";
+    if (score >= 60) return "Your GreenView is Clouded ";
+    if (score >= 40) return "Your GreenView is Hazy ";
+    if (score >= 20) return "Your GreenView is Smoky ";
+    return "Your GreenView is Polluted ";
   };
 
   const renderScoreHistory = (history: ScoreEntry[]) => (
-    <div className={`score-history ${showHistory ? 'visible' : 'hidden'}`}>
+    <div className={`score-history ${showHistory ? "visible" : "hidden"}`}>
       {history.map((entry, index) => (
         <div key={index} className="history-entry">
-          <p><strong>Date:</strong> {entry.date.toDate().toLocaleDateString()}</p>
-          <p><strong>Score:</strong> {entry.score}</p>
-          <p><strong>Questions:</strong> {entry.questions.join(", ")}</p>
-          <p><strong>Answers:</strong> {entry.answers.join(", ")}</p>
+          <p>
+            <strong>Date:</strong> {entry.date.toDate().toLocaleDateString()}
+          </p>
+          <p>
+            <strong>Score:</strong> {entry.score}
+          </p>
+          <p>
+            <strong>Questions:</strong> {entry.questions.join(", ")}
+          </p>
+          <p>
+            <strong>Answers:</strong> {entry.answers.join(", ")}
+          </p>
         </div>
       ))}
     </div>
@@ -113,35 +132,97 @@ const Profile: React.FC = () => {
         <div className="profile-info">
           {isEditing ? (
             <>
-              <label>Name: <input value={name} onChange={(e) => setName(e.target.value)} /></label>
-              <label>Bio: <input value={bio} onChange={(e) => setBio(e.target.value)} /></label>
-              <label>Phone: <input value={phoneNumber} onChange={(e) => setPhoneNumber(e.target.value)} /></label>
-              <button className="save-btn" onClick={handleSaveProfile}>Save</button>
-              <button className="cancel-btn" onClick={() => setIsEditing(false)}>Cancel</button>
+              <label>
+                Name:{" "}
+                <input value={name} onChange={(e) => setName(e.target.value)} />
+              </label>
+              <label>
+                Bio:{" "}
+                <input value={bio} onChange={(e) => setBio(e.target.value)} />
+              </label>
+              <label>
+                Phone:{" "}
+                <input
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
+                />
+              </label>
+              <button className="save-btn" onClick={handleSaveProfile}>
+                Save
+              </button>
+              <button
+                className="cancel-btn"
+                onClick={() => setIsEditing(false)}
+              >
+                Cancel
+              </button>
             </>
           ) : (
             <>
-              <p><strong>Name:</strong> {profileData?.name || "Not set"}</p>
-              <p><strong>Email:</strong> {profileData?.email || "Not set"}</p>
-              <p><strong>Bio:</strong> {profileData?.bio || "Not set"}</p>
-              <p><strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}</p>
-              <button className="edit-btn" onClick={() => setIsEditing(true)}>Edit Profile</button>
+              <p>
+                <strong>Name:</strong> {profileData?.name || "Not set"}
+              </p>
+              <p>
+                <strong>Email:</strong> {profileData?.email || "Not set"}
+              </p>
+              <p>
+                <strong>Bio:</strong> {profileData?.bio || "Not set"}
+              </p>
+              <p>
+                <strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}
+              </p>
+              <button className="edit-btn" onClick={() => setIsEditing(true)}>
+                Edit Profile
+              </button>
             </>
           )}
         </div>
       </div>
 
-      <div className="score-section">
-        <h2>{getGreenViewStatus(scoreData?.score)}</h2>
-        <button className="toggle-history-btn" onClick={() => setShowHistory(!showHistory)}>
-          {showHistory ? "Hide Score History" : "Show Score History"}
-        </button>
-        {showHistory && scoreData?.scoreHistory && renderScoreHistory(scoreData.scoreHistory)}
+      <h2 className="statement">{getGreenViewStatus(scoreData?.score)}</h2>
+
+      <div className="area-section">
+        <div className="strengths-section">
+          <h2 className="section-title"> Strengths </h2>
+          {scoreData?.structuredSummary.strengths.map(({ area }) => (
+            <div
+              key={area} // Use area as the unique key
+              className="rectangle"
+            >
+              <div className="front">{area}</div> {/* Front text is the area */}
+              {/* Back text is the description */}
+            </div>
+          ))}
+        </div>
+        <div className="strengths-section">
+          <h2 className="section-title"> Improvement </h2>
+          {scoreData?.structuredSummary.improvement.map(({ area }) => (
+            <div
+              key={area} // Use area as the unique key
+              className="rectangle"
+            >
+              <div className="front">{area}</div> {/* Front text is the area */}
+              {/* Back text is the description */}
+            </div>
+          ))}
+        </div>
       </div>
 
       <div className="badges-section">
         <h2>Badges</h2>
         <div className="badges-placeholder">Coming soon...</div>
+      </div>
+
+      <div className="score-section">
+        <button
+          className="toggle-history-btn"
+          onClick={() => setShowHistory(!showHistory)}
+        >
+          {showHistory ? "Hide Score History" : "Show Score History"}
+        </button>
+        {showHistory &&
+          scoreData?.scoreHistory &&
+          renderScoreHistory(scoreData.scoreHistory)}
       </div>
     </div>
   );

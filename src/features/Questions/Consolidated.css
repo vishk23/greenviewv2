@@ -190,17 +190,21 @@ body, html {
 }
 
 .score-container {
-    width: 100%;
-    text-align: center;
-    max-height: 1000px;
     display: flex;
-    flex-direction: column;
-    justify-content: flex-start;
-    align-items: center;
+    height: 100vh;
+    width: 100vw;
+    justify-content: center;
+    align-items: start;
+    background-color: #f8f4e1;
+    background-image: url('/public/questions_background.gif');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
 }
 
 .score-box, .ai-box {
-    width: 80%;
+    padding-top: 150px;
+    width: 75%;
 }
 
 .score-box p {
@@ -250,6 +254,10 @@ body, html {
     font-size: 18px;
   }
   
-  .link:hover {
+.link:hover {
     text-decoration: underline;
   }
+
+.animation {
+    position: absolute;
+}
