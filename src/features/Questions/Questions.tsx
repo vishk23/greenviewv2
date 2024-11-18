@@ -101,6 +101,15 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
     },
   ];
 
+  const getSource = () => {
+    if (score == null) return "";
+    if (score >= 80) return "/statement/Clear.gif";
+    if (score >= 60) return "/statement/Clouded.gif";
+    if (score >= 40) return "/statement/Hazy.gif";
+    if (score >= 20) return "/statement/Smoky.gif";
+    return "/statement/Polluted.gif";
+  };
+
   const handleAnswerSelect = (answerIndex: number) => {
     const updatedAnswers = [...answers];
     updatedAnswers[currentQuestion] = answerIndex;
@@ -144,47 +153,57 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
   }, [currentQuestion]);
 
   return (
-    <div className="questions-container">
+    <div>
       {score === null ? (
-        <div className="white-box">
-          <p className="question-number">
-            Question {currentQuestion + 1} of {questions.length}
-          </p>
-          <h2>{questions[currentQuestion].question}</h2>
-          <div className="answers-container">
-            {questions[currentQuestion].answers.map((answer, index) => (
-              <Button
-                key={index}
-                text={answer}
-                onClick={() => handleAnswerSelect(index)}
-                isSelected={answers[currentQuestion] === index}
-              />
-            ))}
-          </div>
-          <div className="buttons">
-            <button
-              onClick={handlePrevious}
-              disabled={currentQuestion === 0}
-              style={{ textTransform: "uppercase" }}
-            >
-              Previous
-            </button>
-            <button
-              onClick={handleNext}
-              disabled={answers[currentQuestion] === undefined}
-              style={{ textTransform: "uppercase" }}
-            >
-              {currentQuestion === questions.length - 1 ? "Submit" : "Next"}
-            </button>
+        <div className="questions-container">
+          <div className="white-box">
+            <p className="question-number">
+              Question {currentQuestion + 1} of {questions.length}
+            </p>
+            <h2>{questions[currentQuestion].question}</h2>
+            <div className="answers-container">
+              {questions[currentQuestion].answers.map((answer, index) => (
+                <Button
+                  key={index}
+                  text={answer}
+                  onClick={() => handleAnswerSelect(index)}
+                  isSelected={answers[currentQuestion] === index}
+                />
+              ))}
+            </div>
+            <div className="buttons">
+              <button
+                onClick={handlePrevious}
+                disabled={currentQuestion === 0}
+                style={{ textTransform: "uppercase" }}
+              >
+                Previous
+              </button>
+              <button
+                onClick={handleNext}
+                disabled={answers[currentQuestion] === undefined}
+                style={{ textTransform: "uppercase" }}
+              >
+                {currentQuestion === questions.length - 1 ? "Submit" : "Next"}
+              </button>
+            </div>
           </div>
         </div>
       ) : (
-        <Score
-          score={score}
-          totalQuestions={questions.length}
-          answers={answers}
-          questions={questions}
-        />
+        <div className="score-container">
+          <img
+            src={getSource()}
+            alt=""
+            style={{ width: "100%", height: "100%" }}
+            className="animation"
+          />
+          <Score
+            score={score}
+            totalQuestions={questions.length}
+            answers={answers}
+            questions={questions}
+          />
+        </div>
       )}
     </div>
   );

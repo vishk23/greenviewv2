@@ -49,7 +49,7 @@ const App: React.FC = () => {
     ];
 
     function getRandomCount(): number {
-      return Math.floor(Math.random() * 15) + 10;
+      return Math.floor(Math.random() * 5) + 5;
     }
 
     function getRandomDuration(): number {
