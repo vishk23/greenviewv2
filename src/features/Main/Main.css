@@ -5,188 +5,98 @@
 
 
 .main-page {
+    width: 100%;
+    overflow-x: hidden;
+    background-color: rgba(255, 248, 235, 1);
+    padding-top: 20px;
+}
+
+.hero-slider {
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    position: relative;
+}
+
+.image-container {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    width: 100%;
-    background-color: rgba(255, 248, 235, 1);
 }
 
-/* Image Container styling */
-.image-container {
-    width: 100%;
-    height: 100vh; /* Takes up the top half of the viewport */
-    background-image: url('/public/Warren.png'); /* Replace with your chosen image */
-    background-size: cover;
-    background-position: center;
-    position: relative;
-    display: flex;
-    align-items: flex-start; /* Align text to the top */
-    justify-content: flex-start; /* Align text to the left */
-}
-
-/* Text overlay on top of the image */
-.overlay-text {
-    position: absolute;
-    top: 120px;
-    left: 50px;
-    color: rgba(255, 248, 235, 1); /* Light color for readability */
-    max-width: 30%; /* Limits width for readability */
-}
-
-.overlay-text h1 {
-    font-size: 2rem;
-    color: rgba(159, 195, 123, 1); /* Green accent color */
-    margin-bottom: 10px;
-}
-
-.overlay-text p {
-    font-size: 1.2rem;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.start-quiz-button {
-    background-color: rgba(159, 195, 123, 1);
-    color: rgba(255, 248, 235, 1);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease;
-}
-
-.start-quiz-button:hover {
-    background-color: rgba(138, 170, 107, 1);
-}
-
-/* Upcoming Events Section */
-.events-section {
+.title-text {
     width: 100%;
     text-align: center;
-    padding: 20px 0;
-    background-color: rgba(255, 248, 235, 1); /* Matches background color */
+    padding: 20px;
+    margin: 0 auto;
+    max-width: 800px;
+}
+
+.title-text h1 {
+    color: #9FC37B;
+    font-size: 2rem;
+    margin-bottom: 10px;
+    text-align: center;
+}
+
+.title-text p {
+    color: #000000;
+    margin-bottom: 15px;
+    text-align: center;
+}
+
+.image-container img {
+    width: 100%;
+    height: auto;
+    display: block;
+    max-width: none;
+}
+
+.events-section {
+    padding: 40px 20px;
+    margin-top: 40px;
 }
 
 .events-title {
-    font-size: 2rem;
     color: rgba(159, 195, 123, 1);
-    font-weight: bold;
-    margin-bottom: 20px;
-}
-
-.events-grid {
-    display: flex;
-    justify-content: center;
-    gap: 20px;
-    margin-bottom: 20px;
+    font-size: 2rem;
+    margin-bottom: 30px;
 }
 
 .event-card {
-    width: 200px;
-    padding: 20px;
-    background-color: rgba(159, 195, 123, 1); /* Green background for event cards */
-    color: rgba(255, 248, 235, 1); /* Light text color */
-    border-radius: 8px;
-    text-align: center;
-}
-
-.event-card h3 {
-    font-size: 1.5rem;
-    margin-bottom: 10px;
-}
-
-.event-card p {
-    font-size: 1rem;
-    margin: 5px 0;
-}
-
-.calendar-text {
-    font-size: 1rem;
-    color: #333;
-    margin-bottom: 20px;
-}
-
-.calendar-button {
     background-color: rgba(159, 195, 123, 1);
-    color: rgba(255, 248, 235, 1);
-    padding: 10px 20px;
-    border: none;
-    border-radius: 5px;
-    cursor: pointer;
-    text-transform: uppercase;
-    transition: background-color 0.3s ease;
-}
-
-.calendar-button:hover {
-    background-color: rgba(138, 170, 107, 1);
-}
-
-/* Responsive Adjustments */
-@media (max-width: 1024px) {
-    .overlay-text h1 {
-        font-size: 1.5rem;
-    }
-
-    .overlay-text p {
-        font-size: 1rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .overlay-text h1 {
-        font-size: 1.2rem;
-    }
-
-    .overlay-text p {
-        font-size: 0.9rem;
-    }
-}
-
-
-/* Carousel container adjustments */
-.events-section {
-    max-width: 1200px;
-    margin: 20px auto;
-    
-    padding: 20px 100px;
-}
-
-/* Center the current event and make it stand out */
-.event-card {
     padding: 20px;
-    background-color: #9FCB7B;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    text-align: center;
-    color: #FFF8EB;
-    transition: transform 0.3s ease; /* Add a smooth transition */
+    margin: 10px;
+    border-radius: 8px;
+    color: white;
 }
 
-/* Scale the center card slightly larger */
-.slick-center .event-card {
-    transform: scale(1.1); /* Makes the center card larger */
-}
-
-/* Optional: Position the dots below the carousel */
+/* Slider dot styles */
 .slick-dots {
-    bottom: -20px; /* Adjust the position of the dots if needed */
+    position: relative !important;
+    bottom: 0 !important;
+    margin-top: 20px;
 }
 
-/* Styling for the carousel buttons */
-.slick-prev, .slick-next {
-    color: #9FCB7B;
-    font-size: 24px;
-    z-index: 1;
-    opacity: 0.8;
+.slick-dots li button:before {
+    color: #F06D3C !important;
+    opacity: 0.3;
+    font-size: 10px;
 }
 
-/* Position the arrows closer to the carousel */
-.slick-prev {
-    left: -30px;
+.slick-dots li.slick-active button:before {
+    color: #F06D3C !important;
+    opacity: 1;
 }
 
-.slick-next {
-    right: -30px;
+/* Optional: If you want to adjust the dot spacing */
+.slick-dots li {
+    margin: 0 5px;
 }
+
+.start-quiz-button {
+    display: block;
+    margin: 0 auto;
+}
+  

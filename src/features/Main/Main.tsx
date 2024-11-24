@@ -14,9 +14,47 @@ interface Event {
   end: Date;
 }
 
+interface HeroSlide {
+  title: string;
+  description: string;
+  imageUrl: string;
+}
+
 const MainPage: React.FC = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
+
+  const heroSlides: HeroSlide[] = [
+    {
+        title: "In the past 12 months, Warren Towers averaged 253.35 tones of waste...",
+        description: `Curious about your individual impact on the environment?
+        Click here to take our Sustainability Quiz!`,
+        imageUrl: "/assets/Warren-animation.gif"
+    },
+    {
+        title: "In the past 12 months, Stuvi averaged 266.8 tones of waste...",
+        description: `Curious about your individual impact on the environment?
+        Click here to take our Sustainability Quiz!`,
+        imageUrl: "/assets/StuVi-animation.gif"
+    },
+    {
+        title: "In the past 12 months, West averaged 254.52 tones of waste...",
+        description: `Curious about your individual impact on the environment?
+        Click here to take our Sustainability Quiz!`,
+        imageUrl: "/assets/West-animation.gif"
+    }
+];
+
+
+  const heroSliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    autoplay: true,
+    autoplaySpeed: 5000,
+  };
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -55,22 +93,25 @@ const MainPage: React.FC = () => {
     navigate('/score');
   };
 
-
-
   return (
     <div className="main-page">
-      {/* Image Container with Text Overlay */}
-      <div className="image-container">
-        <div className="overlay-text">
-          <h1>This year, Warren Towers averaged X amount of waste...</h1>
-          <p>Curious about your individual impact on the environment? Click here to take our Sustainability Quiz!</p>
-          <button onClick={startQuiz} className="start-quiz-button">
-            Take Quiz
-          </button>
-        </div>
+      <div className="hero-slider">
+        <Slider {...heroSliderSettings}>
+          {heroSlides.map((slide, index) => (
+            <div key={index} className="image-container">
+              <div className="title-text">
+                <h1>{slide.title}</h1>
+                <p>{slide.description}</p>
+                <button onClick={startQuiz} className="start-quiz-button">
+                  Take Quiz
+                </button>
+              </div>
+              <img src={slide.imageUrl} alt={`Slide ${index + 1}`} />
+            </div>
+          ))}
+        </Slider>
       </div>
 
-      {/* Upcoming Events Section */}
       <div className="events-section">
         <h2 className="events-title">Upcoming Events on Campus</h2>
         <Slider {...sliderSettings}>
