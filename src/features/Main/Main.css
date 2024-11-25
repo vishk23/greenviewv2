@@ -109,6 +109,10 @@
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
+    .main-page {
+        padding-top: 180px; /* Adjust the space as needed */
+    }
+
     .text-container h1 {
         font-size: 1.5rem;
     }

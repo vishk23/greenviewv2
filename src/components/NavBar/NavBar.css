@@ -15,6 +15,15 @@
   text-decoration: none;
 }
 
+.navbar-toggle {
+  display: none; /* Hidden by default */
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  cursor: pointer;
+  margin-left: 1rem;
+}
+
 .nav-links {
   list-style-type: none;
   display: flex;
@@ -181,18 +190,30 @@
   transform: translateY(-100%); /* Slide navbar up and out of view */
 }
 
-
 @media (max-width: 768px) {
+
+  /* Reduce logo size for mobile */
+.navbar-header .logo img {
+  width: 120px;
+  height: auto;
+}
+
   /* NAVBAR CONTAINER */
   .navbar-main {
     flex-direction: column; /* Stack everything vertically */
     padding: 0.5rem; /* Compact padding for smaller screens */
     align-items: center; /* Center everything */
     height: auto; /* Allow navbar to grow vertically */
-    position: sticky; /* Make navbar sticky at the top */
+    width: 100%;
+    position: fixed; /* Make navbar sticky at the top */
     top: 0;
     z-index: 1000; /* Ensure it stays above content */
     overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+
+  /* Show toggle button on smaller screens */
+  .navbar-toggle {
+    display: block;
   }
 
   /* LOGO */
@@ -218,6 +239,23 @@
     padding: 0; /* Remove padding */
   }
 
+  /* Collapsed nav-links are hidden */
+  .navbar-center.collapsed {
+    display: none;
+  }
+
+  /* Expanded nav-links */
+  .navbar-center {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    width: 100%;
+    text-align: center;
+    background-color: #fff8eb;
+    padding: 1rem 0;
+    border-top: 1px solid #9FC37B;
+  }
+
   .nav-link {
     font-size: 1.2rem; /* Make links larger for touch interaction */
     padding: 1rem 0; /* Increase touch target size */
@@ -233,13 +271,17 @@
   }
 
   /* AUTH / USER SECTION */
-  .navbar-right {
-    display: flex;
-    flex-direction: column; /* Stack the login/signup area */
-    align-items: center; /* Center-align items */
-    gap: 1rem; /* Add spacing */
-    margin-top: 1rem; /* Add spacing above user section */
+  .navbar-right.hidden-mobile {
+    display: none; /* Hide navbar-right when navbar is collapsed */
   }
+
+  .navbar-right {
+    flex-direction: column; /* Stack items vertically on mobile */
+    margin-top: 1rem;
+    gap: 1rem;
+  }
+
+
 
   .popup-button {
     padding: 0.8rem 1.5rem; /* Touch-friendly button size */
