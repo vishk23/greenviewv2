@@ -4,6 +4,10 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 This is a web application for the Boston University Spark! course XC475. GreenView is a webapp that helps students on campus who want to see a significant environmental impact by helping bridge the gap between their intentions and actions.
 
+# Deployed URL
+
+You can access the live application here: [GreenView Live](https://greenviewv2.web.app/).
+
 # Team
 
 | Name  | Role | Contact Info |
