@@ -1,5 +1,5 @@
 export const EventSliderSettings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 800,
     slidesToShow: 3,

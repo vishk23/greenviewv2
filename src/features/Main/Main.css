@@ -78,14 +78,62 @@
 
 .image-container img {
     width: 100%;
-    max-height: calc(100vh - 205px);
+    max-height: calc(100vh - 208px);
+    object-position: bottom; 
     object-fit: cover; /* Ensure the GIF fills the container proportionally */
 }
 
-/* Remove slider dots */
 .slick-dots {
-    display: none !important;
+    bottom: 10px; /* Adjust position below the carousel */
+    text-align: center;
+    z-index: 10;
 }
+
+.slick-dots li button:before {
+    font-size: 20px;
+    color: F7E6C4; /* Matches your theme */
+    opacity: 0.7;
+    transition: opacity 0.3s ease;
+    z-index: 10;
+}
+
+.slick-dots li.slick-active button:before {
+    opacity: 1; /* Highlight active dot */
+    z-index: 10;
+}
+
+
+.slick-prev,
+.slick-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(159, 195, 123, 1); /* Matches your theme */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.slick-prev {
+    left: -40px; /* Adjust left arrow position */
+}
+
+.slick-next {
+    right: -40px; /* Adjust right arrow position */
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    background-color: rgba(130, 160, 100, 1); /* Highlight on hover */
+}
+
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
@@ -144,4 +192,35 @@
     height: auto; /* Maintain aspect ratio */
     margin-top: 40px; /* Space above the image */
     display: block; /* Ensure it behaves like a block element */
+}
+
+.slick-prev,
+.slick-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 2;
+    width: 30px;
+    height: 30px;
+    background-color: rgba(159, 195, 123, 1); /* Matches your theme */
+    color: white;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+}
+
+.slick-prev {
+    left: -40px; /* Adjust left arrow position */
+}
+
+.slick-next {
+    right: -40px; /* Adjust right arrow position */
+}
+
+.slick-prev:hover,
+.slick-next:hover {
+    background-color: rgba(130, 160, 100, 1); /* Highlight on hover */
 }

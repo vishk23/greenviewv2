@@ -48,7 +48,7 @@ const MainPage: React.FC = () => {
         title: "In the past 12 months, West averaged 254.52 tones of waste...",
         description: `Curious about your individual impact on the environment?
         Click here to take our Sustainability Quiz!`,
-        imageUrl: "/assets/West-animation-1130.gif"
+        imageUrl: "/assets/West-animation.gif"
     }
 ], []);
 
