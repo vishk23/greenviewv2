@@ -25,6 +25,8 @@ const NavBar: React.FC = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
 
+  const [hidden, setHidden] = useState(false);
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
@@ -35,6 +37,25 @@ const NavBar: React.FC = () => {
     });
 
     return unsubscribe;
+  }, []);
+
+  useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    const handleScroll = () => {
+      if (window.scrollY > lastScrollY && window.scrollY > 100) {
+        setHidden(true); // Hide navbar when scrolling down
+      } else {
+        setHidden(false); // Show navbar when scrolling up
+      }
+      lastScrollY = window.scrollY;
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
   }, []);
 
   const handleLogin = async () => {
@@ -78,7 +99,7 @@ const NavBar: React.FC = () => {
   const toggleDropdown = () => setShowDropdown(!showDropdown);
 
   return (
-    <nav className="navbar-main">
+    <nav className={`navbar-main ${hidden ? "hidden" : ""}`}>
       <div className="navbar-left">
         <NavLink to="/" className="logo">
           <img src="/full_logo.png" alt="LOGO" style={{ width: '200px', height: 'auto' }} />
