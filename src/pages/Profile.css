@@ -122,9 +122,9 @@ button:hover {
 .card {
   position: relative;
   width: 250px;
-  height: 40px;
-  margin-left: 40px;
-  line-height: 40px;
+  height: 60px;
+  margin-left: 20px;
+  line-height: 20px;
   perspective: 1000px;
   transition: transform 0.6s;
   transform-style: preserve-3d;
@@ -152,38 +152,14 @@ button:hover {
 }
 
 .card .back {
+  width: 470px;
+  line-height: 15px;
+  padding-left: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
-  background-color: #f4f1e8;
-  color: #333;
-  transform: rotateY(180deg);
-}
-
-.card::before {
-  content: "";
-  position: absolute;
-  top: 50%;
-  right: -50px;
-  border-left: 20px solid #4CAF50;
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
-  transform: translateY(-50%);
-}
-
-.card.strength::before {
-  border-left-color: #4CAF50;
-}
-
-.card.improvement::before {
-  border-left-color: #FF9800;
-}
-
-.card.strength {
   background-color: #4CAF50;
-}
-
-.card.improvement {
-  background-color: #FF9800;
+  color: #fff;
+  transform: rotateY(180deg) translateX(50%);
 }
 
