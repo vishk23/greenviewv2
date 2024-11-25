@@ -1,9 +1,20 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, PureComponent } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@services/firebase";
 import { doc, getDoc, updateDoc } from "firebase/firestore";
 import "./Profile.css";
+import {
+  LineChart,
+  Line,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  Legend,
+  ResponsiveContainer,
+} from "recharts";
+import { getFirestore } from "firebase/firestore";
 
 interface ScoreEntry {
   score: number;
@@ -128,41 +139,118 @@ const Profile: React.FC = () => {
     );
   };
 
+  const getSource = () => {
+    if (scoreData?.score == null) return "";
+    if (scoreData?.score >= 80) return "/statement/Clear.gif";
+    if (scoreData?.score >= 60) return "/statement/Clouded.gif";
+    if (scoreData?.score >= 40) return "/statement/Hazy.gif";
+    if (scoreData?.score >= 20) return "/statement/Smoky.gif";
+    return "/statement/Polluted.gif";
+  };
+
+  const getFeedback = () => {
+    if (scoreData?.score == null) return "";
+    if (scoreData?.score >= 80) return "Your GreenView is Clear";
+    if (scoreData?.score >= 60) return "Your GreenView is Clouded";
+    if (scoreData?.score >= 40) return "Your GreenView is Hazy";
+    if (scoreData?.score >= 20) return "Your GreenView is Smoky";
+    return "Your GreenView is Polluted";
+  };
+
   return (
-    <div className="profile-page">
-      <h1 className="profile-title">Your Profile</h1>
-      <div className="profile-card">
-        <div className="profile-info">
-          <p>
-            <strong>Name:</strong> {profileData?.name || "Not set"}
-          </p>
-          <p>
-            <strong>Email:</strong> {profileData?.email || "Not set"}
-          </p>
-          <p>
-            <strong>Bio:</strong> {profileData?.bio || "Not set"}
-          </p>
-          <p>
-            <strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}
-          </p>
+    <div className="background123">
+      <img
+        src={getSource()}
+        alt=""
+        style={{
+          position: "fixed",
+          top: 0,
+          left: 0,
+          width: "100%",
+          height: "100%",
+          objectFit: "cover",
+          pointerEvents: "none", // Allow clicks through the image
+        }}
+      />
+      <div className="profile-page">
+        <div className="profile-card">
+          <div className="profile-info">
+            <h2>{profileData?.name || "Not set"}</h2>
+            <p>
+              <strong>Email:</strong> {profileData?.email || "Not set"}
+            </p>
+            <p>
+              <strong>Bio:</strong> {profileData?.bio || "Not set"}
+            </p>
+            <p>
+              <strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}
+            </p>
+          </div>
         </div>
+
+        <div className="score">
+          <h2>{getFeedback()}</h2>
+        </div>
+
+        <div className="area-section">
+          <div className="strengths-section">
+            <h2>Strengths</h2>
+            {scoreData?.structuredSummary.strengths &&
+              renderSummaryCards(
+                scoreData.structuredSummary.strengths,
+                flippedStrengths,
+                "strength"
+              )}
+          </div>
+
+          <div className="strengths-section">
+            <h2>Improvement Areas</h2>
+            {scoreData?.structuredSummary.improvement &&
+              renderSummaryCards(
+                scoreData.structuredSummary.improvement,
+                flippedImprovements,
+                "improvement"
+              )}
+          </div>
+        </div>
+
+        <div className="score">
+          <h2>Score History</h2>
+        </div>
+
+        <ResponsiveContainer width="90%" height="30%">
+          <LineChart
+            width={500}
+            height={300}
+            data={
+              scoreData && scoreData.scoreHistory
+                ? scoreData.scoreHistory.map((entry) => ({
+                    date: entry.date, // Convert date to Date object
+                    score: entry.score, // Keep the score as it is
+                  }))
+                : []
+            }
+            margin={{
+              top: 5,
+              right: 30,
+              left: 20,
+              bottom: 5,
+            }}
+          >
+            <CartesianGrid strokeDasharray="3 3" />
+            <XAxis dataKey="date" />
+            <YAxis />
+            <Tooltip />
+            <Legend />
+            <Line
+              type="monotone"
+              dataKey="score"
+              stroke="#8884d8"
+              activeDot={{ r: 8 }}
+            />
+          </LineChart>
+        </ResponsiveContainer>
       </div>
-
-      <h2>Strengths</h2>
-      {scoreData?.structuredSummary.strengths &&
-        renderSummaryCards(
-          scoreData.structuredSummary.strengths,
-          flippedStrengths,
-          "strength"
-        )}
-
-      <h2>Improvement Areas</h2>
-      {scoreData?.structuredSummary.improvement &&
-        renderSummaryCards(
-          scoreData.structuredSummary.improvement,
-          flippedImprovements,
-          "improvement"
-        )}
     </div>
   );
 };

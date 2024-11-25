@@ -42,11 +42,11 @@ function Chatbot() {
       }
 
       const chat = model.startChat({
-        history: messages.map(msg => ({
+        history: messages.map((msg) => ({
           role: msg.sender === "user" ? "user" : "model",
-          parts: [{ text: msg.text }]
+          parts: [{ text: msg.text }],
         })),
-        generationConfig: { maxOutputTokens: 8192 }
+        generationConfig: { maxOutputTokens: 8192 },
       });
 
       const result = await chat.sendMessage(messageText);
@@ -57,7 +57,11 @@ function Chatbot() {
       setInput("");
     } catch (error) {
       console.error("Error:", error);
-      addMessage({ sender: "bot", text: "Sorry, something went wrong.", needsResponse: false });
+      addMessage({
+        sender: "bot",
+        text: "Sorry, something went wrong.",
+        needsResponse: false,
+      });
     } finally {
       setIsRequestPending(false);
     }
@@ -67,20 +71,32 @@ function Chatbot() {
     <div>
       {isVisible ? (
         <div className={`chat-container ${isExpanded ? "expanded" : ""}`}>
-          <button className="close-button" onClick={() => setIsVisible(false)}>
-            ✖
-          </button>
-          <button className="expand-button" onClick={() => setIsExpanded(!isExpanded)}>
-            {isExpanded ? "🔽" : "🔼"}
-          </button>
+          <div className="top-bar">
+            <button
+              className="close-button"
+              onClick={() => setIsVisible(false)}
+            >
+              ✖
+            </button>
+            <button
+              className="expand-button"
+              onClick={() => setIsExpanded(!isExpanded)}
+            >
+              {isExpanded ? "🔽" : "🔼"}
+            </button>
+          </div>
           <div className="chat-history">
             {messages.length === 0 ? (
-              <div className="empty-chat-message">Hey There! How can I help you today?</div>
+              <div className="empty-chat-message">
+                Hey There! How can I help you today?
+              </div>
             ) : (
               messages.map((msg, index) => (
                 <div
                   key={index}
-                  className={msg.sender === "bot" ? "message-bot" : "message-user"}
+                  className={
+                    msg.sender === "bot" ? "message-bot" : "message-user"
+                  }
                 >
                   <ReactMarkdown>{msg.text}</ReactMarkdown>
                 </div>
@@ -95,7 +111,11 @@ function Chatbot() {
               onKeyPress={(e) => e.key === "Enter" && handleSend()}
               placeholder="Type your message..."
             />
-            <button className="send-button" onClick={() => handleSend()} disabled={isRequestPending}>
+            <button
+              className="send-button"
+              onClick={() => handleSend()}
+              disabled={isRequestPending}
+            >
               ➤
             </button>
           </div>
