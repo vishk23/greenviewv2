@@ -112,7 +112,7 @@ const handleBeforeChange = (current: number, next: number) => {
             <div key={index} className="hero-slide">
               <div
                 className="text-container"
-                onClick={() => console.log('Clicked!')}
+                onClick={() => navigate('/score')} // Navigate to /score
               >
                 <h1>{slide.title}</h1>
                 <p>{slide.description}</p>
