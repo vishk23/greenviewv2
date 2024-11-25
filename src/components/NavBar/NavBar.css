@@ -176,3 +176,99 @@
   border: 1px solid #ccc;
   border-radius: 4px;
 }
+
+@media (max-width: 768px) {
+  /* NAVBAR CONTAINER */
+  .navbar-main {
+    flex-direction: column; /* Stack everything vertically */
+    padding: 0.5rem; /* Compact padding for smaller screens */
+    align-items: center; /* Center everything */
+    height: auto; /* Allow navbar to grow vertically */
+    position: sticky; /* Make navbar sticky at the top */
+    top: 0;
+    z-index: 1000; /* Ensure it stays above content */
+    overflow-x: hidden; /* Prevent horizontal scrolling */
+  }
+
+  /* LOGO */
+  .navbar-left {
+    width: 100%; /* Take full width */
+    text-align: center; /* Center-align the logo */
+    margin-bottom: 1rem; /* Add spacing below the logo */
+  }
+
+  .navbar-left img {
+    max-width: 50%; /* Scale the logo for mobile */
+    height: auto; /* Maintain aspect ratio */
+  }
+
+  /* NAV LINKS */
+  .nav-links {
+    display: flex;
+    flex-direction: column; /* Stack links vertically */
+    gap: 1rem; /* Add spacing between links */
+    width: 100%; /* Full width for links */
+    text-align: center; /* Center-align links */
+    margin: 0; /* Remove extra margin */
+    padding: 0; /* Remove padding */
+  }
+
+  .nav-link {
+    font-size: 1.2rem; /* Make links larger for touch interaction */
+    padding: 1rem 0; /* Increase touch target size */
+    color: #9FC37B;
+    text-decoration: none;
+    border-bottom: 1px solid #f0f0f0; /* Add separator for clarity */
+  }
+
+  .nav-link:hover,
+  .nav-link.active {
+    background-color: #f8f4e1; /* Subtle hover background */
+    color: #3A5E20; /* Highlight active link */
+  }
+
+  /* AUTH / USER SECTION */
+  .navbar-right {
+    display: flex;
+    flex-direction: column; /* Stack the login/signup area */
+    align-items: center; /* Center-align items */
+    gap: 1rem; /* Add spacing */
+    margin-top: 1rem; /* Add spacing above user section */
+  }
+
+  .popup-button {
+    padding: 0.8rem 1.5rem; /* Touch-friendly button size */
+    font-size: 1rem;
+    background-color: #8bc995;
+    color: white;
+    border-radius: 5px;
+    border: none;
+    cursor: pointer;
+    width: 100%; /* Full-width button */
+    text-align: center;
+  }
+
+  .popup-button:hover {
+    background-color: #76b481;
+  }
+
+  /* AUTH POPUP */
+  .auth-popup {
+    width: 90%; /* Fit within mobile screen */
+    max-width: 400px; /* Reasonable max width */
+    padding: 1rem;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+  }
+
+  /* HIDE DROPDOWN MENU BY DEFAULT */
+  .dropdown-menu {
+    display: none; /* Hide dropdown on mobile */
+  }
+
+  /* SHOW DROPDOWN WHEN ACTIVE */
+  .user-name:hover + .dropdown-menu {
+    display: block;
+  }
+}
