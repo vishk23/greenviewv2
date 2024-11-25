@@ -1,10 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { db } from '@services/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import Slider from 'react-slick';
 import './Main.css';
 import { sliderSettings } from './SliderSetting';
+import EventCard from './EventCard';
+import './EventCard.css';
+import  {EventSliderSettings} from './EventSliderSettings';
+
 
 interface Event {
   id: string;
@@ -24,7 +28,10 @@ const MainPage: React.FC = () => {
   const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
 
-  const heroSlides: HeroSlide[] = [
+  const sliderRef = useRef<any>(null); // Use ref to access slider
+  const [, setActiveSlide] = useState(0); // Track active slide
+
+  const heroSlides: HeroSlide[] = React.useMemo(() => [
     {
         title: "In the past 12 months, Warren Towers averaged 253.35 tones of waste...",
         description: `Curious about your individual impact on the environment?
@@ -41,20 +48,22 @@ const MainPage: React.FC = () => {
         title: "In the past 12 months, West averaged 254.52 tones of waste...",
         description: `Curious about your individual impact on the environment?
         Click here to take our Sustainability Quiz!`,
-        imageUrl: "/assets/West-animation.gif"
+        imageUrl: "/assets/West-animation-1130.gif"
     }
-];
+], []);
+
+useEffect(() => {
+  heroSlides.forEach((slide) => {
+    const img = new Image();
+    img.src = slide.imageUrl;
+  });
+}, [heroSlides]);
+
+const handleBeforeChange = (current: number, next: number) => {
+  setActiveSlide(next); // Update active slide index
+};
 
 
-  const heroSliderSettings = {
-    dots: true,
-    infinite: true,
-    speed: 500,
-    slidesToShow: 1,
-    slidesToScroll: 1,
-    autoplay: true,
-    autoplaySpeed: 5000,
-  };
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -89,47 +98,62 @@ const MainPage: React.FC = () => {
     fetchEvents();
   }, []);
 
-  const startQuiz = () => {
-    navigate('/score');
-  };
+
 
   return (
     <div className="main-page">
       <div className="hero-slider">
-        <Slider {...heroSliderSettings}>
+      <Slider
+          {...sliderSettings}
+          ref={sliderRef}
+          beforeChange={handleBeforeChange}
+        >
           {heroSlides.map((slide, index) => (
-            <div key={index} className="image-container">
-              <div className="title-text">
+            <div key={index} className="hero-slide">
+              <div
+                className="text-container"
+                onClick={() => console.log('Clicked!')}
+              >
                 <h1>{slide.title}</h1>
                 <p>{slide.description}</p>
-                <button onClick={startQuiz} className="start-quiz-button">
-                  Take Quiz
-                </button>
               </div>
-              <img src={slide.imageUrl} alt={`Slide ${index + 1}`} />
+              <div className="image-container">
+                {/* Conditionally render GIF based on active slide */}
+                <img
+                  src={slide.imageUrl }
+                  alt={`Slide ${index + 1}`}
+                />
+              </div>
             </div>
           ))}
         </Slider>
+
+
+
+
       </div>
 
       <div className="events-section">
         <h2 className="events-title">Upcoming Events on Campus</h2>
-        <Slider {...sliderSettings}>
-          {events.map((event) => (
-            <div key={event.id} className="event-card">
-              <h3>{event.title}</h3>
-              <p>{event.location}</p>
-              <p>
-                {event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} -{' '}
-                {event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-              </p>
-            </div>
-          ))}
-        </Slider>
+        <Slider {...EventSliderSettings}>
+  {events.map((event) => (
+    <EventCard
+      key={event.id}
+      date={event.start.toLocaleDateString([], { day: 'numeric' })}
+      weekday={event.start.toLocaleDateString([], { weekday: 'long' })}
+      title={event.title}
+      location={event.location}
+      time={`${event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - 
+             ${event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+    />
+  ))}
+</Slider>
+
         <p className="calendar-text">Take a look at our calendar for more events happening around you!</p>
         <button onClick={() => navigate('/calendar')} className="calendar-button">
           Go to Calendar
         </button>
+        <img src="/assets/bd09ad965a55332dbd5cc8216c02a37e.png" alt="Decorative" className="image-under-events" />
       </div>
     </div>
   );
