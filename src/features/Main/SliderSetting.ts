@@ -1,21 +1,14 @@
 export const sliderSettings = {
   dots: true,
+  arrows: false,
   infinite: true,
-  speed: 1000,
-  slidesToShow: 3, // Show 3 slides at a time (center + half of each side)
+  speed: 1000, // Longer animation time for smoothness
+  cssEase: "cubic-bezier(0.25, 1, 0.5, 1)", // Use cubic-bezier for custom smoothness
+  slidesToShow: 1,
   slidesToScroll: 1,
-  autoplay: true,
+  autoplay: false,
   autoplaySpeed: 5000,
-  centerMode: true, // Enable center mode to focus on the middle card
-  centerPadding: "10px", // Adjust padding to control how much of side slides are shown
-  responsive: [
-    { 
-      breakpoint: 768, 
-      settings: { slidesToShow: 1, slidesToScroll: 1, centerPadding: "0px" } 
-    },
-    { 
-      breakpoint: 1024, 
-      settings: { slidesToShow: 2, slidesToScroll: 1, centerPadding: "10px" } 
-    },
-  ],
+  pauseOnHover: true,
+  swipeToSlide: true, // Allow seamless dragging
+  draggable: true, // Enable dragging
 };

@@ -1,13 +1,20 @@
-import React, { useState } from 'react';
+
+import ProgressBar from '@components/ProgressBar/ProgressBar';
+import React, { useState, useEffect } from 'react';
 import './Energy.css';
 import { useNavigate } from 'react-router-dom';
-import ProgressBar from '@components/ProgressBar/ProgressBar';
+import { useAuthState } from 'react-firebase-hooks/auth';
+import { auth, db } from '@services/firebase';
+import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
+import { ModuleCompletion } from './ModuleCompletion'; // Assuming this is where the model is defined
 
 const EnergyModule: React.FC = () => {
   const [quizAnswers, setQuizAnswers] = useState<{ [key: string]: string }>({});
   const [quizFeedback, setQuizFeedback] = useState<{ [key: string]: string }>({});
   const [progress, setProgress] = useState(10);
+  const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
+  const [user] = useAuthState(auth);
 
   const handleQuizSubmit = (e: React.FormEvent, questionId: string, correctAnswer: string) => {
     e.preventDefault();
@@ -22,6 +29,37 @@ const EnergyModule: React.FC = () => {
   const handleAnswerChange = (questionId: string, value: string) => {
     setQuizAnswers((prev) => ({ ...prev, [questionId]: value }));
   };
+
+  const saveCompletionStatus = async () => {
+    if (user && progress === 100 && !isCompleted) {
+        try {
+            const userDocRef = doc(db, 'moduleCompletion', user.uid);
+            
+            const newCompletion: ModuleCompletion = {
+              userId: user.uid,
+              energyModule: true,
+              };
+
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          await updateDoc(userDocRef, {
+            energyModule: true,
+            });
+        } else {
+          await setDoc(userDocRef, newCompletion);
+        }
+
+        setIsCompleted(true);
+      } catch (error) {
+        console.error('Error saving module completion status:', error);
+      }
+    }
+  };
+
+  useEffect(() => {
+    saveCompletionStatus();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [progress, user]);
 
   return (
     <div className="module-page">

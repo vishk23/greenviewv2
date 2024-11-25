@@ -24,6 +24,14 @@ const NavBar: React.FC = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
+
+  const toggleNavbar = () => {
+    setIsCollapsed(!isCollapsed);
+  };
+
+
+
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -36,6 +44,8 @@ const NavBar: React.FC = () => {
 
     return unsubscribe;
   }, []);
+
+
 
   const handleLogin = async () => {
     try {
@@ -80,11 +90,17 @@ const NavBar: React.FC = () => {
   return (
     <nav className="navbar-main">
       <div className="navbar-left">
-        <NavLink to="/" className="logo">
-          <img src="/full_logo.png" alt="LOGO" style={{ width: '200px', height: 'auto' }} />
-        </NavLink>
+        <div className="navbar-header">
+          <NavLink to="/" className="logo">
+            <img src="/full_logo.png" alt="LOGO" style={{ width: '120px', height: 'auto' }} />
+          </NavLink>
+          {/* Hamburger button */}
+          <button className="navbar-toggle" onClick={toggleNavbar}>
+            ☰
+          </button>
+        </div>
       </div>
-      <div className="navbar-center">
+      <div className={`navbar-center ${isCollapsed ? "collapsed" : ""}`}>
         <ul className="nav-links">
           {links.map((link, index) => (
             <li key={index}>
@@ -95,7 +111,7 @@ const NavBar: React.FC = () => {
           ))}
         </ul>
       </div>
-      <div className="navbar-right">
+      <div className={`navbar-right ${isCollapsed ? "hidden-mobile" : ""}`}>
         {user ? (
           <div className="user-menu">
             <span className="user-name" onClick={toggleDropdown}>
@@ -160,7 +176,7 @@ const NavBar: React.FC = () => {
       </div>
     </nav>
   );
-};
-
-
-export default NavBar;
+  
+  
+}
+export default NavBar
