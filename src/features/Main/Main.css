@@ -87,6 +87,7 @@
     bottom: 10px; /* Adjust position below the carousel */
     text-align: center;
     z-index: 10;
+    color: #F15824;
 }
 
 .slick-dots li button:before {
@@ -95,44 +96,15 @@
     opacity: 0.7;
     transition: opacity 0.3s ease;
     z-index: 10;
+    color: #F15824;
 }
 
 .slick-dots li.slick-active button:before {
     opacity: 1; /* Highlight active dot */
     z-index: 10;
+    color: #000000;
 }
 
-
-.slick-prev,
-.slick-next {
-    position: absolute;
-    top: 50%;
-    transform: translateY(-50%);
-    z-index: 2;
-    width: 30px;
-    height: 30px;
-    background-color: rgba(159, 195, 123, 1); /* Matches your theme */
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
-}
-
-.slick-prev {
-    left: -40px; /* Adjust left arrow position */
-}
-
-.slick-next {
-    right: -40px; /* Adjust right arrow position */
-}
-
-.slick-prev:hover,
-.slick-next:hover {
-    background-color: rgba(130, 160, 100, 1); /* Highlight on hover */
-}
 
 
 /* Responsive adjustments */
