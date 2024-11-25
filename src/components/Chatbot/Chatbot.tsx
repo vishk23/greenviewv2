@@ -85,7 +85,7 @@ function Chatbot() {
               {isExpanded ? "🔽" : "🔼"}
             </button>
           </div>
-          <div className="chat-history">
+          <div className={`chat-history ${isExpanded ? "expanded" : ""}`}>
             {messages.length === 0 ? (
               <div className="empty-chat-message">
                 Hey There! How can I help you today?

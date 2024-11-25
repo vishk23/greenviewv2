@@ -22,6 +22,7 @@
 
 .top-bar {
   display: flex;
+  flex-direction: column;
   position: sticky;
   background-color: #f8f4e1;
   bottom: 0;
@@ -29,14 +30,24 @@
   bottom: 0;
   width: 100%;
   padding-top: 1rem;
+  z-index: 10;
 }
 
 .chat-history {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
+  height: 30vh;
   padding-right: 8px;
   margin-bottom: 8px;
+}
+
+.chat-history.expanded {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 55vh;
+  padding-right: 8px;
 }
 
 .empty-chat-message {
@@ -85,6 +96,8 @@
 
 .message-input {
   display: flex;
+  flex-direction: row;
+  justify-items: center;
   gap: 10px;
 }
 
