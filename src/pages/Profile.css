@@ -1,10 +1,23 @@
+.background123 {
+  display: flex;
+  justify-content: flex-end; /* Push child elements to the right */
+  align-items: flex-start;
+  height: 100vh; /* Full viewport height */
+  width: 100vw; /* Full viewport width */
+  background-color: #f8f4e1;
+  background-image: url('/public/questions_background.gif');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
 .profile-page {
-  max-width: 900px;
+  width: 60%;
+  padding: 10px;
+  height: 92%; /* Match the parent's height */
   margin: 20px auto;
-  padding: 30px;
-  background-color: #f7f6f2;
-  border-radius: 15px;
-  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  background-color: #fff8eb;
+  z-index: 10;
 }
 
 .profile-title {
@@ -19,6 +32,12 @@
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
+}
+
+.profile-info h2 {
+  font-size: 36px;
+  font-weight: 500;
+  color: #619b62;
 }
 
 .profile-info p, label {
@@ -72,6 +91,7 @@ button:hover {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+  margin-bottom: 20px;
 }
 
 .strengths-section, .improvements-section {
@@ -82,6 +102,16 @@ button:hover {
   gap: 20px;
 }
 
+.area-section h2 {
+  font-weight: 500;
+}
+
+.score h2 {
+  font-weight: bold;
+  margin-left: 10px;
+  margin-bottom: 10px;
+}
+
 .section-title {
   font-size: 1.5rem;
   font-weight: bold;
@@ -89,31 +119,48 @@ button:hover {
   margin-bottom: 10px;
 }
 
-.rectangle {
+.card {
   position: relative;
   width: 250px;
   height: 40px;
-  background-color: #4CAF50; /* Green background for the label */
-  color: white;
-  font-size: 16px;
   margin-left: 40px;
   line-height: 40px;
-  pointer-events: none;
+  perspective: 1000px;
+  transition: transform 0.6s;
+  transform-style: preserve-3d;
+  cursor: pointer;
 }
 
-.rectangle .front{
-  display: flex;
-  align-items: center;
-  background-color: #4CAF50;
-  padding-left: 30px;
+.card.flipped {
+  transform: rotateY(180deg);
+}
+
+.card .front,
+.card .back {
   position: absolute;
   width: 100%;
   height: 100%;
   backface-visibility: hidden;
 }
 
-/* Triangle on the right side of the label */
-.rectangle::before {
+.card .front {
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  background-color: #4CAF50;
+  color: white;
+}
+
+.card .back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #f4f1e8;
+  color: #333;
+  transform: rotateY(180deg);
+}
+
+.card::before {
   content: "";
   position: absolute;
   top: 50%;
@@ -124,13 +171,19 @@ button:hover {
   transform: translateY(-50%);
 }
 
-.rectangle::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0px; /* Position the triangle to the left */
-  border-left: 20px solid #f4f1e8; /* Create the triangle */
-  border-top: 20px solid transparent;
-  border-bottom: 20px solid transparent;
-  transform: translateY(-50%);
+.card.strength::before {
+  border-left-color: #4CAF50;
 }
+
+.card.improvement::before {
+  border-left-color: #FF9800;
+}
+
+.card.strength {
+  background-color: #4CAF50;
+}
+
+.card.improvement {
+  background-color: #FF9800;
+}
+
