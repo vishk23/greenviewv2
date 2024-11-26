@@ -8,6 +8,7 @@ import { sliderSettings } from './SliderSetting';
 import EventCard from './EventCard';
 import './EventCard.css';
 import  {EventSliderSettings} from './EventSliderSettings';
+import Footer from '@components/Footer/Footer';
 
 
 interface Event {
@@ -155,7 +156,12 @@ const handleBeforeChange = (current: number, next: number) => {
         </button>
         <img src="/assets/bd09ad965a55332dbd5cc8216c02a37e.png" alt="Decorative" className="image-under-events" />
       </div>
+
+      <Footer/>
+
     </div>
+
+    
   );
 };
 
