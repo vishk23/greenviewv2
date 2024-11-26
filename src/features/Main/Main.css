@@ -107,6 +107,10 @@
 
 
 
+  
+
+
+
 /* Responsive adjustments */
 @media (max-width: 768px) {
     .main-page {
@@ -120,6 +124,7 @@
     .text-container p {
         font-size: 0.9rem;
     }
+
 }
 .slick-track {
     transition-timing-function: ease-in-out !important; /* Ensure smooth easing */
@@ -200,3 +205,4 @@
 .slick-next:hover {
     background-color: rgba(130, 160, 100, 1); /* Highlight on hover */
 }
+
