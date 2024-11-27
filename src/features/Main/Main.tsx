@@ -35,20 +35,17 @@ const MainPage: React.FC = () => {
   const heroSlides: HeroSlide[] = React.useMemo(() => [
     {
         title: "In the past 12 months, Warren Towers averaged 253.35 tones of waste...",
-        description: `Curious about your individual impact on the environment?
-        Click here to take our Sustainability Quiz!`,
+        description: "Curious about your individual impact on the environment?",
         imageUrl: "/assets/Warren-animation.gif"
     },
     {
         title: "In the past 12 months, Stuvi averaged 266.8 tones of waste...",
-        description: `Curious about your individual impact on the environment?
-        Click here to take our Sustainability Quiz!`,
+        description: "Curious about your individual impact on the environment?",
         imageUrl: "/assets/StuVi-animation.gif"
     },
     {
         title: "In the past 12 months, West averaged 254.52 tones of waste...",
-        description: `Curious about your individual impact on the environment?
-        Click here to take our Sustainability Quiz!`,
+        description: "Curious about your individual impact on the environment?",
         imageUrl: "/assets/West-animation.gif"
     }
 ], []);
@@ -111,17 +108,19 @@ const handleBeforeChange = (current: number, next: number) => {
         >
           {heroSlides.map((slide, index) => (
             <div key={index} className="hero-slide">
-              <div
-                className="text-container"
-                onClick={() => navigate('/score')} // Navigate to /score
-              >
+              <div className="text-container">
                 <h1>{slide.title}</h1>
                 <p>{slide.description}</p>
+                <button 
+                  className="take-quiz-button"
+                  onClick={() => navigate('/score')}
+                >
+                  Take Quiz
+                </button>
               </div>
               <div className="image-container">
-                {/* Conditionally render GIF based on active slide */}
                 <img
-                  src={slide.imageUrl }
+                  src={slide.imageUrl}
                   alt={`Slide ${index + 1}`}
                 />
               </div>

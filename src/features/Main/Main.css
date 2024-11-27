@@ -39,36 +39,27 @@
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Center-align the text */
-    justify-content: center; /* Center vertically */
-    cursor: pointer; /* Indicate it's clickable */
-    transition: background-color 0.3s ease; /* Smooth hover effect */
+    align-items: center;
+    justify-content: center;
+    cursor: default;
 }
+
 .text-container p {
     font-size: 1rem;
-    margin: 0;
-    color: #5C873A; /* Muted green for the text */
-    background-color: #F7E6C4; /* Light cream for the background */
-    text-decoration: underline; /* Highlight clickable nature */
-    cursor: pointer; /* Indicate interactivity */
-    padding: 5px 10px; /* Add a bit of padding for better appearance */
-    border-radius: 5px; /* Smooth corners */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Smooth hover effect */
+    margin: 0 0 15px 0;
+    color: #5C873A;
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: default;
+    background: none;
+    text-decoration: none;
 }
-
-.text-container p:hover {
-    background-color: #D9F2BC; /* Light greenish background on hover */
-    color: #3A5E20; /* Darker green for the text on hover */
-}
-
 
 .text-container h1 {
     font-size: 2rem;
     margin-bottom: 10px;
     color: #9FC37B;
 }
-
-
 
 .image-container {
     width: 100%;
@@ -104,12 +95,6 @@
     z-index: 10;
     color: #000000;
 }
-
-
-
-  
-
-
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
