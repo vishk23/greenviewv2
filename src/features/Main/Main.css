@@ -19,6 +19,7 @@
     justify-content: flex-start; /* Text appears at the top */
     overflow: hidden;
     padding-top: 0;
+    padding-bottom: 40px; /* Add padding at the bottom to accommodate the dots */
 }
 
 .hero-slide {
@@ -63,37 +64,49 @@
 
 .image-container {
     width: 100%;
-    flex-grow: 1; /* Take up remaining space after text */
-    overflow: hidden;
+    overflow: visible;
+    margin-bottom: 0; /* Remove any bottom margin if present */
 }
 
 .image-container img {
     width: 100%;
-    max-height: calc(100vh - 208px);
-    object-position: bottom; 
-    object-fit: cover; /* Ensure the GIF fills the container proportionally */
+    height: auto;
+    object-position: center;
+    object-fit: contain;
 }
 
 .slick-dots {
-    bottom: 10px; /* Adjust position below the carousel */
+    bottom: -30px; /* Change from 10px to -30px to position below the image */
+    position: relative; /* Change from absolute to relative positioning */
     text-align: center;
     z-index: 10;
-    color: #F15824;
+    padding-top: 20px; /* Add some padding to create space */
+    background-color: rgba(255, 248, 235, 1); /* Match the background color */
 }
 
 .slick-dots li button:before {
     font-size: 20px;
-    color: F7E6C4; /* Matches your theme */
-    opacity: 0.7;
+    color: transparent; /* Make the default dot transparent */
+    opacity: 1;
     transition: opacity 0.3s ease;
     z-index: 10;
-    color: #F15824;
+    border: 2px solid #F06D3C; /* Add border for inactive dots */
+    border-radius: 50%;
+    content: '';
+    width: 12px;
+    height: 12px;
+    display: block;
 }
 
 .slick-dots li.slick-active button:before {
-    opacity: 1; /* Highlight active dot */
+    background-color: #F06D3C; /* Fill active dot */
+    opacity: 1;
     z-index: 10;
-    color: #000000;
+}
+
+/* Adjust spacing between dots if needed */
+.slick-dots li {
+    margin: 0 8px;
 }
 
 /* Responsive adjustments */
@@ -168,7 +181,7 @@
     z-index: 2;
     width: 30px;
     height: 30px;
-    background-color: rgba(159, 195, 123, 1); /* Matches your theme */
+    background-color: #F06D3C;
     color: white;
     border-radius: 50%;
     display: flex;
@@ -188,6 +201,6 @@
 
 .slick-prev:hover,
 .slick-next:hover {
-    background-color: rgba(130, 160, 100, 1); /* Highlight on hover */
+    background-color: #F06D3C;
 }
 
