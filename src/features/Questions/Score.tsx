@@ -1,11 +1,16 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { auth, db, model, structuredModel } from "@services/firebase";
-import { doc, getDoc, setDoc, updateDoc } from "firebase/firestore";
-import ProgressBar from "./ProgressBar";
-import { useChatContext } from "../../contexts/ChatContext";
-import "./Consolidated.css";
+import { auth, db } from "@services/firebase";
+import { doc, updateDoc } from "firebase/firestore";
+import ProgressBar from "@components/ProgressBar/ProgressBar";
+import { useChatContext } from "@contexts/ChatContext";
+import Leaderboard from "@features/Leaderboard/Leaderboard";
+import CollapsibleBox from "@components/CollapsibleBox/CollapsibleBox";
+import { generateAISummary } from "../../utils/aiUtils";
+import { saveUserScore } from "../../utils/scoreUtils";
+import "./Score.css";
+import { motion, AnimatePresence } from "framer-motion";
 
 interface ScoreProps {
   score: number;
@@ -14,36 +19,60 @@ interface ScoreProps {
   questions: { question: string; answers: string[] }[];
 }
 
-interface ScoreEntry {
-  score: number;
-  date: Date;
-  answers: string[];
-  questions: string[];
-  structuredSummary?: any;
+interface StructuredSummaryItem {
+  area: string;
+  description: string;
 }
 
+interface StructuredSummary {
+  strengths: StructuredSummaryItem[];
+  improvement: StructuredSummaryItem[];
+}
+
+/**
+ * Score component displays the quiz results, leaderboard, and personalized summary
+ */
 const Score: React.FC<ScoreProps> = ({
   score,
   totalQuestions,
   answers,
   questions,
 }) => {
+  console.log('=== SCORE COMPONENT INITIALIZATION ===');
+  console.log('User answers:', answers);
+  console.log('Questions:', questions);
+  console.log('Selected answers:', questions.map((q, i) => ({
+    question: q.question,
+    selectedAnswer: q.answers[answers[i]]
+  })));
+
+  // Auth state
   const [user] = useAuthState(auth);
+  
+  // Score and message state
   const [previousScore, setPreviousScore] = useState<number | null>(null);
-  const [message, setMessage] = useState<string>(
-    "Great start! This is your first time taking the quiz."
-  );
-  const [isAIBoxVisible, setIsAIBoxVisible] = useState(false);
+  const [message, setMessage] = useState<string>("Great start! This is your first time taking the quiz.");
+  
+  // Notification state
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  
+  // Chat context for suggested questions
+  const { addMessage, setIsVisible } = useChatContext();
+  
+  // AI-generated content state
+  const [isGeneratingAI, setIsGeneratingAI] = useState(true);
+  const [hasError, setHasError] = useState(false);
+  const [structuredSummary, setStructuredSummary] = useState<StructuredSummary | null>(null);
   const [aiResponse, setAiResponse] = useState<string>("");
   const [potentialQuestions, setPotentialQuestions] = useState<string[]>([]);
-  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
-  const { addMessage, setIsVisible } = useChatContext();
-  const [isSummaryLoading, setIsSummaryLoading] = useState(false);
-  const [structuredSummary, setStructuredSummary] = useState<any>(null);
 
+  // Calculate score percentage
   const maxScore = totalQuestions * 10;
   const percentageScore = (score / maxScore) * 100;
 
+  /**
+   * Get feedback message based on score percentage
+   */
   const getFeedback = () => {
     if (percentageScore >= 80) return "Your GreenView is Clear";
     if (percentageScore >= 60) return "Your GreenView is Clouded";
@@ -52,192 +81,75 @@ const Score: React.FC<ScoreProps> = ({
     return "Your GreenView is Polluted";
   };
 
-  const generateStructuredSummary = async (qaPairs: any) => {
-    try {
-      const chat = structuredModel.startChat({
-        history: [
-          {
-            role: "user",
-            parts: [
-              {
-                text: "Based on the provided quiz questions and answers, generate a JSON summary with 'strengths' and 'improvements' fields. Each item in these fields should have two elements: the name of the area and a description. Limit each list to a maximum of three items.",
-              },
-            ],
-          },
-        ],
-        generationConfig: { maxOutputTokens: 300 },
+  /**
+   * Initialize score and generate AI summary
+   */
+  useEffect(() => {
+    const initializeScore = async () => {
+      if (!user) {
+        console.log('No user found, skipping initialization');
+        return;
+      }
+
+      console.log('=== STARTING AI GENERATION ===');
+      console.log('Input data:', {
+        questions,
+        answers,
+        selectedAnswers: questions.map((q, i) => ({
+          question: q.question,
+          selectedAnswer: q.answers[answers[i]]
+        }))
       });
 
-      const result = await chat.sendMessage(JSON.stringify(qaPairs));
-      let structuredResponse = await result.response.text();
+      setIsGeneratingAI(true);
+      setHasError(false);
+      
+      try {
+        console.log('Calling generateAISummary...');
+        const aiResult = await generateAISummary(questions, answers);
+        console.log('AI Generation Result:', aiResult);
+        
+        // Update state with AI results
+        console.log('Updating state with AI results...');
+        setAiResponse(aiResult.summary);
+        setStructuredSummary(aiResult.structuredSummary);
+        setPotentialQuestions(aiResult.suggestedQuestions);
 
-      console.log("Raw structured response:", structuredResponse);
-
-      // Remove any backticks and code block markers from the response
-      if (structuredResponse.startsWith("```json")) {
-        structuredResponse = structuredResponse
-          .replace(/```json|```/g, "")
-          .trim();
-      }
-
-      console.log("Cleaned structured response:", structuredResponse);
-
-      // Parse the cleaned response
-      const parsedResponse = JSON.parse(structuredResponse);
-      console.log("Parsed Structured Summary:", parsedResponse);
-
-      // Enforce a maximum of 3 items for both strengths and improvement
-      const normalizedResponse = {
-        strengths: (parsedResponse.strengths || []).slice(0, 3),
-        improvement: (parsedResponse.improvements || []).slice(0, 3),
-      };
-
-      console.log(
-        "Normalized Structured Summary (Max 3 items):",
-        normalizedResponse
-      );
-
-      return normalizedResponse;
-    } catch (error) {
-      console.error("Error generating structured summary:", error);
-      return { strengths: [], improvement: [] };
-    }
-  };
-
-  useEffect(() => {
-    const runAIBoxLogic = async () => {
-      if (
-        !isAIBoxVisible &&
-        !aiResponse &&
-        score &&
-        totalQuestions &&
-        answers.length > 0 &&
-        questions.length > 0
-      ) {
-        setIsSummaryLoading(true);
-        try {
-          const qaPairs = questions.map((q, i) => ({
-            question: q.question,
-            answer: q.answers[answers[i]],
-          }));
-
-          // Generate unstructured summary
-          const chat = model.startChat({
-            history: [
-              {
-                role: "user",
-                parts: [
-                  {
-                    text: "Generate a sustainability summary and suggestions based on the following quiz questions and answers.",
-                  },
-                ],
-              },
-            ],
-            generationConfig: { maxOutputTokens: 500 },
-          });
-
-          const result = await chat.sendMessage(JSON.stringify(qaPairs));
-          const aiResponseText = await result.response.text();
-          setAiResponse(aiResponseText);
-
-          // Generate structured summary
-          const structuredSummary = await generateStructuredSummary(qaPairs);
-          setStructuredSummary(structuredSummary);
-
-          // Save the structured summary to Firestore
-          if (user && structuredSummary) {
-            const userDocRef = doc(db, "scores", user.uid);
-            await updateDoc(userDocRef, { structuredSummary });
-          }
-
-          // Generate potential questions
-          const questionResult = await chat.sendMessage(
-            "Based on the previous context, provide three practical questions that the user might want to ask a chatbot that is a sustainability expert. Only provide the questions."
-          );
-          const potentialQuestionsText = await questionResult.response.text();
-
-          const questionsArray = potentialQuestionsText
-            .split("\n")
-            .filter((q) => q.trim())
-            .map((q) => q.substring(0, q.indexOf("?") + 1));
-
-          setPotentialQuestions(questionsArray.slice(0, 3));
-        } catch (error) {
-          console.error("Error generating AI summary:", error);
-        } finally {
-          setIsSummaryLoading(false);
-        }
+        console.log('Saving score to database...');
+        const scoreResult = await saveUserScore(
+          user.uid, 
+          score, 
+          answers, 
+          questions, 
+          aiResult.structuredSummary
+        );
+        console.log('Score save result:', scoreResult);
+        
+        setPreviousScore(scoreResult.previousScore);
+        setMessage(scoreResult.message);
+      } catch (error) {
+        console.error("Error in initializeScore:", error);
+        setHasError(true);
+      } finally {
+        console.log('Finishing AI generation, setting isGeneratingAI to false');
+        setIsGeneratingAI(false);
       }
     };
 
-    // Run the function when score, totalQuestions, answers, or questions change
-    if (score && totalQuestions && answers.length > 0 && questions.length > 0) {
-      runAIBoxLogic();
-    }
-  }, [score, totalQuestions, answers, questions, isAIBoxVisible, aiResponse, user]);
-
-  useEffect(() => {
-    const saveScore = async () => {
-      if (user) {
-        const userDocRef = doc(db, "scores", user.uid);
-        const newScoreEntry: ScoreEntry = {
-          score,
-          date: new Date(),
-          answers: answers.map(
-            (answerIndex, i) => questions[i].answers[answerIndex]
-          ),
-          questions: questions.map((q) => q.question),
-        };
-
-        try {
-          const userDoc = await getDoc(userDocRef);
-          if (userDoc.exists()) {
-            const userData = userDoc.data();
-            const previous = userData?.score ?? 0;
-            setPreviousScore(previous);
-
-            const updatedHistory = userData?.scoreHistory
-              ? [...userData.scoreHistory, newScoreEntry]
-              : [newScoreEntry];
-
-            await updateDoc(userDocRef, {
-              score,
-              lastUpdated: new Date(),
-              scoreHistory: updatedHistory,
-            });
-
-            setMessage(
-              score > previous
-                ? `Great Job! Your score improved by ${
-                    score - previous
-                  } points!`
-                : score === previous
-                ? "Your score remains the same. Keep going!"
-                : "Keep going! You can improve your score!"
-            );
-          } else {
-            await setDoc(userDocRef, {
-              userId: user.uid,
-              score,
-              lastUpdated: new Date(),
-              scoreHistory: [newScoreEntry],
-            });
-          }
-        } catch (error) {
-          console.error("Error saving score:", error);
-        }
-      }
-    };
-
-    saveScore();
+    initializeScore();
   }, [user, score, answers, questions]);
 
+  /**
+   * Handle clicking a suggested question
+   */
   const handleQuestionClick = (question: string) => {
     addMessage({ sender: "user", text: question, needsResponse: true });
     setIsVisible(true);
-    setIsAIBoxVisible(false);
   };
 
+  /**
+   * Enable notifications for the user
+   */
   const handleEnableNotifications = async () => {
     if (user) {
       const userDocRef = doc(db, "users", user.uid);
@@ -246,25 +158,192 @@ const Score: React.FC<ScoreProps> = ({
     }
   };
 
-  return (
-    <div>
-      <div className="score-container">
-        <div className="score-box">
-          <ProgressBar points={percentageScore} />
-          <span className="score-number">{getFeedback()}</span>
-          <span className="job">{message}</span>
-          <a href="summary" className="link">
-            Click here to your summary!
-          </a>
-          {!notificationsEnabled ? (
-            <button onClick={handleEnableNotifications}>
-              Enable Notifications
-            </button>
-          ) : (
-            <p>Notifications Enabled</p>
-          )}
+  /**
+   * Render strengths and improvements sections
+   */
+  const renderStrengthsAndImprovements = () => {
+    if (!structuredSummary) return null;
+    return (
+      <div className="summary-areas">
+        <div className="strengths-section">
+          <h4>Strengths</h4>
+          {structuredSummary.strengths.map((item, index) => (
+            <div key={index} className="summary-item">
+              <h5>{item.area}</h5>
+              <p>{item.description}</p>
+            </div>
+          ))}
+        </div>
+        <div className="improvement-section">
+          <h4>Areas for Improvement</h4>
+          {structuredSummary.improvement.map((item, index) => (
+            <div key={index} className="summary-item">
+              <h5>{item.area}</h5>
+              <p>{item.description}</p>
+            </div>
+          ))}
         </div>
       </div>
+    );
+  };
+
+  /**
+   * Render suggested questions section
+   */
+  const renderSuggestedQuestions = () => {
+    if (!potentialQuestions.length) return null;
+    return (
+      <div className="suggested-questions">
+        <h4>Suggested Questions</h4>
+        <div className="questions-list">
+          {potentialQuestions.map((question, index) => (
+            <button
+              key={index}
+              onClick={() => handleQuestionClick(question)}
+              className="question-button"
+            >
+              {question}
+            </button>
+          ))}
+        </div>
+      </div>
+    );
+  };
+
+  /**
+   * Render loading spinner
+   */
+  const renderLoadingSpinner = () => (
+    <div className="loading-container">
+      <div className="loading-spinner"></div>
+      <p>Analyzing your responses...</p>
+    </div>
+  );
+
+  /**
+   * Render error message
+   */
+  const renderError = () => (
+    <div className="error-message">
+      <p>Sorry, we couldn't generate your summary. Please try again later.</p>
+    </div>
+  );
+
+  /**
+   * Render summary content
+   */
+  const renderSummaryContent = () => {
+    console.log('=== RENDERING SUMMARY ===');
+    console.log('Current state:', {
+      hasError,
+      isGeneratingAI,
+      structuredSummary,
+      aiResponse,
+      potentialQuestions,
+      user: user?.uid
+    });
+
+    if (hasError) {
+      console.log('Rendering error state');
+      return renderError();
+    }
+    if (isGeneratingAI) {
+      console.log('Rendering loading state');
+      return renderLoadingSpinner();
+    }
+
+    console.log('Rendering full summary with:', {
+      hasStructuredSummary: !!structuredSummary,
+      hasAiResponse: !!aiResponse,
+      numQuestions: potentialQuestions.length
+    });
+
+    return (
+      <>
+        {structuredSummary && (
+          <div>
+            {renderStrengthsAndImprovements()}
+          </div>
+        )}
+        {renderSuggestedQuestions()}
+        {aiResponse && (
+          <div className="ai-response">
+            <h4>Additional Insights</h4>
+            <p>{aiResponse}</p>
+          </div>
+        )}
+      </>
+    );
+  };
+
+  return (
+    <div className="score-container">
+      <motion.div 
+        className="score-box"
+        initial={{ opacity: 0, y: -50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 1.2,
+          ease: "easeOut"
+        }}
+      >
+        <div className="progress-bar-container">
+          <div 
+            className="progress-bar" 
+            style={{ 
+              width: `${percentageScore}%`,
+              background: 'linear-gradient(to right, #f2745f, rgb(159, 195, 123))'
+            }}
+          />
+          <p>{percentageScore.toFixed(2)}/100 points</p>
+        </div>
+        <span className="score-number">{getFeedback()}</span>
+        <span className="job">{message}</span>
+        {!notificationsEnabled ? (
+          <button onClick={handleEnableNotifications}>
+            Enable Notifications
+          </button>
+        ) : (
+          <p>Notifications Enabled</p>
+        )}
+      </motion.div>
+
+      <motion.div 
+        className="collapsible-sections"
+        initial={{ opacity: 0, y: 50 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ 
+          duration: 1.5,
+          delay: 1,
+          ease: "easeOut"
+        }}
+        style={{ width: '100%', display: 'flex', flexDirection: 'column', alignItems: 'center' }}
+      >
+        <CollapsibleBox title="Leaderboard" defaultOpen={true} type="leaderboard">
+          <Leaderboard />
+        </CollapsibleBox>
+
+        <CollapsibleBox 
+          title="Your Summary" 
+          defaultOpen={true} 
+          isLoading={isGeneratingAI}
+          hasError={hasError}
+          type="summary"
+        >
+          {structuredSummary && (
+            <div>
+              {renderStrengthsAndImprovements()}
+            </div>
+          )}
+          {renderSuggestedQuestions()}
+          {aiResponse && (
+            <div className="ai-response">
+              <h4>Additional Insights</h4>
+              <p>{aiResponse}</p>
+            </div>
+          )}
+        </CollapsibleBox>
+      </motion.div>
     </div>
   );
 };

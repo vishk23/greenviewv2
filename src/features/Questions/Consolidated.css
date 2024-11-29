@@ -261,3 +261,295 @@ body, html {
 .animation {
     position: absolute;
 }
+
+.results-dashboard {
+  max-width: 1200px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+  position: relative;
+  z-index: 100;
+}
+
+.collapsible-box {
+  background: rgba(255, 255, 255, 0.95);
+  border-radius: 12px;
+  margin-bottom: 1rem;
+  overflow: hidden;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  position: relative;
+  z-index: 101;
+}
+
+.collapsible-header {
+  width: 100%;
+  padding: 1rem;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.collapsible-header:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.collapsible-header h3 {
+  margin: 0;
+  font-size: 1.25rem;
+  color: #333;
+}
+
+.collapsible-content {
+  padding: 1rem;
+  overflow: hidden;
+}
+
+.score-box {
+  padding: 2rem;
+  text-align: center;
+}
+
+.score-number {
+  font-size: 2rem;
+  font-weight: bold;
+  color: #333;
+  display: block;
+  margin: 1rem 0;
+}
+
+.job {
+  font-size: 1.1rem;
+  color: #666;
+  display: block;
+  margin-bottom: 1rem;
+}
+
+.notification-button {
+  background-color: #4CAF50;
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 6px;
+  cursor: pointer;
+  font-size: 1rem;
+  transition: background-color 0.3s;
+}
+
+.notification-button:hover {
+  background-color: #45a049;
+}
+
+.notifications-enabled {
+  color: #4CAF50;
+  font-weight: 500;
+}
+
+.summary-areas {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 2rem;
+  margin-bottom: 2rem;
+}
+
+@media (max-width: 768px) {
+  .summary-areas {
+    grid-template-columns: 1fr;
+  }
+}
+
+.summary-item {
+  background: rgba(255, 255, 255, 0.8);
+  padding: 1rem;
+  border-radius: 8px;
+  margin-bottom: 1rem;
+}
+
+.summary-item h5 {
+  margin: 0 0 0.5rem 0;
+  color: #333;
+  font-size: 1.1rem;
+}
+
+.summary-item p {
+  margin: 0;
+  color: #666;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.suggested-questions {
+  margin-top: 2rem;
+}
+
+.questions-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.question-button {
+  background: #f0f0f0;
+  border: none;
+  padding: 1rem;
+  border-radius: 8px;
+  text-align: left;
+  cursor: pointer;
+  transition: background-color 0.3s;
+  font-size: 0.95rem;
+  color: #333;
+}
+
+.question-button:hover {
+  background: #e0e0e0;
+}
+
+.ai-response {
+  margin-top: 2rem;
+  padding: 1rem;
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+}
+
+.ai-response h4 {
+  margin: 0 0 1rem 0;
+  color: #333;
+}
+
+.ai-response p {
+  margin: 0;
+  color: #666;
+  line-height: 1.6;
+}
+
+.loading {
+  text-align: center;
+  padding: 2rem;
+  color: #666;
+  font-style: italic;
+}
+
+/* Leaderboard Styles */
+.leaderboard-content {
+  background: rgba(255, 255, 255, 0.8);
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.leaderboard-header {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1.5fr;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(76, 175, 80, 0.1);
+  font-weight: bold;
+  color: #333;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1.5fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  align-items: center;
+}
+
+.leaderboard-row:last-child {
+  border-bottom: none;
+}
+
+.leaderboard-row:hover {
+  background: rgba(76, 175, 80, 0.05);
+}
+
+.row-item {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.row-item.rank {
+  font-weight: bold;
+  color: #4CAF50;
+}
+
+.row-item.score {
+  font-weight: bold;
+}
+
+.row-item.badge {
+  color: #666;
+  font-style: italic;
+}
+
+/* Highlight current user's row */
+.leaderboard-row.current-user {
+  background: rgba(76, 175, 80, 0.1);
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .leaderboard-header,
+  .leaderboard-row {
+    grid-template-columns: 0.5fr 1.5fr 0.8fr 1.2fr;
+    font-size: 0.9rem;
+    gap: 0.5rem;
+    padding: 0.75rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .leaderboard-header,
+  .leaderboard-row {
+    grid-template-columns: 0.5fr 1.2fr 0.8fr 1fr;
+    font-size: 0.8rem;
+    gap: 0.25rem;
+    padding: 0.5rem;
+  }
+}
+
+/* Update existing leaderboard styles */
+.leaderboard {
+  background: transparent;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.leaderboard-header {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1.5fr;
+  gap: 1rem;
+  padding: 1rem;
+  background: rgba(76, 175, 80, 0.1);
+  font-weight: bold;
+  color: #333;
+}
+
+.leaderboard-row {
+  display: grid;
+  grid-template-columns: 0.5fr 2fr 1fr 1.5fr;
+  gap: 1rem;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.8);
+}
+
+.show-more-button {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 1rem;
+  background: rgba(76, 175, 80, 0.1);
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 500;
+  transition: background-color 0.3s;
+}
+
+.show-more-button:hover {
+  background: rgba(76, 175, 80, 0.2);
+}
