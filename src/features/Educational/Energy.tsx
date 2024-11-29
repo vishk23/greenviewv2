@@ -188,7 +188,7 @@ const EnergyModule: React.FC = () => {
 
       <section className="progress-section">
         <h2>Your Energy Conservation Journey</h2>
-        <ProgressBar progress={progress} />
+        <ProgressBar points={progress} />
       </section>
     </div>
   );
