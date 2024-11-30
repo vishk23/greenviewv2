@@ -23,8 +23,11 @@ const Educational: React.FC = () => {
       title: 'Waste Reduction While on Campus', 
       description: 'Understand how to properly recycle, compost, and reduce waste across BU’s campus.' 
     },
+    
+  ];
+  const contact = [
     { 
-      id: '4', 
+      id: '1', 
       title: 'Get Involved: BU Sustainability Programs', 
       description: 'Discover ways to actively participate in BU’s sustainability initiatives, such as joining student-led eco clubs, attending events, or volunteering for campus-wide sustainability projects.' 
     },
@@ -74,6 +77,21 @@ const Educational: React.FC = () => {
             Check out our Video Library.
           </span>
         </p>
+      </section>
+      <section className="contact-section">
+        <h2>Get Involved at BU!</h2>
+        <div className="modules-grid">
+          {contact.map((contact) => (
+            <div
+              key={contact.id}
+              className="module-card"
+              onClick={() => handleModuleClick(contact.id)}
+            >
+              <h3>{contact.title}</h3>
+              <p>{contact.description}</p>
+            </div>
+          ))}
+        </div>
       </section>
 
       <section className="map-section">
