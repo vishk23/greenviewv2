@@ -9,6 +9,7 @@ import EventCard from './EventCard';
 import './EventCard.css';
 import  {EventSliderSettings} from './EventSliderSettings';
 import Footer from '@components/Footer/Footer';
+import Map from '@features/Map/Map';
 
 
 interface Event {
@@ -128,8 +129,7 @@ const handleBeforeChange = (current: number, next: number) => {
           ))}
         </Slider>
 
-
-
+        <Map />
 
       </div>
 
