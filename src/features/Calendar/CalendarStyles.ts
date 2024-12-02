@@ -4,9 +4,10 @@ const CalendarStyles: Record<string, CSSProperties> = {
   pageContainer: {
     display: 'flex',
     flexDirection: 'column',
-    alignItems: 'center',
+    alignItems: 'stretch',
     padding: '20px',
     backgroundColor: '#FFF8EB',
+    width: '100%',
   },
   header: {
     marginBottom: '20px',
@@ -24,6 +25,7 @@ const CalendarStyles: Record<string, CSSProperties> = {
     maxWidth: '1200px',
     width: '100%',
     gap: '20px',
+    margin: '0 auto',
   },
   calendarContainer: {
     flex: 2,
@@ -57,6 +59,11 @@ const CalendarStyles: Record<string, CSSProperties> = {
     fontSize: '16px',
     cursor: 'pointer',
     transition: 'background-color 0.3s ease',
+  },
+  footer: {
+    marginTop: '20px',
+    width: '100%',
+    textAlign: 'center',
   },
 };
 

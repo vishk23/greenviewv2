@@ -11,6 +11,7 @@ import { db } from '@services/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import CalendarStyles from './CalendarStyles';
 import { generateICS } from '../../utils/icsUtils';
+import Footer from '@components/Footer/Footer';
 
 const locales = { 'en-US': enUS };
 const localizer = dateFnsLocalizer({
@@ -103,6 +104,7 @@ const MyCalendar: React.FC = () => {
           </div>
         )}
       </div>
+      <Footer/>
     </div>
   );
 };

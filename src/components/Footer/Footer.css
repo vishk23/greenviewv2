@@ -4,11 +4,31 @@
   padding: 0 !important;
 }
 
-.footer-content {
-  background-color: #9FC37B;
-  margin: 0 !important;
-  padding: 0 !important;
+.footer-image-wrapper {
+  width: 100%;
+  height: auto;
+  background-color: transparent;
+  margin: 0;
+  padding: 0;
+  display: flex; /* Flexbox ensures alignment */
+  justify-content: center;
 }
+
+.footer-image {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.footer-content {
+  width: 100%;
+  /* max-width: 1200px; Ensures the content remains centered */
+  margin: 0 auto;
+  padding: 0 20px;
+  background-color: #9FC37B;
+  text-align: center;
+}
+
 
 .team-section {
   margin-top: 20px;
@@ -40,6 +60,7 @@
   align-items: flex-start;
   max-width: 1200px;
   margin: 0 auto;
+  width: 100%;
 }
 
 .footer-team {
