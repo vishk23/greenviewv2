@@ -1,8 +1,13 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import React, { useEffect, useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import Button from "@components/Button/Button";
 import Score from "./Score";
 import "./Consolidated.css";
+import { onAuthStateChanged, User } from "firebase/auth";
+import { auth, db } from "@services/firebase";
+import { loginWithEmail, registerWithEmail } from "@services/authService";
+import { doc, setDoc } from "firebase/firestore";
 
 interface QuestionsProps {
   spawnObject: (group: number) => void;
@@ -13,6 +18,80 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
   const [answers, setAnswers] = useState<number[]>([]);
   const [score, setScore] = useState<number | null>(null);
   const [isAnimation, setIsAnimation] = useState<boolean>(false);
+  const [hasStarted, setHasStarted] = useState(false);
+  const [user, setUser] = useState<User | null>(null);
+  const [showAuthForm, setShowAuthForm] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [username, setUsername] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
+
+  useEffect(() => {
+    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        setShowAuthForm(false);
+      }
+    });
+
+    return unsubscribe;
+  }, []);
+
+  const handleLogin = async () => {
+    try {
+      await loginWithEmail(email, password);
+      setShowAuthForm(false);
+      setErrorMessage("");
+      setHasStarted(true);
+    } catch (error) {
+      setErrorMessage("Login failed. Please try again.");
+    }
+  };
+
+  const handleSignUp = async () => {
+    try {
+      const user = await registerWithEmail(email, password, username, phoneNumber);
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          username,
+          email,
+          phoneNumber,
+          notificationsEnabled: false,
+        });
+        setShowAuthForm(false);
+        setErrorMessage("");
+        setHasStarted(true);
+      } else {
+        setErrorMessage("Sign-up failed. Please try again.");
+      }
+    } catch (error) {
+      setErrorMessage("Sign-up failed. Please try again.");
+      console.error("Sign-up error:", error);
+    }
+  };
+
+  const formatPhoneNumber = (value: string) => {
+    // Remove all non-digits
+    const phoneNumber = value.replace(/\D/g, '');
+    
+    // Format the number
+    if (phoneNumber.length <= 3) {
+      return phoneNumber;
+    } else if (phoneNumber.length <= 6) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
+    } else if (phoneNumber.length <= 10) {
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6)}`;
+    }
+    // Limit to 10 digits
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+  };
+
+  const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const formattedNumber = formatPhoneNumber(e.target.value);
+    setPhoneNumber(formattedNumber);
+  };
 
   const questions = [
     {
@@ -101,6 +180,7 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
     },
   ];
 
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const getSource = () => {
     if (score == null) return "";
     if (score >= 80) return "/statement/Clear.gif";
@@ -154,23 +234,106 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
 
   return (
     <div>
-      {score === null ? (
+      {!hasStarted ? (
         <div className="questions-container">
-          <div className="white-box">
+          <motion.div 
+            className={`white-box start-screen ${showAuthForm ? 'with-auth' : ''}`}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
+            {!showAuthForm ? (
+              <>
+                <h1>Curious about your impact<br />on the environment<br />around you?</h1>
+                <p>Take our quiz to find your sustainability score!</p>
+                <button 
+                  className="start-button"
+                  onClick={() => user ? setHasStarted(true) : setShowAuthForm(true)}
+                >
+                  {user ? "START QUIZ" : "LOG IN TO START QUIZ"}
+                </button>
+              </>
+            ) : (
+              <div className="auth-form">
+                <h3>{isSignUp ? "Sign Up" : "Login"}</h3>
+                {errorMessage && <p className="error-message">{errorMessage}</p>}
+                {isSignUp && (
+                  <>
+                    <input
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                      placeholder="Username"
+                    />
+                    <input
+                      type="tel"
+                      value={phoneNumber}
+                      onChange={handlePhoneChange}
+                      placeholder="Phone Number (XXX) XXX-XXXX"
+                      maxLength={14}
+                    />
+                  </>
+                )}
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Email"
+                />
+                <input
+                  type="password"
+                  value={password}
+                  onChange={(e) => setPassword(e.target.value)}
+                  placeholder="Password"
+                />
+                <button 
+                  onClick={isSignUp ? handleSignUp : handleLogin}
+                  className="auth-submit"
+                >
+                  {isSignUp ? "Sign Up" : "Login"}
+                </button>
+                <button 
+                  onClick={() => setIsSignUp(!isSignUp)}
+                  className="auth-toggle"
+                >
+                  {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+                </button>
+              </div>
+            )}
+          </motion.div>
+        </div>
+      ) : score === null ? (
+        <div className="questions-container">
+          <motion.div 
+            className="white-box"
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.5 }}
+          >
             <p className="question-number">
               Question {currentQuestion + 1} of {questions.length}
             </p>
-            <h2>{questions[currentQuestion].question}</h2>
-            <div className="answers-container">
-              {questions[currentQuestion].answers.map((answer, index) => (
-                <Button
-                  key={index}
-                  text={answer}
-                  onClick={() => handleAnswerSelect(index)}
-                  isSelected={answers[currentQuestion] === index}
-                />
-              ))}
-            </div>
+            <AnimatePresence mode="wait">
+              <motion.div
+                key={currentQuestion}
+                initial={{ opacity: 0, x: 50 }}
+                animate={{ opacity: 1, x: 0 }}
+                exit={{ opacity: 0, x: -50 }}
+                transition={{ duration: 0.3 }}
+              >
+                <h2>{questions[currentQuestion].question}</h2>
+                <div className="answers-container">
+                  {questions[currentQuestion].answers.map((answer, index) => (
+                    <Button
+                      key={index}
+                      text={answer}
+                      onClick={() => handleAnswerSelect(index)}
+                      isSelected={answers[currentQuestion] === index}
+                    />
+                  ))}
+                </div>
+              </motion.div>
+            </AnimatePresence>
             <div className="buttons">
               <button
                 onClick={handlePrevious}
@@ -187,23 +350,15 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                 {currentQuestion === questions.length - 1 ? "Submit" : "Next"}
               </button>
             </div>
-          </div>
+          </motion.div>
         </div>
       ) : (
-        <div className="score-container">
-          <img
-            src={getSource()}
-            alt=""
-            style={{ width: "100%", height: "100%" }}
-            className="animation"
-          />
-          <Score
-            score={score}
-            totalQuestions={questions.length}
-            answers={answers}
-            questions={questions}
-          />
-        </div>
+        <Score
+          score={score}
+          totalQuestions={questions.length}
+          answers={answers}
+          questions={questions}
+        />
       )}
     </div>
   );

@@ -2,122 +2,101 @@
 
 .score-container {
     display: flex;
+    height: 100vh;
+    width: 100vw;
     justify-content: center;
-    align-items: center;
-    background-color: rgba(255, 250, 241, 1); /* Light background color */
+    align-items: start;
+    background-color: #f8f4e1;
+    background-image: url('/public/questions_background.gif');
+    background-size: cover;
+    background-position: 50%;
+    background-repeat: no-repeat;
+    flex-direction: column;
 }
 
 .score-box {
-    background-color: rgba(255, 250, 241, 1);
-    border-radius: 8px;
-    padding: 20px;
-    width: 800px; /* Fixed width for large screens */
-    height: 400px; /* Fixed height for large screens */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    position: relative;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center; /* Center everything horizontally */
-    text-align: center; /* Center text */
+    align-items: center;
+    width: 75%;
+    padding-top: 150px;
+    position: relative;
+    text-align: center;
+    overflow: hidden;
+    z-index: 10;
+    margin: 0 auto;
 }
 
-/* Wrapper to position the progress bar */
-.progress-bar-wrapper {
-    display: flex;
-    justify-content: center; /* Center the progress bar horizontally */
-    width: 50%; /* Ensure the wrapper takes up full width */
-    margin-top: 50px; /* Adjust margin to space it above the score */
-}
-/* Center the progress bar */
 .progress-bar-container {
-    width: 90%; /* You can adjust this width based on the desired size */
+    width: 90%;
     height: 20px;
     background-color: #e0e0e0;
     border-radius: 10px;
     overflow: hidden;
-    margin-bottom: 20px;
+    margin-bottom: 0;
 }
-
-/* Center the score number and display it properly */
-.score-display {
-    font-family: 'Glacial Indifference', sans-serif;
-    display: flex;
-    flex-direction: column; /* Ensure the score and message are stacked vertically */
-    justify-content: center;
-    align-items: center;
-    height: 100%;
-    margin-top: -50px;
-    gap: 60px; /* Adds space between score number and the message */
-}
-
-.score-number {
-    font-size: 5rem; /* Large font for large screens */
-    color: #333;
-    font-weight: 200;
-}
-
-/* Smaller font for the message */
-.job {
-    font-weight: 100;
-    font-size: 1.5rem; /* Smaller font size for the message */
-    color:  rgba(159, 195, 123, 1);
-    margin-top: 10px; /* Add spacing above the message */
-}
-
-
 
 .progress-bar {
     height: 100%;
-    background-color: #f2745f; /* Color for the completed portion */
+    background: linear-gradient(to right, #f2745f, rgb(159, 195, 123));
     border-radius: 10px;
-    transition: width 0.5s ease; /* Smooth transition */
+    transition: width 0.5s ease;
 }
 
-/* Media queries for responsiveness */
-@media (max-width: 1024px) {
-    .score-box {
-        width: 600px; /* Reduce width for medium-sized screens */
-        height: 300px; /* Reduce height */
-    }
-
-    .score-number {
-        font-size: 4rem; /* Slightly smaller font size */
-    }
-
-    .progress-bar-container {
-        width: 85%; /* Adjust width for smaller screens */
-    }
+.progress-bar-container p {
+    margin: 5px 0;
+    color: #333;
 }
 
-@media (max-width: 768px) {
-    .score-box {
-        width: 500px; /* Further reduce for small screens */
-        height: 250px;
-    }
-
-    .score-number {
-        font-size: 3.5rem; /* Adjust font size */
-    }
-
-    .progress-bar-container {
-        width: 80%; /* Make the progress bar smaller to fit */
-    }
+.score-number {
+    color: #3a5a40;
+    font-size: 72px;
+    padding: 15px;
+    font-weight: 200;
 }
 
-@media (max-width: 480px) {
-    .score-box {
-        width: 95%; /* Almost full width for very small screens */
-        height: auto; /* Let height adjust dynamically */
-        padding: 10px;
-    }
-
-    .score-number {
-        font-size: 2.5rem; /* Smaller font for mobile */
-    }
-
-    .progress-bar-container {
-        width: 95%; /* Full width for very small screens */
-    }
+.job {
+    color: #28a745;
+    font-size: 24px;
+    font-weight: 700;
+    margin-top: 10px;
+    padding: 15px;
 }
+
+.link {
+    color: red;
+    text-decoration: none;
+    font-size: 18px;
+    margin: 10px 0;
+}
+
+.link:hover {
+    text-decoration: underline;
+}
+
+button {
+    background-color: rgba(159, 195, 123, 1);
+    color: white;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 2px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+button:hover {
+    background-color: rgba(138, 170, 107, 1);
+}
+
+/* Collapsible sections below score */
+.collapsible-sections {
+    width: 90%;
+    max-width: 1200px;
+    margin: 2rem auto;
+    padding: 0 1rem;
+}
+
+/* Keep existing media queries and loading states */
 

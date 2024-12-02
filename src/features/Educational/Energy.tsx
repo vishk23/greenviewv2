@@ -259,6 +259,7 @@ const EnergyModule: React.FC = () => {
         </div>
                   
       </section>
+
        {/* Progress Bar */}
        <section className="progress-section">
                 <h2>Your Progress</h2>
