@@ -5,7 +5,7 @@ const CalendarStyles: Record<string, CSSProperties> = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'stretch',
-    padding: '20px',
+    // padding: '20px',
     backgroundColor: '#FFF8EB',
     width: '100%',
   },
@@ -26,7 +26,9 @@ const CalendarStyles: Record<string, CSSProperties> = {
     width: '100%',
     gap: '20px',
     margin: '0 auto',
-  },
+    marginBottom: '100px'
+  },  
+  
   calendarContainer: {
     flex: 2,
     minWidth: '700px',

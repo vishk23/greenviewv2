@@ -1,7 +1,8 @@
 .footer {
   text-align: center;
-  margin: 0 !important;
-  padding: 0 !important;
+  margin: 0;
+  padding: 40px 20px;
+  background-color: #9FC37B;
 }
 
 .footer-image-wrapper {
@@ -24,7 +25,7 @@
   width: 100%;
   /* max-width: 1200px; Ensures the content remains centered */
   margin: 0 auto;
-  padding: 0 20px;
+  padding: 20px;
   background-color: #9FC37B;
   text-align: center;
 }
@@ -82,6 +83,7 @@
 
 .footer h2,
 .footer h3 {
+  font-size: 2rem;
   color: #fff8eb;
 }
 
@@ -130,7 +132,7 @@
   }
 }
 
-.footer-image-wrapper {
+/* .footer-image-wrapper {
   display: block;
   width: 100%;
   height: auto;
@@ -142,4 +144,4 @@
 html, body {
   margin: 0;
   padding: 0;
-}
+} */
