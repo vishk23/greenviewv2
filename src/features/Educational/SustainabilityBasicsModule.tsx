@@ -132,77 +132,114 @@ const SustainabilityBasicsModule: React.FC = () => {
       </header>
 
       <section className="info-section">
-        <h2>What is Sustainability?</h2>
-        <p>
-          Sustainability ensures that we meet our current needs without compromising the ability of future generations to meet theirs. It revolves around three main pillars:
-        </p>
-        <ul>
-          <li><strong>Environmental:</strong> Protecting ecosystems and natural resources.</li>
-          <li><strong>Social:</strong> Promoting equity and improving quality of life.</li>
-          <li><strong>Economic:</strong> Encouraging responsible growth and reducing waste.</li>
-        </ul>
-        <p>
-          For more on sustainability definitions, visit the{" "}
-          <a
-            href="https://www.epa.gov/sustainability"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            EPA Sustainability Page
-          </a>.
-        </p>
+  <div className="grid-container">
+    <div className="green-box">
+      <h2>What is Sustainability?</h2>
+      <p>
+        Sustainability ensures that we meet our current needs without
+        compromising the ability of future generations to meet theirs. It
+        revolves around three main pillars:
+      </p>
+      <ul>
+        <li>
+          <strong>Environmental:</strong> Protecting ecosystems and natural
+          resources.
+        </li>
+        <li>
+          <strong>Social:</strong> Promoting equity and improving quality of
+          life.
+        </li>
+        <li>
+          <strong>Economic:</strong> Encouraging responsible growth and
+          reducing waste.
+        </li>
+      </ul>
+      <p>
+        For more on sustainability definitions, visit the{" "}
+        <a
+          href="https://www.epa.gov/sustainability"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          EPA Sustainability Page
+        </a>
+        .
+      </p>
+    </div>
 
-        <h2>The Environmental Pillar</h2>
-        <p>
-          This pillar focuses on preserving the planet's natural resources. Major aspects include:
-        </p>
-        <ul>
-          <li><strong>Climate Change:</strong> Reducing greenhouse gas emissions to prevent global warming.</li>
-          <li><strong>Deforestation:</strong> Protecting forests that absorb CO₂ and provide oxygen.</li>
-          <li><strong>Biodiversity:</strong> Conserving plant and animal species to maintain ecosystem balance.</li>
-        </ul>
-        <p>
-          Learn more at the{" "}
-          <a
-            href="https://www.worldwildlife.org/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            WWF Deforestation Page
-          </a>.
-        </p>
+    <div className="green-box">
+      <h2>The Environmental Pillar</h2>
+      <p>This pillar focuses on preserving the planet's natural resources. Major aspects include:</p>
+      <ul>
+        <li>
+          <strong>Climate Change:</strong> Reducing greenhouse gas emissions to prevent global warming.
+        </li>
+        <li>
+          <strong>Deforestation:</strong> Protecting forests that absorb CO₂ and provide oxygen.
+        </li>
+        <li>
+          <strong>Biodiversity:</strong> Conserving plant and animal species to maintain ecosystem balance.
+        </li>
+      </ul>
+      <p>
+        Learn more at the{" "}
+        <a
+          href="https://www.worldwildlife.org/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WWF Deforestation Page
+        </a>
+        .
+      </p>
+    </div>
 
-        <h2>The Social Pillar</h2>
-        <p>Emphasizing quality of life for all communities, it involves:</p>
-        <ul>
-          <li><strong>Equity:</strong> Ensuring fair treatment for everyone.</li>
-          <li><strong>Health and Safety:</strong> Promoting public health and reducing workplace hazards.</li>
-          <li><strong>Community Engagement:</strong> Encouraging participation in societal decisions.</li>
-        </ul>
-        <p>
-          Visit the{" "}
-          <a
-            href="https://www.un.org/sustainabledevelopment/inequality/"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            UN SDG 10 Page
-          </a>{" "}
-          to learn more.
-        </p>
+    <div className="green-box">
+      <h2>The Social Pillar</h2>
+      <p>Emphasizing quality of life for all communities, it involves:</p>
+      <ul>
+        <li>
+          <strong>Equity:</strong> Ensuring fair treatment for everyone.
+        </li>
+        <li>
+          <strong>Health and Safety:</strong> Promoting public health and reducing workplace hazards.
+        </li>
+        <li>
+          <strong>Community Engagement:</strong> Encouraging participation in societal decisions.
+        </li>
+      </ul>
+      <p>
+        Visit the{" "}
+        <a
+          href="https://www.un.org/sustainabledevelopment/inequality/"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          UN SDG 10 Page
+        </a>{" "}
+        to learn more.
+      </p>
+    </div>
 
-        <h2>Global Challenges in Sustainability</h2>
-        <p>
-          Challenges include climate change, water scarcity, and waste management. Addressing these requires global cooperation. Learn more at the{" "}
-          <a
-            href="https://www.un.org/en/climatechange"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            UN Climate Action Page
-          </a>.
-        </p>
-      </section>
+    <div className="green-box">
+      <h2>Global Challenges in Sustainability</h2>
+      <p>
+        Challenges include climate change, water scarcity, and waste
+        management. Addressing these requires global cooperation. Learn more
+        at the{" "}
+        <a
+          href="https://www.un.org/en/climatechange"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          UN Climate Action Page
+        </a>
+        .
+      </p>
+    </div>
+  </div>
+</section>
+
 
       <section className="quiz-section">
       <div className="white-box">

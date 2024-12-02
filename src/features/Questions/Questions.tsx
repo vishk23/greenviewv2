@@ -52,7 +52,12 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
 
   const handleSignUp = async () => {
     try {
-      const user = await registerWithEmail(email, password, username, phoneNumber);
+      const user = await registerWithEmail(
+        email,
+        password,
+        username,
+        phoneNumber
+      );
       if (user) {
         await setDoc(doc(db, "users", user.uid), {
           username,
@@ -74,18 +79,24 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
 
   const formatPhoneNumber = (value: string) => {
     // Remove all non-digits
-    const phoneNumber = value.replace(/\D/g, '');
-    
+    const phoneNumber = value.replace(/\D/g, "");
+
     // Format the number
     if (phoneNumber.length <= 3) {
       return phoneNumber;
     } else if (phoneNumber.length <= 6) {
       return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3)}`;
     } else if (phoneNumber.length <= 10) {
-      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6)}`;
+      return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+        3,
+        6
+      )}-${phoneNumber.slice(6)}`;
     }
     // Limit to 10 digits
-    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(3, 6)}-${phoneNumber.slice(6, 10)}`;
+    return `(${phoneNumber.slice(0, 3)}) ${phoneNumber.slice(
+      3,
+      6
+    )}-${phoneNumber.slice(6, 10)}`;
   };
 
   const handlePhoneChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -233,22 +244,32 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
   }, [currentQuestion]);
 
   return (
-    <div>
+    <>
       {!hasStarted ? (
         <div className="questions-container">
-          <motion.div 
-            className={`white-box start-screen ${showAuthForm ? 'with-auth' : ''}`}
+          <motion.div
+            className={`white-box start-screen ${
+              showAuthForm ? "with-auth" : ""
+            }`}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
           >
             {!showAuthForm ? (
               <>
-                <h1>Curious about your impact<br />on the environment<br />around you?</h1>
+                <h1>
+                  Curious about your impact
+                  <br />
+                  on the environment
+                  <br />
+                  around you?
+                </h1>
                 <p>Take our quiz to find your sustainability score!</p>
-                <button 
+                <button
                   className="start-button"
-                  onClick={() => user ? setHasStarted(true) : setShowAuthForm(true)}
+                  onClick={() =>
+                    user ? setHasStarted(true) : setShowAuthForm(true)
+                  }
                 >
                   {user ? "START QUIZ" : "LOG IN TO START QUIZ"}
                 </button>
@@ -256,7 +277,9 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
             ) : (
               <div className="auth-form">
                 <h3>{isSignUp ? "Sign Up" : "Login"}</h3>
-                {errorMessage && <p className="error-message">{errorMessage}</p>}
+                {errorMessage && (
+                  <p className="error-message">{errorMessage}</p>
+                )}
                 {isSignUp && (
                   <>
                     <input
@@ -286,17 +309,19 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                   onChange={(e) => setPassword(e.target.value)}
                   placeholder="Password"
                 />
-                <button 
+                <button
                   onClick={isSignUp ? handleSignUp : handleLogin}
                   className="auth-submit"
                 >
                   {isSignUp ? "Sign Up" : "Login"}
                 </button>
-                <button 
+                <button
                   onClick={() => setIsSignUp(!isSignUp)}
                   className="auth-toggle"
                 >
-                  {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+                  {isSignUp
+                    ? "Already have an account? Login"
+                    : "Don't have an account? Sign Up"}
                 </button>
               </div>
             )}
@@ -304,7 +329,7 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
         </div>
       ) : score === null ? (
         <div className="questions-container">
-          <motion.div 
+          <motion.div
             className="white-box"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -360,7 +385,7 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
           questions={questions}
         />
       )}
-    </div>
+    </>
   );
 };
 

@@ -4,16 +4,15 @@ import './Footer.css'; // Import CSS for styling the footer
 const Footer: React.FC = () => {
   return (
     <footer className="footer">
-     <div className="footer-image-wrapper" style={{ margin: '-1', padding: '-1' }}>
-      <img
-        src="/assets/footerImage.png"
-        alt="Decorative"
-        className="footer-image"
-        style={{ margin: '-1', padding: '-1', display: 'block' }}
-      />
-    </div>
+      <div className="footer-image-wrapper">
+        <img
+          src="/assets/footerImage.png"
+          alt="Decorative"
+          className="footer-image"
+        />
+      </div>
 
-      <div className="footer-content" style={{ marginTop: '0', paddingTop: '0' }}>
+      <div className="footer-content">
         <div className="footer-container">
           <div className="footer-team">
             <h2>GreenView: Who Are We?</h2>

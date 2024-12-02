@@ -93,7 +93,6 @@ const EnergyModule: React.FC = () => {
 
   const handleQuizSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
     const currentQuestionData = questions[currentQuestion];
     const userAnswer = quizAnswers[currentQuestionData.id];
 
@@ -117,6 +116,7 @@ const EnergyModule: React.FC = () => {
   const handlePrevious = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion((prev) => prev - 1);
+      setQuizFeedback(null);
       setQuizFeedback(null);
     }
   };
@@ -305,7 +305,3 @@ const EnergyModule: React.FC = () => {
 };
 
 export default EnergyModule;
-
-
-
-
