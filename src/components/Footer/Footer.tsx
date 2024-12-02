@@ -11,36 +11,32 @@ const Footer: React.FC = () => {
             At GreenView, our mission is to inspire sustainable habits and provide resources for a greener future.
             Our team is dedicated to empowering individuals to reduce waste, save energy, and live sustainably.
           </p>
-          <div className="team">
-            <h3>Meet The Team</h3>
-            <div className="team-list">
-              <div className="team-column">
-                <div className="team-member">
-                  <img src="/path-to-image-maidah.png" alt="Maidah" />
-                  <span>Maidah - Team Lead & Designer</span>
-                </div>
-                <div className="team-member">
-                  <img src="/path-to-image-sadiq.png" alt="Sadiq" />
-                  <span>Sadiq - Software Engineer</span>
-                </div>
-                <div className="team-member">
-                  <img src="/path-to-image-abdullah.png" alt="Abdullah" />
-                  <span>Abdullah - Software Engineer</span>
-                </div>
+          <div className="team-section">
+            <h2>Meet The Team</h2>
+            <div className="team-members">
+              <div className="team-member">
+                <img src="/assets/team/Abdullah.png" alt="Abdullah" className="team-photo" />
+                <p>Abdullah - Software Engineer</p>
               </div>
-              <div className="team-column">
-                <div className="team-member">
-                  <img src="/path-to-image-ana.png" alt="Ana" />
-                  <span>Ana - Software Engineer</span>
-                </div>
-                <div className="team-member">
-                  <img src="/path-to-image-vishnu.png" alt="Vishnu" />
-                  <span>Vishnu - Software Engineer</span>
-                </div>
-                <div className="team-member">
-                  <img src="/path-to-image-wesley.png" alt="Wesley" />
-                  <span>Wesley - Software Engineer</span>
-                </div>
+              <div className="team-member">
+                <img src="/assets/team/Ana.png" alt="Ana" className="team-photo" />
+                <p>Ana - Software Engineer</p>
+              </div>
+              <div className="team-member">
+                <img src="/assets/team/Maidah.png" alt="Maidah" className="team-photo" />
+                <p>Maidah - Team Lead & Designer</p>
+              </div>
+              <div className="team-member">
+                <img src="/assets/team/Sadiq.png" alt="Sadiq" className="team-photo" />
+                <p>Sadiq - Software Engineer</p>
+              </div>
+              <div className="team-member">
+                <img src="/assets/team/Vishnu.png" alt="Vishnu" className="team-photo" />
+                <p>Vishnu - Software Engineer</p>
+              </div>
+              <div className="team-member">
+                <img src="/assets/team/Wesley.png" alt="Wesley" className="team-photo" />
+                <p>Wesley - Software Engineer</p>
               </div>
             </div>
           </div>
