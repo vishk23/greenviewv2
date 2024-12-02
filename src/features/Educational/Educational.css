@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Glacial+Indifference:wght@400;700&display=swap');
+
 .educational-page {
   padding: 20px;
 }
@@ -5,6 +7,7 @@
 .educational-header {
   text-align: center;
   margin-bottom: 40px;
+  font-weight: normal;
 }
 
 .educational-header h1 {
@@ -13,60 +16,83 @@
 
 .modules-grid {
   display: flex;
-  gap: 20px;
+  gap: 150px;
   flex-wrap: wrap;
   justify-content: center; /* Centers the modules horizontally */
 }
 
 .module-card {
-  background: rgba(159, 195, 123, 1); /* Correct green for module background */
-  color: white;
+  color: rgba(159, 195, 123, 1);
   padding: 15px;
   border-radius: 10px;
   cursor: pointer;
   text-align: center;
   width: 250px; /* Consistent size for better centering */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.module-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+.module-title {
+  white-space: normal; /* Allows wrapping to multiple lines */
+  overflow-wrap: break-word; /* Ensures long words break properly */
+  word-break: break-word; /* Prevents single characters from being isolated */
 }
 
-.quiz-section button, .discussion-section button {
-  background: rgba(159, 195, 123, 1);
-  color: white;
-  padding: 10px 20px;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
+.module-title span {
+  white-space: nowrap; /* Prevents small words from being isolated */
 }
 
-.quiz-section button:hover, .discussion-section button:hover {
-  background: rgba(159, 195, 123, 1);
+.module-description {
+  text-align: center; /* Centers the text horizontally */
+  word-wrap: break-word; /* Ensures long words wrap to the next line */
+  margin: 10px 0; /* Adds spacing above and below */
+  line-height: 1.5; /* Improves readability with proper line spacing */
+  font-size: 18px; /* Adjust size as needed */
+  color: #333; /* Optional: change text color */
 }
 
-.stats-grid div {
-  background: #c8e6c9;
-  padding: 10px;
-  border-radius: 10px;
-  text-align: center;
+.video-container {
+  display: flex;
+  justify-content: center; /* Centers the video horizontally */
+  align-items: center; /* Centers vertically if needed */
+  margin: 20px 0; /* Optional: adds spacing above and below */
 }
 
-.gallery-grid img {
-  width: 300px;
-  height: auto;
+.centered-text {
+  text-align: center; /* Centers the text horizontally */
+  margin: 10px 0; /* Adds vertical spacing */
+  font-size: 16px; /* Adjust font size as needed */
+  line-height: 1.5; /* Improves readability */
 }
+
 .link {
-  color: rgba(159, 195, 123, 1); /* New green color */
-  cursor: pointer;
-  text-decoration: underline;
+  color: #F15824; /* Optional: Add a color for the link */
+  text-decoration: underline; /* Optional: Underline the link */
+  cursor: pointer; 
+  font-weight: bold;
 }
 
 .link:hover {
-  color: rgba(120, 160, 95, 1); /* Darker green for hover effect */
+  font-weight: bold;
 }
 
+.contact-button-container {
+  display: flex;
+  justify-content: center; /* Centers the button horizontally */
+  align-items: center; /* Centers vertically if needed */
+  margin-top: 20px; /* Optional: Adds spacing above the button */
+}
 
+.join-button {
+  background-color: rgba(159, 195, 123, 1); /* Your desired background color */
+  color: white; /* Text color */
+  border: none; /* Remove default border */
+  border-radius: 2px; /* Rounded corners */
+  padding: 10px 20px; /* Adjust padding */
+  font-size: 18px; /* Adjust font size */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth hover transition */
+}
+
+.join-button:hover {
+  background-color: rgba(139, 175, 103, 1); /* Slightly darker color for hover */
+}

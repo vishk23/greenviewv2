@@ -205,7 +205,7 @@
     align-items: center; /* Center everything */
     height: auto; /* Allow navbar to grow vertically */
     width: 100%;
-    position: fixed; /* Make navbar sticky at the top */
+    position: relative; /* Make navbar sticky at the top */
     top: 0;
     z-index: 1000; /* Ensure it stays above content */
     overflow-x: hidden; /* Prevent horizontal scrolling */

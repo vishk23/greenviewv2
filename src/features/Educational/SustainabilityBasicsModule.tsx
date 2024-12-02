@@ -1,56 +1,115 @@
 /* eslint-disable react-hooks/exhaustive-deps */
-import React, { useState, useEffect } from 'react';
-import './SustainabilityBasicsModule.css';
-import { useNavigate } from 'react-router-dom';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '@services/firebase';
-import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
-import { ModuleCompletion } from './ModuleCompletion'; // Assuming this is where the model is defined
+import React, { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "@services/firebase";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import ProgressBar from "@components/ProgressBar/ProgressBar";
+import { ModuleCompletion } from "./ModuleCompletion";
+import "./Module.css";
 
 const SustainabilityBasicsModule: React.FC = () => {
   const [quizAnswers, setQuizAnswers] = useState<{ [key: string]: string }>({});
-  const [quizFeedback, setQuizFeedback] = useState<{ [key: string]: string }>({});
-  const [progress, setProgress] = useState(10);
+  const [quizFeedback, setQuizFeedback] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
 
-  const handleQuizSubmit = (e: React.FormEvent, questionId: string, correctAnswer: string) => {
+  const questions = [
+    {
+      id: "q1",
+      question: "Which of the following is NOT a pillar of sustainability?",
+      answers: ["Environmental", "Social", "Economic", "Technological"],
+      correctAnswer: "Technological",
+    },
+    {
+      id: "q2",
+      question: "What percentage of global greenhouse gas emissions come from food production?",
+      answers: ["15%", "26%", "35%", "50%"],
+      correctAnswer: "26%",
+    },
+    {
+      id: "q3",
+      question: "Which SDG focuses on climate action?",
+      answers: ["SDG 7", "SDG 12", "SDG 13", "SDG 15"],
+      correctAnswer: "SDG 13",
+    },
+    {
+      id: "q4",
+      question: "How much of total global emissions is contributed by deforestation?",
+      answers: ["10%", "20%", "30%", "40%"],
+      correctAnswer: "10%",
+    },
+    {
+      id: "q5",
+      question: "What is one simple action you can take to reduce waste?",
+      answers: ["Use plastic bags", "Use reusable bags", "Use disposable cups", "Throw away food waste"],
+      correctAnswer: "Use reusable bags",
+    },
+  ];
+
+  const handleQuizSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (quizAnswers[questionId]?.toLowerCase() === correctAnswer) {
-      setQuizFeedback((prev) => ({ ...prev, [questionId]: 'Correct!' }));
-      setProgress((prev) => Math.min(prev + 18, 100));
+
+    const currentQuestionData = questions[currentQuestion];
+    const userAnswer = quizAnswers[currentQuestionData.id];
+
+    if (userAnswer === currentQuestionData.correctAnswer) {
+      setQuizFeedback("Correct!");
+      setProgress((prev) =>
+        Math.min(prev === 0 ? 20 : prev + (100 * 0.2), 100)
+      );
     } else {
-      setQuizFeedback((prev) => ({ ...prev, [questionId]: `Oops! The correct answer is ${correctAnswer.toUpperCase()}.` }));
+      setQuizFeedback(
+        `Oops! The correct answer is ${currentQuestionData.correctAnswer}.`
+      );
     }
   };
 
-  const handleAnswerChange = (questionId: string, value: string) => {
-    setQuizAnswers((prev) => ({ ...prev, [questionId]: value }));
+  const handleAnswerChange = (value: string) => {
+    setQuizAnswers((prev) => ({
+      ...prev,
+      [questions[currentQuestion].id]: value,
+    }));
+  };
+
+  const handleNext = () => {
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion((prev) => prev + 1);
+      setQuizFeedback(null);
+    } else {
+      setIsCompleted(true);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion((prev) => prev - 1);
+      setQuizFeedback(null);
+    }
   };
 
   const saveCompletionStatus = async () => {
     if (user && progress === 100 && !isCompleted) {
-        try {
-            const userDocRef = doc(db, 'moduleCompletion', user.uid);
-            
-            const newCompletion: ModuleCompletion = {
-              userId: user.uid,
-              sustainabilityBasicsModule: true,
-              };
+      try {
+        const userDocRef = doc(db, "moduleCompletion", user.uid);
+        const newCompletion: ModuleCompletion = {
+          userId: user.uid,
+          sustainabilityBasicsModule: true,
+        };
 
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
-          await updateDoc(userDocRef, {
-            sustainabilityBasicsModule: true,
-            });
+          await updateDoc(userDocRef, { sustainabilityBasicsModule: true });
         } else {
           await setDoc(userDocRef, newCompletion);
         }
 
         setIsCompleted(true);
       } catch (error) {
-        console.error('Error saving module completion status:', error);
+        console.error("Error saving module completion status:", error);
       }
     }
   };
@@ -61,12 +120,15 @@ const SustainabilityBasicsModule: React.FC = () => {
 
   return (
     <div className="module-page">
-      <button className="back-button" onClick={() => navigate('/educational')}>
+      <button className="back-button" onClick={() => navigate("/educational")}>
         &larr; Back to Educational Resources
       </button>
+
       <header>
         <h1>Sustainability Basics</h1>
-        <p>Welcome! Discover how sustainability impacts your life and what actions you can take to create a greener future.</p>
+        <p>
+          Welcome! Discover how sustainability impacts your life and what actions you can take to create a greener future.
+        </p>
       </header>
 
       <section className="info-section">
@@ -80,8 +142,14 @@ const SustainabilityBasicsModule: React.FC = () => {
           <li><strong>Economic:</strong> Encouraging responsible growth and reducing waste.</li>
         </ul>
         <p>
-          For more on sustainability definitions, visit the 
-          <a href="https://www.epa.gov/sustainability" target="_blank" rel="noopener noreferrer">EPA Sustainability Page</a>.
+          For more on sustainability definitions, visit the{" "}
+          <a
+            href="https://www.epa.gov/sustainability"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            EPA Sustainability Page
+          </a>.
         </p>
 
         <h2>The Environmental Pillar</h2>
@@ -94,107 +162,132 @@ const SustainabilityBasicsModule: React.FC = () => {
           <li><strong>Biodiversity:</strong> Conserving plant and animal species to maintain ecosystem balance.</li>
         </ul>
         <p>
-          Learn more at the <a href="https://www.worldwildlife.org/" target="_blank" rel="noopener noreferrer">WWF Deforestation Page</a>.
+          Learn more at the{" "}
+          <a
+            href="https://www.worldwildlife.org/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            WWF Deforestation Page
+          </a>.
         </p>
 
         <h2>The Social Pillar</h2>
-        <p>
-          Emphasizing quality of life for all communities, it involves:
-        </p>
+        <p>Emphasizing quality of life for all communities, it involves:</p>
         <ul>
           <li><strong>Equity:</strong> Ensuring fair treatment for everyone.</li>
           <li><strong>Health and Safety:</strong> Promoting public health and reducing workplace hazards.</li>
           <li><strong>Community Engagement:</strong> Encouraging participation in societal decisions.</li>
         </ul>
         <p>
-          Visit the <a href="https://www.un.org/sustainabledevelopment/inequality/" target="_blank" rel="noopener noreferrer">UN SDG 10 Page</a> to learn more.
+          Visit the{" "}
+          <a
+            href="https://www.un.org/sustainabledevelopment/inequality/"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            UN SDG 10 Page
+          </a>{" "}
+          to learn more.
         </p>
 
         <h2>Global Challenges in Sustainability</h2>
         <p>
-          Challenges include climate change, water scarcity, and waste management. Addressing these requires global cooperation. Learn more at the <a href="https://www.un.org/en/climatechange" target="_blank" rel="noopener noreferrer">UN Climate Action Page</a>.
+          Challenges include climate change, water scarcity, and waste management. Addressing these requires global cooperation. Learn more at the{" "}
+          <a
+            href="https://www.un.org/en/climatechange"
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+            UN Climate Action Page
+          </a>.
         </p>
       </section>
 
       <section className="quiz-section">
-        <h2>Quick Quiz</h2>
-        <p>Test your knowledge with these questions:</p>
-
-        <div>
-          <p><strong>1. Which of the following is NOT a pillar of sustainability?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q1', 'd')}>
-            <label><input type="radio" name="q1" value="a" onChange={(e) => handleAnswerChange('q1', e.target.value)} /> A) Environmental</label>
-            <label><input type="radio" name="q1" value="b" onChange={(e) => handleAnswerChange('q1', e.target.value)} /> B) Social</label>
-            <label><input type="radio" name="q1" value="c" onChange={(e) => handleAnswerChange('q1', e.target.value)} /> C) Economic</label>
-            <label><input type="radio" name="q1" value="d" onChange={(e) => handleAnswerChange('q1', e.target.value)} /> D) Technological</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q1'] && <p className="quiz-feedback">{quizFeedback['q1']}</p>}
+      <div className="white-box">
+        {isCompleted ? (
+  <div>
+    {progress === 100 ? (
+      <>
+        <h2>Congratulations!</h2>
+        <p>You’ve completed the Energy Module!</p>
+        <p>
+          Apply these tips to reduce your carbon footprint and make your dorm
+          more sustainable.
+        </p>
+        <button onClick={() => navigate("/educational")}>
+          Back to Educational Resources
+        </button>
+      </>
+    ) : (
+      <>
+        <h2>Oops!</h2>
+        <p>
+          It seems like you didn’t get all the answers right. Try again to
+          complete the module!
+        </p>
+        <button onClick={() =>  navigate("/educational")}>
+          Back to Educational Resources
+        </button>
+      </>
+    )}
+  </div>
+) : (
+  <>
+    <h2>Quick Quiz</h2>
+    <p>{questions[currentQuestion].question}</p>
+    <form onSubmit={handleQuizSubmit}>
+      {questions[currentQuestion].answers.map((answer, index) => (
+        <label key={index}>
+          <input
+            type="radio"
+            name="answer"
+            value={answer}
+            onChange={() => handleAnswerChange(answer)}
+            checked={quizAnswers[questions[currentQuestion].id] === answer}
+          />
+          {answer}
+        </label>
+      ))}
+      <div className="navigation-buttons">
+        <button
+          type="button"
+          onClick={handlePrevious}
+          disabled={currentQuestion === 0}
+        >
+          Previous
+        </button>
+        <button
+          type="submit"
+          disabled={!quizAnswers[questions[currentQuestion].id]}
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={!quizFeedback}
+        >
+          Next
+        </button>
+      </div>
+    </form>
+    {quizFeedback && <p className="quiz-feedback">{quizFeedback}</p>}
+  </>
+)}
+         
         </div>
-
-
-        {/* Question 2 */}
-        <div className="quiz-card">
-          <p><strong>2. What percentage of global greenhouse gas emissions come from food production?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q2', 'b')}>
-            <label><input type="radio" name="q2" value="a" onChange={(e) => handleAnswerChange('q2', e.target.value)} /> A) 15%</label>
-            <label><input type="radio" name="q2" value="b" onChange={(e) => handleAnswerChange('q2', e.target.value)} /> B) 26%</label>
-            <label><input type="radio" name="q2" value="c" onChange={(e) => handleAnswerChange('q2', e.target.value)} /> C) 35%</label>
-            <label><input type="radio" name="q2" value="d" onChange={(e) => handleAnswerChange('q2', e.target.value)} /> D) 50%</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q2'] && <p className="quiz-feedback">{quizFeedback['q2']}</p>}
-        </div>
-
-        {/* Question 3 */}
-        <div className="quiz-card">
-          <p><strong>3. Which SDG focuses on climate action?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q3', 'c')}>
-            <label><input type="radio" name="q3" value="a" onChange={(e) => handleAnswerChange('q3', e.target.value)} /> A) SDG 7</label>
-            <label><input type="radio" name="q3" value="b" onChange={(e) => handleAnswerChange('q3', e.target.value)} /> B) SDG 12</label>
-            <label><input type="radio" name="q3" value="c" onChange={(e) => handleAnswerChange('q3', e.target.value)} /> C) SDG 13</label>
-            <label><input type="radio" name="q3" value="d" onChange={(e) => handleAnswerChange('q3', e.target.value)} /> D) SDG 15</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q3'] && <p className="quiz-feedback">{quizFeedback['q3']}</p>}
-        </div>
-
-        {/* Question 4 */}
-        <div className="quiz-card">
-          <p><strong>4. How much of total global emissions is contributed by deforestation?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q4', 'a')}>
-            <label><input type="radio" name="q4" value="a" onChange={(e) => handleAnswerChange('q4', e.target.value)} /> A) 10%</label>
-            <label><input type="radio" name="q4" value="b" onChange={(e) => handleAnswerChange('q4', e.target.value)} /> B) 20%</label>
-            <label><input type="radio" name="q4" value="c" onChange={(e) => handleAnswerChange('q4', e.target.value)} /> C) 30%</label>
-            <label><input type="radio" name="q4" value="d" onChange={(e) => handleAnswerChange('q4', e.target.value)} /> D) 40%</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q4'] && <p className="quiz-feedback">{quizFeedback['q4']}</p>}
-        </div>
-
-        {/* Question 5 */}
-        <div className="quiz-card">
-          <p><strong>5. What is one simple action you can take to reduce waste?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q5', 'b')}>
-            <label><input type="radio" name="q5" value="a" onChange={(e) => handleAnswerChange('q5', e.target.value)} /> A) Use plastic bags</label>
-            <label><input type="radio" name="q5" value="b" onChange={(e) => handleAnswerChange('q5', e.target.value)} /> B) Use reusable bags</label>
-            <label><input type="radio" name="q5" value="c" onChange={(e) => handleAnswerChange('q5', e.target.value)} /> C) Use disposable cups</label>
-            <label><input type="radio" name="q5" value="d" onChange={(e) => handleAnswerChange('q5', e.target.value)} /> D) Throw away food waste</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q5'] && <p className="quiz-feedback">{quizFeedback['q5']}</p>}
-        </div>
+                  
       </section>
-
-      <section className="progress-section">
-        <h2>Your Sustainability Journey</h2>
-        <div className="progress-wrapper">
-          <progress value={progress} max="100"></progress>
-          <p>{progress}% completed</p>
-        </div>
-      </section>
+       {/* Progress Bar */}
+       <section className="progress-section">
+                <h2>Your Progress</h2>
+                <ProgressBar points={progress} />
+              </section>
     </div>
   );
 };
+
 
 export default SustainabilityBasicsModule;

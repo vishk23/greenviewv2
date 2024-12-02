@@ -1,3 +1,5 @@
+
+
 .background123 {
   display: flex;
   justify-content: flex-end; /* Push child elements to the right */
@@ -12,154 +14,356 @@
 }
 
 .profile-page {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
   width: 60%;
-  padding: 10px;
-  height: 92%; /* Match the parent's height */
-  margin: 20px auto;
   background-color: #fff8eb;
   z-index: 10;
 }
 
-.profile-title {
-  font-size: 2.5rem;
-  text-align: center;
-  margin-bottom: 20px;
-  color: #3d5a40;
-}
-
-.profile-card {
-  background: linear-gradient(135deg, #e3f2e1, #d0e9d4);
-  padding: 20px;
-  border-radius: 12px;
-  margin-bottom: 20px;
+.profile-info, .statement, .badges {
+  padding-top: 0px;
+  padding-left: 60px;
 }
 
 .profile-info h2 {
   font-size: 36px;
   font-weight: 500;
-  color: #619b62;
+  color: #9FC37B;
 }
 
-.profile-info p, label {
-  font-size: 1.2rem;
-  margin: 10px 0;
+.profile-info p {
+  font-size: 16px;
+  margin: 0;
 }
 
-input {
-  width: 100%;
-  padding: 10px;
-  border-radius: 8px;
-  border: 1px solid #cfcfcf;
+.profile-title {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+  gap: 16px
 }
 
-button {
-  background-color: #5ca36a;
-  color: white;
-  padding: 12px 20px;
-  border: none;
-  border-radius: 8px;
-  cursor: pointer;
-  margin-top: 15px;
+.profile-info input {
+  font-size: 36px; /* Match font size of .profile-info h2 */
+  font-weight: 500; /* Match font weight of .profile-info h2 */
+  color: #9FC37B; /* Match text color */
+  border: 1px solid #ccc; /* Optional: add a border for inputs */
+  border-radius: 4px; /* Optional: rounded corners */
+  padding: 5px 10px; /* Add padding for a better look */
+  margin-top: 20px;
+  width: 40%; /* Adjust width to fit nicely */
+  outline: none; /* Remove default focus outline */
 }
 
-button:hover {
-  background-color: #4e9358;
+.profile-info input:focus {
+  border-color: #9FC37B; /* Highlight border on focus */
+  box-shadow: 0 0 4px rgba(159, 195, 123, 0.5); /* Add subtle shadow */
 }
 
-.statement {
-  font-size: 2.5rem;
-  font-weight: bold;
+.profile-info p input {
+  font-size: 16px; /* Match font size of .profile-info p */
+  font-weight: normal; /* Match font weight of paragraphs */
+  color: inherit; /* Inherit color from parent */
+  border: 1px solid #ccc;
+  padding: 5px;
+  width: 25%;
+  margin-top: 4px;
+  border-radius: 4px;
+  outline: none;
 }
 
-.badges-placeholder {
-  text-align: center;
-  font-style: italic;
-  color: #888;
-  padding: 20px;
-  background-color: #eef7ee;
-  border-radius: 10px;
+.profile-info p input:focus {
+  border-color: #9FC37B;
+  box-shadow: 0 0 4px rgba(159, 195, 123, 0.5);
 }
 
-.history-entry {
-  background-color: #f1f8f2;
-  padding: 15px;
-  margin-bottom: 10px;
-  border-radius: 10px;
+
+.notification-section {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 16px
+}
+
+.notification-section p {
+  color: #F06D3C;
+}
+
+.statement h2 {
+  font-size: 36px;
+  font-weight: 700;
+  color: #9FC37B;
+}
+
+.area {
+  display: flex;
+  flex-direction: row;
+  padding-top: 0px;
+  padding-left: 60px;
 }
 
 .area-section {
   display: flex;
-  flex-direction: row;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  flex-direction: column;
+  width: 40%;
 }
 
-.strengths-section, .improvements-section {
+.area-section h2, .badges h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #9FC37B;
+}
+
+.card-section {
   display: flex;
   flex-direction: column;
-  width: 50%;
-  padding: 10px;
-  gap: 20px;
-}
-
-.area-section h2 {
-  font-weight: 500;
-}
-
-.score h2 {
-  font-weight: bold;
-  margin-left: 10px;
-  margin-bottom: 10px;
-}
-
-.section-title {
-  font-size: 1.5rem;
-  font-weight: bold;
-  margin-left: 40px;
-  margin-bottom: 10px;
+  gap: 8px;
 }
 
 .card {
   position: relative;
-  width: 250px;
-  height: 60px;
-  margin-left: 20px;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  width: 200px;
+  height: 40px;
   line-height: 20px;
-  perspective: 1000px;
-  transition: transform 0.6s;
-  transform-style: preserve-3d;
+  background-color: #9FC37B;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
   cursor: pointer;
 }
 
-.card.flipped {
-  transform: rotateY(180deg);
+.card:active {
+  font-size: 15px;
 }
 
-.card .front,
-.card .back {
+.card.flipped, .card:hover {
+  color: #545F48;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+
+}
+
+.card::before {
+  content: "";
   position: absolute;
+  top: 50%;
+  right: -20px;
+  border-left: 20px solid #9FC37B;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  transform: translateY(-50%);
+}
+
+.card::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  border-left: 20px solid #fff8eb;
+  border-top: 20px solid transparent;
+  border-bottom: 20px solid transparent;
+  transform: translateY(-50%);
+}
+
+
+.history {
+  padding-left: 60px;
+}
+
+.history h2 {
+  font-size: 24px;
+  font-weight: 700;
+  color: #9FC37B;
+}
+
+.popup {
+  position: absolute;
+  height: auto;
+  width: 30%;
+  left: -100%; /* Start off-screen to the left */
+  padding-left: 20px;
+  padding-right: 20px;
+  padding-top: 20px;
+  top: 33%;
+  background-color: #fff8eb;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25); /* Add shadow */
+  border-top-right-radius: 20px; /* Round the top-right corner */
+  border-bottom-right-radius: 20px; /* Round the bottom-right corner */
+  animation: slideIn 0.5s ease-out forwards; /* Add animation */
+}
+
+
+
+/* Animation definition */
+@keyframes slideIn {
+  0% {
+    left: -100%; /* Start completely off-screen */
+  }
+  100% {
+    left: 0; /* End at its final position */
+  }
+}
+
+.popup-title {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
   width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
+  height: 40px;
+  border-bottom: 4px solid #9FC37B;
 }
 
-.card .front {
-  display: flex;
-  align-items: center;
-  padding-left: 30px;
-  background-color: #4CAF50;
-  color: white;
+.popup-title h2{
+  all: unset;
+  font-size: 24px;
+  font-weight: 700;
+  color: #9FC37B;
 }
 
-.card .back {
-  width: 470px;
-  line-height: 15px;
-  padding-left: 30px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #4CAF50;
-  color: #fff;
-  transform: rotateY(180deg) translateX(50%);
+.expand-button {
+  all: unset;
+  cursor: pointer;
+  transition: transform 0.6s ease;
 }
 
+.expand-button:hover {
+  all: unset;
+  transform: translateX(4px);
+}
+
+.expand-button:active {
+  font-size: 20px;
+}
+
+.close-button {
+  all: unset;
+  width: 22px;
+  height: 22px;
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.close-button:hover {
+  all: unset;
+  width: 24px;
+  height: 24px;
+}
+
+.close-button:active {
+  all: unset;
+  width: 22px;
+  height: 22px;
+}
+
+.edit-button {
+  all: unset;
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.edit-button:hover {
+  all: unset;
+  width: 24px;
+  height: 24px;
+  margin-top: 5px;
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.edit-button:active {
+  all: unset;
+  width: 20px;
+  height: 20px;
+  margin-top: 5px;
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
+}
+
+.notification {
+  all: unset;
+  display: inline-flex; /* Use flexbox for centering */
+  justify-content: center; /* Center content horizontally */
+  align-items: center; /* Center content vertically */
+  width: 160px;
+  height: 20px;
+  padding: 10px 20px; /* Adjust padding for button size */
+  font-size: 16px; /* Set font size */
+  border: none; /* Remove default border */
+  border-radius: 5px; /* Optional: rounded corners */
+  background-color: #9FC37B; /* Button background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Pointer cursor on hover */
+  transition: background-color 0.3s ease; /* Smooth background transition */
+}
+
+.notification:hover {
+  background-color: #545F48; /* Darker blue on hover */
+}
+
+.notification:active {
+  width: 156px;
+  height: 16px;
+  margin: 2px;
+  background-color: #545F48; /* Darker blue on hover */
+}
+
+.notification p {
+  color: white; /* Text color */
+  margin: 0; /* Remove default margin from <p> */
+}
+
+@media (max-width: 768px) {
+  .profile-page {
+    width: 100%;
+    min-height: 100%;
+    height: auto;
+  }
+
+  .area {
+    flex-direction: column;
+    padding-left: 60px;
+  }
+
+  .popup {
+    position: fixed; /* Center relative to the viewport */
+    top: 50%; /* Start in the vertical center */
+    left: 50%; /* Start in the horizontal center */
+    transform: translate(-50%, -50%); /* Adjust for the element's own size */
+    height: auto; /* Adjust height based on content */
+    width: 80%; /* Occupy most of the screen width */
+    max-width: 500px; /* Optional: Limit the maximum width */
+    padding: 20px;
+    background-color: #fff8eb;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25); /* Add shadow */
+    border-radius: 20px; /* Round all corners */
+    animation: fadeInScale 0.5s ease-out forwards; /* Updated animation */
+    z-index: 1000; /* Ensure it's above other elements */
+  }
+
+  .notification-section {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  /* Animation for fading in and scaling */
+  @keyframes fadeInScale {
+    0% {
+      opacity: 0;
+      transform: translate(-50%, -50%) scale(0.9); /* Slightly smaller and transparent */
+    }
+    100% {
+      opacity: 1;
+      transform: translate(-50%, -50%) scale(1); /* Fully visible and normal size */
+    }
+  }
+
+  .profile-info input {
+    width: 65%;
+  }
+}

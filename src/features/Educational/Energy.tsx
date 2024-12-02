@@ -1,64 +1,127 @@
-
-import ProgressBar from '@components/ProgressBar/ProgressBar';
-import React, { useState, useEffect } from 'react';
-import './Energy.css';
-import { useNavigate } from 'react-router-dom';
-import { useAuthState } from 'react-firebase-hooks/auth';
-import { auth, db } from '@services/firebase';
-import { doc, setDoc, getDoc, updateDoc } from 'firebase/firestore';
-import { ModuleCompletion } from './ModuleCompletion'; // Assuming this is where the model is defined
+import ProgressBar from "@components/ProgressBar/ProgressBar";
+import React, { useState, useEffect } from "react";
+import "./Module.css";
+import { useNavigate } from "react-router-dom";
+import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, db } from "@services/firebase";
+import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
+import { ModuleCompletion } from "./ModuleCompletion"; // Assuming this is where the model is defined
 
 const EnergyModule: React.FC = () => {
   const [quizAnswers, setQuizAnswers] = useState<{ [key: string]: string }>({});
-  const [quizFeedback, setQuizFeedback] = useState<{ [key: string]: string }>({});
-  const [progress, setProgress] = useState(10);
+  const [quizFeedback, setQuizFeedback] = useState<string | null>(null);
+  const [progress, setProgress] = useState(0); // Initial progress set to 10%
+  const [currentQuestion, setCurrentQuestion] = useState(0);
   const [isCompleted, setIsCompleted] = useState(false);
   const navigate = useNavigate();
   const [user] = useAuthState(auth);
 
-  const handleQuizSubmit = (e: React.FormEvent, questionId: string, correctAnswer: string) => {
+  const questions = [
+    {
+      id: "q1",
+      question: "What is the most energy-efficient type of light bulb?",
+      answers: ["LED", "Incandescent", "Halogen", "Fluorescent"],
+      correctAnswer: "LED",
+    },
+    {
+      id: "q2",
+      question: "What is 'phantom power'?",
+      answers: [
+        "Energy used by refrigerators",
+        "Energy drawn by devices not in use",
+        "Energy used by microwaves",
+        "Energy used by light bulbs",
+      ],
+      correctAnswer: "Energy drawn by devices not in use",
+    },
+    {
+      id: "q3",
+      question: "Which appliance uses the most energy in a dorm?",
+      answers: ["Laptop", "Microwave", "Refrigerator", "Fan"
+
+      ],
+      correctAnswer: "Refrigerator",
+    },
+    {
+      id: "q4",
+      question:"How much energy can unplugging a fully charged laptop save in a week?",
+      answers: ["1 kWh", "2.5 kWh", "3.5 kWh", "4.5 kWh"],
+      correctAnswer: "4.5 kWh",
+    },
+    {
+      id: "q5",
+      question:"What is the recommended thermostat setting for winter energy efficiency?",
+      answers: ["68°F", "72°F", "75°F", "78°F"],
+      correctAnswer: "68°F",
+    },
+  ];
+
+  const handleQuizSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (quizAnswers[questionId]?.toLowerCase() === correctAnswer) {
-      setQuizFeedback((prev) => ({ ...prev, [questionId]: 'Correct!' }));
-      setProgress((prev) => Math.min(prev + 18, 100));
-    } else {
-      setQuizFeedback((prev) => ({ ...prev, [questionId]: `Oops! The correct answer is ${correctAnswer.toUpperCase()}.` }));
+
+    const currentQuestionData = questions[currentQuestion];
+    const userAnswer = quizAnswers[currentQuestionData.id];
+
+    if (userAnswer === currentQuestionData.correctAnswer) {
+      setQuizFeedback("Correct!");
+      setProgress((prev) =>
+        Math.min(prev === 0 ? 20 : prev +  (100* 0.2), 100) // If progress is 0, set to 20%, otherwise increment by 20% of current value
+      );} else {
+      setQuizFeedback(
+        `Oops! The correct answer is ${currentQuestionData.correctAnswer}.`
+      );
     }
   };
 
-  const handleAnswerChange = (questionId: string, value: string) => {
-    setQuizAnswers((prev) => ({ ...prev, [questionId]: value }));
+  const handleAnswerChange = (value: string) => {
+    setQuizAnswers((prev) => ({
+      ...prev,
+      [questions[currentQuestion].id]: value,
+    }));
+  };
+
+  const handleNext = () => {
+    if (currentQuestion < questions.length - 1) {
+      setCurrentQuestion((prev) => prev + 1);
+      setQuizFeedback(null); // Clear feedback for the next question
+    } else {
+      setIsCompleted(true);
+    }
+  };
+
+  const handlePrevious = () => {
+    if (currentQuestion > 0) {
+      setCurrentQuestion((prev) => prev - 1);
+      setQuizFeedback(null); // Clear feedback for the previous question
+    }
   };
 
   const saveCompletionStatus = async () => {
     if (user && progress === 100 && !isCompleted) {
-        try {
-            const userDocRef = doc(db, 'moduleCompletion', user.uid);
-            
-            const newCompletion: ModuleCompletion = {
-              userId: user.uid,
-              energyModule: true,
-              };
+      try {
+        const userDocRef = doc(db, "moduleCompletion", user.uid);
+        const newCompletion: ModuleCompletion = {
+          userId: user.uid,
+          energyModule: true,
+        };
 
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
-          await updateDoc(userDocRef, {
-            energyModule: true,
-            });
+          await updateDoc(userDocRef, { energyModule: true });
         } else {
           await setDoc(userDocRef, newCompletion);
         }
 
         setIsCompleted(true);
       } catch (error) {
-        console.error('Error saving module completion status:', error);
+        console.error("Error saving module completion status:", error);
       }
     }
   };
 
   useEffect(() => {
     saveCompletionStatus();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [progress, user]);
 
   return (
@@ -116,82 +179,98 @@ const EnergyModule: React.FC = () => {
         <p>Learn more about energy-efficient appliances from the <a href="https://www.energystar.gov/" target="_blank" rel="noopener noreferrer">Energy Star Website</a>.</p>
       </section>
 
+
+
+
+      {/* Quiz Section */}
       <section className="quiz-section">
-        <h2>Quick Quiz</h2>
-        <p>Test your knowledge with these questions:</p>
-
-        {/* Question 1 */}
-        <div>
-          <p><strong>1. What is the most energy-efficient type of light bulb?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q1', 'a')}>
-            <label><input type="radio" name="q1" value="a" onChange={(e) => handleAnswerChange('q1', e.target.value)} /> A) LED</label>
-            <label><input type="radio" name="q1" value="b" onChange={(e) => handleAnswerChange('q1', e.target.value)} /> B) Incandescent</label>
-            <label><input type="radio" name="q1" value="c" onChange={(e) => handleAnswerChange('q1', e.target.value)} /> C) Halogen</label>
-            <label><input type="radio" name="q1" value="d" onChange={(e) => handleAnswerChange('q1', e.target.value)} /> D) Fluorescent</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q1'] && <p className="quiz-feedback">{quizFeedback['q1']}</p>}
+        <div className="white-box">
+        {isCompleted ? (
+  <div>
+    {progress === 100 ? (
+      <>
+        <h2>Congratulations!</h2>
+        <p>You’ve completed the Energy Module!</p>
+        <p>
+          Apply these tips to reduce your carbon footprint and make your dorm
+          more sustainable.
+        </p>
+        <button onClick={() => navigate("/educational")}>
+          Back to Educational Resources
+        </button>
+      </>
+    ) : (
+      <>
+        <h2>Oops!</h2>
+        <p>
+          It seems like you didn’t get all the answers right. Try again to
+          complete the module!
+        </p>
+        <button onClick={() =>  navigate("/educational")}>
+          Back to Educational Resources
+        </button>
+      </>
+    )}
+  </div>
+) : (
+  <>
+    <h2>Quick Quiz</h2>
+    <p>{questions[currentQuestion].question}</p>
+    <form onSubmit={handleQuizSubmit}>
+      {questions[currentQuestion].answers.map((answer, index) => (
+        <label key={index}>
+          <input
+            type="radio"
+            name="answer"
+            value={answer}
+            onChange={() => handleAnswerChange(answer)}
+            checked={quizAnswers[questions[currentQuestion].id] === answer}
+          />
+          {answer}
+        </label>
+      ))}
+      <div className="navigation-buttons">
+        <button
+          type="button"
+          onClick={handlePrevious}
+          disabled={currentQuestion === 0}
+        >
+          Previous
+        </button>
+        <button
+          type="submit"
+          disabled={!quizAnswers[questions[currentQuestion].id]}
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={!quizFeedback}
+        >
+          Next
+        </button>
+      </div>
+    </form>
+    {quizFeedback && <p className="quiz-feedback">{quizFeedback}</p>}
+  </>
+)}
+         
         </div>
-
-        {/* Question 2 */}
-        <div>
-          <p><strong>2. What is "phantom power"?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q2', 'b')}>
-            <label><input type="radio" name="q2" value="a" onChange={(e) => handleAnswerChange('q2', e.target.value)} /> A) Energy used by refrigerators</label>
-            <label><input type="radio" name="q2" value="b" onChange={(e) => handleAnswerChange('q2', e.target.value)} /> B) Energy drawn by devices not in use</label>
-            <label><input type="radio" name="q2" value="c" onChange={(e) => handleAnswerChange('q2', e.target.value)} /> C) Energy used by microwaves</label>
-            <label><input type="radio" name="q2" value="d" onChange={(e) => handleAnswerChange('q2', e.target.value)} /> D) Energy used by light bulbs</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q2'] && <p className="quiz-feedback">{quizFeedback['q2']}</p>}
-        </div>
-
-        {/* Question 3 */}
-        <div>
-          <p><strong>3. Which of the following appliances uses the most energy in a dorm?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q3', 'c')}>
-            <label><input type="radio" name="q3" value="a" onChange={(e) => handleAnswerChange('q3', e.target.value)} /> A) Laptop</label>
-            <label><input type="radio" name="q3" value="b" onChange={(e) => handleAnswerChange('q3', e.target.value)} /> B) Microwave</label>
-            <label><input type="radio" name="q3" value="c" onChange={(e) => handleAnswerChange('q3', e.target.value)} /> C) Refrigerator</label>
-            <label><input type="radio" name="q3" value="d" onChange={(e) => handleAnswerChange('q3', e.target.value)} /> D) Fan</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q3'] && <p className="quiz-feedback">{quizFeedback['q3']}</p>}
-        </div>
-
-        {/* Question 4 */}
-        <div>
-          <p><strong>4. How much energy can unplugging a fully charged laptop save in a week?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q4', 'd')}>
-            <label><input type="radio" name="q4" value="a" onChange={(e) => handleAnswerChange('q4', e.target.value)} /> A) 1 kWh</label>
-            <label><input type="radio" name="q4" value="b" onChange={(e) => handleAnswerChange('q4', e.target.value)} /> B) 2.5 kWh</label>
-            <label><input type="radio" name="q4" value="c" onChange={(e) => handleAnswerChange('q4', e.target.value)} /> C) 3.5 kWh</label>
-            <label><input type="radio" name="q4" value="d" onChange={(e) => handleAnswerChange('q4', e.target.value)} /> D) 4.5 kWh</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q4'] && <p className="quiz-feedback">{quizFeedback['q4']}</p>}
-        </div>
-
-        {/* Question 5 */}
-        <div>
-          <p><strong>5. What is the recommended thermostat setting for energy efficiency during winter?</strong></p>
-          <form onSubmit={(e) => handleQuizSubmit(e, 'q5', 'a')}>
-            <label><input type="radio" name="q5" value="a" onChange={(e) => handleAnswerChange('q5', e.target.value)} /> A) 68°F</label>
-            <label><input type="radio" name="q5" value="b" onChange={(e) => handleAnswerChange('q5', e.target.value)} /> B) 72°F</label>
-            <label><input type="radio" name="q5" value="c" onChange={(e) => handleAnswerChange('q5', e.target.value)} /> C) 75°F</label>
-            <label><input type="radio" name="q5" value="d" onChange={(e) => handleAnswerChange('q5', e.target.value)} /> D) 78°F</label>
-            <button type="submit">Submit</button>
-          </form>
-          {quizFeedback['q5'] && <p className="quiz-feedback">{quizFeedback['q5']}</p>}
-        </div>
+                  
       </section>
 
-      <section className="progress-section">
-        <h2>Your Energy Conservation Journey</h2>
-        <ProgressBar progress={progress} />
-      </section>
+       {/* Progress Bar */}
+       <section className="progress-section">
+                <h2>Your Progress</h2>
+                <ProgressBar points={progress} />
+              </section>
     </div>
   );
 };
 
 export default EnergyModule;
+
+
+
+
