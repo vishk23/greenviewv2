@@ -1,4 +1,6 @@
-
+h2 {
+  all:unset;
+}
 
 .background123 {
   display: flex;
@@ -6,7 +8,7 @@
   align-items: flex-start;
   height: 100vh; /* Full viewport height */
   width: 100vw; /* Full viewport width */
-  background-color: #f8f4e1;
+  background-color: #545F48;
   background-image: url('/public/questions_background.gif');
   background-size: cover;
   background-position: center;
@@ -19,15 +21,18 @@
   height: 100%;
   width: 60%;
   background-color: #fff8eb;
+  gap: 24px;
   z-index: 10;
 }
 
 .profile-info, .statement, .badges {
-  padding-top: 0px;
+  padding-top: 16px;
   padding-left: 60px;
 }
 
 .profile-info h2 {
+  margin: 0%;
+  padding: 0%;
   font-size: 36px;
   font-weight: 500;
   color: #9FC37B;
@@ -109,6 +114,7 @@
   display: flex;
   flex-direction: column;
   width: 40%;
+  gap: 16px;
 }
 
 .area-section h2, .badges h2 {
