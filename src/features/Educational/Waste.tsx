@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@services/firebase";
@@ -101,32 +101,33 @@ const WasteModule: React.FC = () => {
     }
   };
 
-  const saveCompletionStatus = async () => {
+  const saveCompletionStatus = useCallback(async () => {
     if (user && progress === 100 && !isCompleted) {
       try {
         const userDocRef = doc(db, "moduleCompletion", user.uid);
         const newCompletion: ModuleCompletion = {
           userId: user.uid,
-          wasteModule: true,
+          energyModule: true,
         };
-
+  
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
-          await updateDoc(userDocRef, { wasteModule: true });
+          await updateDoc(userDocRef, { energyModule: true });
         } else {
           await setDoc(userDocRef, newCompletion);
         }
-
+  
         setIsCompleted(true);
       } catch (error) {
         console.error("Error saving module completion status:", error);
       }
     }
-  };
+  }, [user, progress, isCompleted]); // Include all dependencies used in the function
+  
 
   useEffect(() => {
     saveCompletionStatus();
-  }, [progress, user]);
+  }, [progress, user, saveCompletionStatus]);
 
   return (
     <div className="module-page">
