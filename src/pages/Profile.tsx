@@ -9,9 +9,7 @@ import {
   Line,
   XAxis,
   YAxis,
-  CartesianGrid,
   Tooltip,
-  Legend,
   ResponsiveContainer,
 } from "recharts";
 import { getFirestore } from "firebase/firestore";
@@ -53,16 +51,15 @@ const Profile: React.FC = () => {
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
   const [scoreData, setScoreData] = useState<ScoreData | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [notificationsEnabled, setNotificationsEnabled] = useState(false);
+  const [updated, setUpdated] = useState(false);
   // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [showHistory, setShowHistory] = useState(false);
+  const [flippedIndex, setFlippedIndex] = useState<number | null>(null);
 
   const [name, setName] = useState("");
   const [bio, setBio] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
-
-  // State for card flipping
-  const [flippedStrengths, setFlippedStrengths] = useState<boolean[]>([]);
-  const [flippedImprovements, setFlippedImprovements] = useState<boolean[]>([]);
 
   // Fetch Profile Data
   useEffect(() => {
@@ -72,10 +69,12 @@ const Profile: React.FC = () => {
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const data = userDoc.data() as ProfileData;
+          console.log(data);
           setProfileData(data);
           setName(data.name || "");
           setBio(data.bio || "");
           setPhoneNumber(data.phoneNumber || "");
+          setNotificationsEnabled(data.notificationsEnabled || false);
         }
       }
     };
@@ -91,53 +90,11 @@ const Profile: React.FC = () => {
         if (scoreDoc.exists()) {
           const data = scoreDoc.data() as ScoreData;
           setScoreData(data);
-          setFlippedStrengths(
-            Array(data.structuredSummary.strengths.length).fill(false)
-          );
-          setFlippedImprovements(
-            Array(data.structuredSummary.improvement.length).fill(false)
-          );
         }
       }
     };
     fetchScoreData();
   }, [user]);
-
-  const handleFlipCard = (index: number, type: "strength" | "improvement") => {
-    if (type === "strength") {
-      const newFlipped = [...flippedStrengths];
-      newFlipped[index] = !newFlipped[index];
-      setFlippedStrengths(newFlipped);
-    } else {
-      const newFlipped = [...flippedImprovements];
-      newFlipped[index] = !newFlipped[index];
-      setFlippedImprovements(newFlipped);
-    }
-  };
-
-  const renderSummaryCards = (
-    summary: { area: string; description: string }[],
-    flippedState: boolean[],
-    type: "strength" | "improvement"
-  ) => {
-    return (
-      <div className="summary-cards">
-        {summary.map((item, index) => (
-          <div
-            key={index}
-            className={`card ${flippedState[index] ? "flipped" : ""}`}
-            onClick={() => handleFlipCard(index, type)}
-          >
-            {!flippedState[index] ? (
-              <div className="front">{item.area}</div>
-            ) : (
-              <div className="back">{item.description}</div>
-            )}
-          </div>
-        ))}
-      </div>
-    );
-  };
 
   const getSource = () => {
     if (scoreData?.score == null) return "";
@@ -157,99 +114,235 @@ const Profile: React.FC = () => {
     return "Your GreenView is Polluted";
   };
 
+  const handleEnableNotifications = async () => {
+    if (user) {
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        notificationsEnabled: !notificationsEnabled,
+      });
+      setNotificationsEnabled(!notificationsEnabled);
+      setUpdated(true);
+    }
+  };
+
+  const renderDescription = (index: number) => {
+    if (index < 100) {
+      return scoreData?.structuredSummary.strengths[index].description;
+    } else {
+      return scoreData?.structuredSummary.improvement[index - 100].description;
+    }
+  };
+
+  const toggleFlip = (index: number | null) => {
+    setFlippedIndex((prevIndex) => (prevIndex === index ? null : index)); // Flip or reset
+  };
+
+  const handleSaveProfile = async () => {
+    if (user && profileData) {
+      const userDocRef = doc(db, "users", user.uid);
+      await updateDoc(userDocRef, {
+        name,
+        bio,
+        phoneNumber,
+        email: profileData.email,
+        notificationsEnabled: profileData.notificationsEnabled || false,
+      });
+
+      setProfileData({ ...profileData, name, bio, phoneNumber });
+      setIsEditing(false);
+    }
+  };
+
   return (
     <div className="background123">
       <img
         src={getSource()}
         alt=""
         style={{
-          position: "fixed",
+          position: "absolute",
           top: 0,
           left: 0,
           width: "100%",
           height: "100%",
           objectFit: "cover",
-          pointerEvents: "none", // Allow clicks through the image
+          pointerEvents: "none",
         }}
       />
+      {flippedIndex !== null && (
+        <div className="popup">
+          <div className="popup-title">
+            <h2>Read Me</h2>
+            <button
+              onClick={() => setFlippedIndex(null)}
+              className="close-button"
+            >
+              <img src="/icons/close.png" className="close-button" alt="" />
+            </button>
+          </div>
+          <p>{renderDescription(flippedIndex)}</p>
+        </div>
+      )}
       <div className="profile-page">
-        <div className="profile-card">
-          <div className="profile-info">
-            <h2>{profileData?.name || "Not set"}</h2>
-            <p>
-              <strong>Email:</strong> {profileData?.email || "Not set"}
-            </p>
-            <p>
-              <strong>Bio:</strong> {profileData?.bio || "Not set"}
-            </p>
-            <p>
-              <strong>Phone:</strong> {profileData?.phoneNumber || "Not set"}
-            </p>
+        <div className="profile-info">
+          <div className="profile-title">
+            {isEditing ? (
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+              />
+            ) : (
+              <h2>{profileData?.name || "Not set"}</h2>
+            )}
+            <button
+              className="edit-button"
+              onClick={() => {
+                if (isEditing) {
+                  handleSaveProfile();
+                }
+                setIsEditing((prev) => !prev);
+              }}
+            >
+              <img className="edit-button" src="/icons/edit.png" alt="Edit" />
+            </button>
+          </div>
+          <p style={isEditing ? { marginTop: 8 } : {}}>
+            <strong>Email: </strong>
+            {profileData?.email || "Not set"}
+          </p>
+          <p>
+            <strong>Phone: </strong>
+            {isEditing ? (
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+              />
+            ) : (
+              profileData?.phoneNumber || "Not set"
+            )}
+          </p>
+
+          <div className="notification-section">
+            <button
+              onClick={() => handleEnableNotifications()}
+              className="notification"
+            >
+              {notificationsEnabled ? (
+                <p>Disable Notifications</p>
+              ) : (
+                <p>Enable Notifications</p>
+              )}
+            </button>
+            {updated && <p> * Updated Successfully</p>}
           </div>
         </div>
-
-        <div className="score">
+        <div className="statement">
           <h2>{getFeedback()}</h2>
         </div>
-
-        <div className="area-section">
-          <div className="strengths-section">
+        <div className="area">
+          <div className="area-section">
             <h2>Strengths</h2>
-            {scoreData?.structuredSummary.strengths &&
-              renderSummaryCards(
-                scoreData.structuredSummary.strengths,
-                flippedStrengths,
-                "strength"
+            <div className="card-section">
+              {scoreData ? (
+                scoreData.structuredSummary.strengths.map((item, index) => (
+                  <div
+                    key={index}
+                    className={`card ${
+                      flippedIndex === index ? "flipped" : ""
+                    }`}
+                    onClick={() => toggleFlip(index)}
+                  >
+                    {item.area}
+                  </div>
+                ))
+              ) : (
+                <p>Please take the quiz to see your Data!</p>
               )}
+            </div>
           </div>
-
-          <div className="strengths-section">
-            <h2>Improvement Areas</h2>
-            {scoreData?.structuredSummary.improvement &&
-              renderSummaryCards(
-                scoreData.structuredSummary.improvement,
-                flippedImprovements,
-                "improvement"
+          <div className="area-section">
+            <h2>Area of Improvements</h2>
+            <div className="card-section">
+              {scoreData ? (
+                scoreData.structuredSummary.improvement.map((item, index) => (
+                  <div
+                    key={index + 100}
+                    className={`card ${
+                      flippedIndex === index + 100 ? "flipped" : ""
+                    }`}
+                    onClick={() => toggleFlip(index + 100)}
+                  >
+                    {item.area}
+                  </div>
+                ))
+              ) : (
+                <p>Please take the quiz to see your Data!</p>
               )}
+            </div>
           </div>
         </div>
-
-        <div className="score">
-          <h2>Score History</h2>
+        <div className="badges">
+          <h2>Badges</h2>
+          {/* ToDO: Add badges here */}
         </div>
-
-        <ResponsiveContainer width="90%" height="30%">
-          <LineChart
-            width={500}
-            height={300}
-            data={
-              scoreData && scoreData.scoreHistory
-                ? scoreData.scoreHistory.map((entry) => ({
-                    date: entry.date, // Convert date to Date object
-                    score: entry.score, // Keep the score as it is
-                  }))
-                : []
-            }
-            margin={{
-              top: 5,
-              right: 30,
-              left: 20,
-              bottom: 5,
-            }}
-          >
-            <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="date" />
-            <YAxis />
-            <Tooltip />
-            <Legend />
-            <Line
-              type="monotone"
-              dataKey="score"
-              stroke="#8884d8"
-              activeDot={{ r: 8 }}
-            />
-          </LineChart>
-        </ResponsiveContainer>
+        <div className="history">
+          <h2>
+            History{" "}
+            {showHistory ? (
+              <button
+                className="expand-button"
+                onClick={() => setShowHistory(false)}
+              >
+                {" "}
+                &lt;{" "}
+              </button>
+            ) : (
+              <button
+                className="expand-button"
+                onClick={() => setShowHistory(true)}
+              >
+                {" "}
+                &gt;{" "}
+              </button>
+            )}
+          </h2>
+        </div>
+        {showHistory ? (
+          <ResponsiveContainer width="80%" height="30%" minHeight="160px">
+            <LineChart
+              width={500}
+              height={300}
+              data={
+                scoreData && scoreData.scoreHistory
+                  ? scoreData.scoreHistory.map((entry) => ({
+                      date: entry.date, // Convert date to Date object
+                      score: entry.score, // Keep the score as it is
+                    }))
+                  : []
+              }
+              margin={{
+                top: 5,
+                right: 0,
+                left: 40,
+                bottom: 0,
+              }}
+            >
+              <XAxis dataKey="date" />
+              <YAxis />
+              <Tooltip />
+              <Line
+                type="monotone"
+                dataKey="score"
+                stroke="#F06D3C"
+                activeDot={{ r: 8 }}
+                dot={false}
+              />
+            </LineChart>
+          </ResponsiveContainer>
+        ) : (
+          <div></div>
+        )}
       </div>
     </div>
   );
