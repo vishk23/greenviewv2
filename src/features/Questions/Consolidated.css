@@ -6,7 +6,7 @@
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background-color: #f8f4e1;
+    background-color: #545F48;
     background-image: url('/public/questions_background.gif');
     background-size: cover;
     background-position: center;
@@ -62,7 +62,7 @@
 }
 
 .progress-bar-container {
-    width: 90%;
+    width: 80%;
     height: 20px;
     background-color: #e0e0e0;
     border-radius: 10px;
@@ -190,6 +190,9 @@ button:disabled {
 
 /* Consolidated.css */
 
+/* Score */
+
+
 body, html {
     height: 100%;
     margin: 0;
@@ -198,20 +201,25 @@ body, html {
 
 .score-container {
     display: flex;
-    height: 100vh;
+    height: auto;
+    min-height: 100vh;
     width: 100vw;
-    justify-content: center;
-    align-items: start;
-    background-color: #f8f4e1;
+    justify-content: start;
+    align-items: center;
+    background-color: #545F48;
     background-image: url('/public/questions_background.gif');
-    background-size: cover;
-    background-position: center;
+    background-size: 100% auto;
+    background-position: top;
     background-repeat: no-repeat;
 }
 
-.score-box, .ai-box {
-    padding-top: 150px;
-    width: 75%;
+.score-box {
+
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  margin-top: 50px;
+  height: 100%;
 }
 
 .score-box p {
@@ -221,6 +229,11 @@ body, html {
   .score-box a {
     display: inline;
   }
+
+.ai-box {
+    padding-top: 150px;
+    width: 75%;
+}
 
 .ai-box {
     padding-left: 10px; /* Increased padding for better spacing */
@@ -359,6 +372,8 @@ body, html {
   grid-template-columns: 1fr 1fr;
   gap: 2rem;
   margin-bottom: 2rem;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 @media (max-width: 768px) {
@@ -367,28 +382,82 @@ body, html {
   }
 }
 
+.summary-section {
+  display: flex;
+  flex-direction: column;
+  gap: 24px
+}
+
+.summary-section h4 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #9FC37B;
+}
+
 .summary-item {
-  background: rgba(255, 255, 255, 0.8);
-  padding: 1rem;
-  border-radius: 8px;
-  margin-bottom: 1rem;
+  position: relative;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
+  width: 400px;
+  height: 50px;
+  line-height: 20px;
+  background-color: #9FC37B;
+  font-size: 16px;
+  font-weight: 700;
+  color: white;
+  cursor: pointer;
 }
 
-.summary-item h5 {
-  margin: 0 0 0.5rem 0;
-  color: #333;
-  font-size: 1.1rem;
+.summary-item:active {
+  font-size: 15px;
 }
 
-.summary-item p {
-  margin: 0;
-  color: #666;
-  font-size: 0.95rem;
-  line-height: 1.5;
+.summary-item.flipped, .summary-item:hover {
+  color: #545F48;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+
+}
+
+.summary-item::before {
+  content: "";
+  position: absolute;
+  top: 50%;
+  right: -25px;
+  border-left: 25px solid #9FC37B;
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+  transform: translateY(-50%);
+}
+
+.summary-item::after {
+  content: "";
+  position: absolute;
+  top: 50%;
+  left: 0px;
+  border-left: 25px solid white;
+  border-top: 25px solid transparent;
+  border-bottom: 25px solid transparent;
+  transform: translateY(-50%);
 }
 
 .suggested-questions {
   margin-top: 2rem;
+  padding-left: 16px;
+  padding-right: 16px;
+}
+
+.description {
+  margin:auto;
+  width: 80%;
+  height: auto;
+  padding: 10px 20px 10px 20px;
+  top: 33%;
+  background-color: #fff8eb;
+  box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.25); /* Add shadow */
+  border-radius: 20px; /* Round the top-right corner */
 }
 
 .questions-list {
@@ -397,20 +466,28 @@ body, html {
   gap: 0.75rem;
 }
 
+
+.suggested-questions h4{
+  font-size: 24px;
+  font-weight: 700;
+  color: #9FC37B;
+}
+
 .question-button {
-  background: #f0f0f0;
+  background: #9FC37B;
   border: none;
   padding: 1rem;
   border-radius: 8px;
   text-align: left;
   cursor: pointer;
-  transition: background-color 0.3s;
+  transition: color 0.3s, background-color 0.3s;
   font-size: 0.95rem;
   color: #333;
 }
 
 .question-button:hover {
-  background: #e0e0e0;
+  color: white;
+  background: #545F48;
 }
 
 .ai-response {
@@ -572,7 +649,7 @@ body, html {
   cursor: pointer;
   transition: all 0.3s ease;
   text-align: left;
-  width: 70%;
+  width: 90%;
 }
 
 .answer-button:hover {
