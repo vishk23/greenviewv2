@@ -1,6 +1,6 @@
 import ProgressBar from "@components/ProgressBar/ProgressBar";
 import React, { useState, useEffect } from "react";
-import "./Energy.css";
+import "./Module.css";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@services/firebase";
@@ -185,67 +185,76 @@ const EnergyModule: React.FC = () => {
       {/* Quiz Section */}
       <section className="quiz-section">
         <div className="white-box">
-          {!isCompleted ? (
-            <>
-              <h2>Quick Quiz</h2>
-              <p>{questions[currentQuestion].question}</p>
-              <form onSubmit={handleQuizSubmit}>
-                {questions[currentQuestion].answers.map((answer, index) => (
-                  <label key={index}>
-                    <input
-                      type="radio"
-                      name="answer"
-                      value={answer}
-                      onChange={() => handleAnswerChange(answer)}
-                      checked={
-                        quizAnswers[questions[currentQuestion].id] === answer
-                      }
-                    />
-                    {answer}
-                  </label>
-                ))}
-                <div className="navigation-buttons">
-                  <button
-                    type="button"
-                    onClick={handlePrevious}
-                    disabled={currentQuestion === 0}
-                  >
-                    Previous
-                  </button>
-                  <button
-                    type="submit"
-                    disabled={!quizAnswers[questions[currentQuestion].id]}
-                  >
-                    Submit
-                  </button>
-                  <button
-                    type="button"
-                    onClick={handleNext}
-                    disabled={!quizFeedback}
-                  >
-                    Next
-                  </button>
-                </div>
-              
-              </form>
-              {quizFeedback && (
-                <p className="quiz-feedback">{quizFeedback}</p>
-              )}
-            </>
-          ) : (
-            <div>
-              
-              <h2>Congratulations!</h2>
-              <p>You’ve completed the Energy Conservation Quiz!</p>
-              <p>
-                Apply these tips to reduce your carbon footprint and make your
-                dorm more sustainable.
-              </p>
-              <button onClick={() => navigate("/educational")}>
-                Back to Educational Resources
-              </button>
-            </div>
-          )}
+        {isCompleted ? (
+  <div>
+    {progress === 100 ? (
+      <>
+        <h2>Congratulations!</h2>
+        <p>You’ve completed the Energy Module!</p>
+        <p>
+          Apply these tips to reduce your carbon footprint and make your dorm
+          more sustainable.
+        </p>
+        <button onClick={() => navigate("/educational")}>
+          Back to Educational Resources
+        </button>
+      </>
+    ) : (
+      <>
+        <h2>Oops!</h2>
+        <p>
+          It seems like you didn’t get all the answers right. Try again to
+          complete the module!
+        </p>
+        <button onClick={() =>  navigate("/educational")}>
+          Back to Educational Resources
+        </button>
+      </>
+    )}
+  </div>
+) : (
+  <>
+    <h2>Quick Quiz</h2>
+    <p>{questions[currentQuestion].question}</p>
+    <form onSubmit={handleQuizSubmit}>
+      {questions[currentQuestion].answers.map((answer, index) => (
+        <label key={index}>
+          <input
+            type="radio"
+            name="answer"
+            value={answer}
+            onChange={() => handleAnswerChange(answer)}
+            checked={quizAnswers[questions[currentQuestion].id] === answer}
+          />
+          {answer}
+        </label>
+      ))}
+      <div className="navigation-buttons">
+        <button
+          type="button"
+          onClick={handlePrevious}
+          disabled={currentQuestion === 0}
+        >
+          Previous
+        </button>
+        <button
+          type="submit"
+          disabled={!quizAnswers[questions[currentQuestion].id]}
+        >
+          Submit
+        </button>
+        <button
+          type="button"
+          onClick={handleNext}
+          disabled={!quizFeedback}
+        >
+          Next
+        </button>
+      </div>
+    </form>
+    {quizFeedback && <p className="quiz-feedback">{quizFeedback}</p>}
+  </>
+)}
          
         </div>
                   
