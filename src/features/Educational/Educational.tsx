@@ -11,17 +11,20 @@ const Educational: React.FC = () => {
     { 
       id: '1', 
       title: 'Sustainability Basics', 
-      description: 'Learn the fundamentals of sustainability and its importance in everyday life.' 
+      description: 'Learn the fundamentals of sustainability and its importance in everyday life.' ,
+      logo: 'SustainabilityLogo' 
     },
     { 
       id: '2', 
       title: 'Energy Conservation in Dorms', 
-      description: 'Learn simple ways to conserve energy in your residence hall, such as efficient use of heating, cooling, and lighting.' 
+      description: 'Learn simple ways to conserve energy in your residence hall, such as efficient use of heating, cooling, and lighting.' ,
+      logo: ''
     },
     { 
       id: '3', 
       title: 'Waste Reduction While on Campus', 
-      description: 'Understand how to properly recycle, compost, and reduce waste across BU’s campus.' 
+      description: 'Understand how to properly recycle, compost, and reduce waste across BU’s campus.' ,
+      logo:''
     },
     
   ];
@@ -29,7 +32,7 @@ const Educational: React.FC = () => {
     { 
       id: '1', 
       title: 'Get Involved: BU Sustainability Programs', 
-      description: 'Discover ways to actively participate in BU’s sustainability initiatives, such as joining student-led eco clubs, attending events, or volunteering for campus-wide sustainability projects.' 
+      description: 'Discover ways to actively participate in BU’s sustainability initiatives, such as joining student-led eco clubs, attending events, or volunteering for campus-wide sustainability projects.' ,
     },
   ];
 
@@ -40,8 +43,8 @@ const Educational: React.FC = () => {
   return (
     <div className="educational-page">
       <header className="educational-header">
-        <h1>Educational Resources</h1>
-        <p>Understanding sustainability is the first step towards a greener future. This section offers a range of resources to help you deepen your knowledge and take actionable steps towards a sustainable lifestyle.</p>
+      <h1 style={{ fontWeight: 'normal' }}>Educational Resources</h1>
+      <p>Understanding sustainability is the first step towards a greener future. This section offers a range of resources to help you deepen your knowledge and take actionable steps towards a sustainable lifestyle.</p>
       </header>
 
       <section className="learning-modules-section">
@@ -53,7 +56,7 @@ const Educational: React.FC = () => {
               className="module-card"
               onClick={() => handleModuleClick(module.id)}
             >
-              <h3>{module.title}</h3>
+              <h3 style={{ fontWeight: 'normal' }}>{module.title + ' >'}</h3>
               <p>{module.description}</p>
             </div>
           ))}

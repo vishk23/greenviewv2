@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Glacial+Indifference:wght@400;700&display=swap');
+
 .educational-page {
   padding: 20px;
 }
@@ -5,6 +7,8 @@
 .educational-header {
   text-align: center;
   margin-bottom: 40px;
+  font-weight: normal;
+
 }
 
 .educational-header h1 {
@@ -13,27 +17,23 @@
 
 .modules-grid {
   display: flex;
-  gap: 20px;
+  gap: 150px;
   flex-wrap: wrap;
   justify-content: center; /* Centers the modules horizontally */
 }
 
 .module-card {
-  background: rgba(159, 195, 123, 1); /* Correct green for module background */
-  color: white;
+ 
+  color: rgba(159, 195, 123, 1);
   padding: 15px;
   border-radius: 10px;
   cursor: pointer;
   text-align: center;
   width: 250px; /* Consistent size for better centering */
-  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.module-card:hover {
-  transform: scale(1.05);
-  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
-}
+
 
 .quiz-section button, .discussion-section button {
   background: rgba(159, 195, 123, 1);
