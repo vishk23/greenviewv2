@@ -45,6 +45,7 @@ const Educational: React.FC = () => {
   };
 
   return (
+    <div className="edu-page">
     <div className="educational-page">
       <div className="educational-header">
         <h1>Educational Resources</h1>
@@ -130,7 +131,9 @@ const Educational: React.FC = () => {
      
         <Map />
       </section>
-      <Footer/>
+      
+    </div>
+    <Footer/>
     </div>
   );
 };
