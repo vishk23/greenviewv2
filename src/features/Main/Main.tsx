@@ -35,20 +35,25 @@ const MainPage: React.FC = () => {
 
   const heroSlides: HeroSlide[] = React.useMemo(() => [
     {
+      title: "In the past 12 months, CDS averaged X tones of waste...",
+      description: "Curious about your individual impact on the environment?",
+      imageUrl: "/assets/CDS.gif"
+  },
+    {
         title: "In the past 12 months, Warren Towers averaged 253.35 tones of waste...",
         description: "Curious about your individual impact on the environment?",
-        imageUrl: "/assets/Warren-animation.gif"
+        imageUrl: "/assets/warren.gif"
     },
     {
         title: "In the past 12 months, Stuvi averaged 266.8 tones of waste...",
         description: "Curious about your individual impact on the environment?",
-        imageUrl: "/assets/StuVi-animation.gif"
+        imageUrl: "/assets/StuVi_1.gif"
     },
     {
         title: "In the past 12 months, West averaged 254.52 tones of waste...",
         description: "Curious about your individual impact on the environment?",
-        imageUrl: "/assets/West-animation.gif"
-    }
+        imageUrl: "/assets/west.gif"
+    },
 ], []);
 
 useEffect(() => {
