@@ -11,15 +11,17 @@
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
+    opacity: 0.8;
 }
 
 .white-box {
-    background-color: rgba(255, 255, 255, 0.4);
-    border-radius: 12px;
-    padding: 35px;
-    width: 900px;
-    height: 500px;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.05);
+    background-color: rgba(255, 255, 255, 0.8);
+    opacity: 0.75 !important;
+    border-radius: 8px;
+    padding: 20px;
+    width: 800px;
+    height: auto;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
     position: relative;
     display: flex;
     flex-direction: column;
