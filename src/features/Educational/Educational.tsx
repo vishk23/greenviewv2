@@ -46,30 +46,38 @@ const Educational: React.FC = () => {
 
   return (
     <div className="educational-page">
-      <header className="educational-header">
-      <h1 style={{ fontWeight: 'normal' }}>Educational Resources</h1>
-      <p style={{fontSize: '20px'}}>Understanding sustainability is the first step towards a greener future. This section offers a range of resources to help you deepen your knowledge and take actionable steps towards a sustainable lifestyle.</p>
-      </header>
+      <div className="educational-header">
+        <h1>Educational Resources</h1>
+        <p>
+          Understanding sustainability is the first step towards a greener future. 
+          This section offers a range of resources to help you deepen your knowledge 
+          and take actionable steps towards a sustainable lifestyle.
+        </p>
+      </div>
 
       <section className="learning-modules-section">
-      <h2 style={{ fontWeight: 'bold', textAlign: 'center' }}>
-        Clarify your GreenView with our Green Guides
-      </h2><br/><br/><br/>
+        <div className="modules-section-header">
+          <h2>Clarify your GreenView with our Green Guides</h2>
+        </div>
 
-      <div className="modules-grid">
+        <div className="modules-grid">
           {modules.map((module) => (
-            <div
-              key={module.id}
-              className="module-card"
-              onClick={() => handleModuleClick(module.id)}
-            >
-              <div className="module-logo">
-                {module.logo && <img src={module.logo} alt={`${module.title} logo`} />}
+            <div key={module.id} className="module-card">
+              <div>
+                <div className="module-logo">
+                  {module.logo && <img src={module.logo} alt={`${module.title} logo`} />}
+                </div>
+                <div className="module-title">
+                  <h3>{module.title}</h3>
+                </div>
+                <p className="module-description">{module.description}</p>
               </div>
-              <div className="module-title">
-              <h3 style={{ fontWeight: 'normal' }}>{module.title + '>'}</h3>
-              </div>
-              <p className="module-description">{module.description}</p>
+              <button 
+                className="start-module-btn"
+                onClick={() => handleModuleClick(module.id)}
+              >
+                Start Module
+              </button>
             </div>
           ))}
         </div>

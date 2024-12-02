@@ -1,51 +1,100 @@
 @import url('https://fonts.googleapis.com/css2?family=Glacial+Indifference:wght@400;700&display=swap');
 
-
+.educational-page {
+  padding: 40px;
+  max-width: 1200px;
+  margin: 0 auto;
+}
 
 .educational-header {
   text-align: center;
-  margin-bottom: 40px;
-  font-weight: normal;
+  margin-bottom: 10px;
 }
 
 .educational-header h1 {
-  color: rgba(159, 195, 123, 1); /* Updated to match the green you are using */
+  color: rgba(159, 195, 123, 1);
+  font-size: 2.5rem;
+  margin-bottom: 20px;
+  font-weight: 500;
+}
+
+.educational-header p {
+  color: #444;
+  font-size: 1.2rem;
+  line-height: 1.6;
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.modules-container {
+  background: white;
+  border-radius: 12px;
+  padding: 40px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  margin: 0 auto;
+  max-width: 1000px;
 }
 
 .modules-grid {
-  display: flex;
-  gap: 150px;
-  flex-wrap: wrap;
-  justify-content: center; /* Centers the modules horizontally */
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  justify-content: center;
+  margin: 0 auto 60px;
+  max-width: 1200px;
 }
 
 .module-card {
-  color: rgba(159, 195, 123, 1);
-  padding: 15px;
+  background: white;
+  border: 2px solid rgba(159, 195, 123, 0.3);
   border-radius: 10px;
-  cursor: pointer;
+  padding: 20px;
   text-align: center;
-  width: 250px; /* Consistent size for better centering */
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.module-card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 6px 12px rgba(0, 0, 0, 0.1);
+  border-color: rgba(159, 195, 123, 0.8);
 }
 
 .module-title {
-  white-space: normal; /* Allows wrapping to multiple lines */
-  overflow-wrap: break-word; /* Ensures long words break properly */
-  word-break: break-word; /* Prevents single characters from being isolated */
-}
-
-.module-title span {
-  white-space: nowrap; /* Prevents small words from being isolated */
+  color: rgba(159, 195, 123, 1);
+  font-size: 1.4rem;
+  font-weight: 500;
+  margin-bottom: 15px;
 }
 
 .module-description {
-  text-align: center; /* Centers the text horizontally */
-  word-wrap: break-word; /* Ensures long words wrap to the next line */
-  margin: 10px 0; /* Adds spacing above and below */
-  line-height: 1.5; /* Improves readability with proper line spacing */
-  font-size: 18px; /* Adjust size as needed */
-  color: #333; /* Optional: change text color */
+  color: #555;
+  font-size: 1.1rem;
+  line-height: 1.5;
+  margin-bottom: 20px;
+}
+
+.start-module-btn {
+  background-color: #F15824;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: auto;
+}
+
+.start-module-btn:hover {
+  background-color: #d94d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(241, 88, 36, 0.2);
 }
 
 .video-container {
@@ -93,4 +142,81 @@
 
 .join-button:hover {
   background-color: rgba(139, 175, 103, 1); /* Slightly darker color for hover */
+}
+
+.modules-section-header {
+  text-align: center;
+  margin: 0 0 20px;
+}
+
+.modules-section-header h2 {
+  color: rgba(159, 195, 123, 1);
+  font-size: 2rem;
+  font-weight: normal;
+  margin-bottom: 20px;
+}
+
+.modules-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 30px;
+  justify-content: center;
+  margin: 0 auto 60px;
+  max-width: 1200px;
+}
+
+.module-card {
+  border: 2px solid rgba(159, 195, 123, 0.3);
+  border-radius: 10px;
+  padding: 20px;
+  text-align: center;
+  transition: all 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
+.module-logo {
+  margin-bottom: 15px;
+}
+
+.module-logo img {
+  width: 60px;
+  height: 60px;
+  object-fit: contain;
+}
+
+.module-title {
+  color: rgba(159, 195, 123, 1);
+  font-size: 1.4rem;
+  font-weight: normal;
+  margin-bottom: 15px;
+}
+
+.module-title h3 {
+  margin: 0;
+}
+
+.start-module-btn {
+  background-color: #F15824;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  margin-top: 20px;
+}
+
+.start-module-btn:hover {
+  background-color: #d94d1f;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(241, 88, 36, 0.2);
+}
+
+.featured-video-section {
+  margin-top: 20px;
 }
