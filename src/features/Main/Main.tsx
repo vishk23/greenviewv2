@@ -153,7 +153,6 @@ const handleBeforeChange = (current: number, next: number) => {
         <button onClick={() => navigate('/calendar')} className="calendar-button">
           Go to Calendar
         </button>
-        <img src="/assets/bd09ad965a55332dbd5cc8216c02a37e.png" alt="Decorative" className="image-under-events" />
       </div>
 
       <Footer/>

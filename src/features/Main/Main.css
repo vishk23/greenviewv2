@@ -171,6 +171,12 @@
     height: auto; /* Maintain aspect ratio */
     margin-top: 40px; /* Space above the image */
     display: block; /* Ensure it behaves like a block element */
+    margin: 0;
+    padding: 0;
+}
+
+.footer{
+    margin-top: 0;
 }
 
 .slick-prev,
