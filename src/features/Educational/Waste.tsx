@@ -1,4 +1,3 @@
-/* eslint-disable react-hooks/exhaustive-deps */
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -143,199 +142,179 @@ const WasteModule: React.FC = () => {
         </p>
       </header>
 
-      <section className="info-section">
-        <h2>Why Reducing Waste Matters</h2>
-        <p>
-          Waste has a significant environmental impact. When waste isn’t managed
-          properly, it can pollute the air, water, and soil. By reducing waste,
-          you can help:
-        </p>
-        <ul>
-          <li>
-            <strong>Reduce Landfill Use:</strong> Landfills produce methane, a
-            potent greenhouse gas.
-          </li>
-          <li>
-            <strong>Conserve Resources:</strong> Recycling and reusing
-            materials reduce the need for raw resources.
-          </li>
-          <li>
-            <strong>Prevent Pollution:</strong> Proper disposal of hazardous
-            waste prevents toxins from leaching into the environment.
-          </li>
-        </ul>
+      <section className="info-section grid-container">
+        <div className="green-box">
+          <h2>Why Reducing Waste Matters</h2>
+          <p>
+            Waste has a significant environmental impact. When waste isn’t managed
+            properly, it can pollute the air, water, and soil. By reducing waste,
+            you can help:
+          </p>
+          <ul>
+            <li>
+              <strong>Reduce Landfill Use:</strong> Landfills produce methane, a
+              potent greenhouse gas.
+            </li>
+            <li>
+              <strong>Conserve Resources:</strong> Recycling and reusing
+              materials reduce the need for raw resources.
+            </li>
+            <li>
+              <strong>Prevent Pollution:</strong> Proper disposal of hazardous
+              waste prevents toxins from leaching into the environment.
+            </li>
+          </ul>
+        </div>
 
-        <h2>Types of Waste</h2>
-        <p>On campus, waste typically falls into the following categories:</p>
-        <ul>
-          <li>
-            <strong>Recyclable Waste:</strong> Items like paper, cardboard,
-            glass, and certain plastics.
-          </li>
-          <li>
-            <strong>Compostable Waste:</strong> Food scraps and other organic
-            materials that can break down naturally.
-          </li>
-          <li>
-            <strong>Hazardous Waste:</strong> Batteries, electronics, and
-            chemicals that require special disposal methods.
-          </li>
-          <li>
-            <strong>General Waste:</strong> Items that cannot be recycled or
-            composted, such as certain types of packaging.
-          </li>
-        </ul>
+        <div className="green-box">
+          <h2>Types of Waste</h2>
+          <p>On campus, waste typically falls into the following categories:</p>
+          <ul>
+            <li>
+              <strong>Recyclable Waste:</strong> Items like paper, cardboard,
+              glass, and certain plastics.
+            </li>
+            <li>
+              <strong>Compostable Waste:</strong> Food scraps and other organic
+              materials that can break down naturally.
+            </li>
+            <li>
+              <strong>Hazardous Waste:</strong> Batteries, electronics, and
+              chemicals that require special disposal methods.
+            </li>
+            <li>
+              <strong>General Waste:</strong> Items that cannot be recycled or
+              composted, such as certain types of packaging.
+            </li>
+          </ul>
+        </div>
 
-        <h2>Practical Tips for Reducing Waste</h2>
-        <ul>
-          <li>
-            <strong>Use Reusable Items:</strong> Carry a reusable water bottle,
-            coffee cup, and shopping bag.
-          </li>
-          <li>
-            <strong>Participate in Recycling Programs:</strong> Learn what can
-            be recycled on your campus and use designated bins.
-          </li>
-          <li>
-            <strong>Compost:</strong> If your campus has a composting program,
-            make use of it for food scraps and organic waste.
-          </li>
-          <li>
-            <strong>Buy in Bulk:</strong> Purchase items in bulk to reduce
-            packaging waste.
-          </li>
-          <li>
-            <strong>Donate:</strong> Instead of throwing away clothes or other
-            items, donate them to campus or community drives.
-          </li>
-        </ul>
+        <div className="green-box">
+          <h2>Practical Tips for Reducing Waste</h2>
+          <ul>
+            <li>
+              <strong>Use Reusable Items:</strong> Carry a reusable water bottle,
+              coffee cup, and shopping bag.
+            </li>
+            <li>
+              <strong>Participate in Recycling Programs:</strong> Learn what can
+              be recycled on your campus and use designated bins.
+            </li>
+            <li>
+              <strong>Compost:</strong> If your campus has a composting program,
+              make use of it for food scraps and organic waste.
+            </li>
+            <li>
+              <strong>Buy in Bulk:</strong> Purchase items in bulk to reduce
+              packaging waste.
+            </li>
+            <li>
+              <strong>Donate:</strong> Instead of throwing away clothes or other
+              items, donate them to campus or community drives.
+            </li>
+          </ul>
+        </div>
 
-        <h2>Did You Know?</h2>
-        <p>
-          🌍 <strong>The average college student produces about 640 pounds of
-          waste per year.</strong> Reducing even a fraction of that can make a
-          big impact.
-        </p>
-
-        <h2>Common Recycling Mistakes</h2>
-        <p>
-          Misunderstanding recycling rules can lead to contamination, making
-          entire batches of recyclables unusable. Avoid these common mistakes:
-        </p>
-        <ul>
-          <li>
-            <strong>Wishful Recycling:</strong> Placing non-recyclable items in
-            the recycling bin, hoping they’ll get recycled anyway.
-          </li>
-          <li>
-            <strong>Dirty Containers:</strong> Recycling dirty food containers
-            can contaminate other recyclables.
-          </li>
-          <li>
-            <strong>Plastic Bags:</strong> Most recycling programs don’t accept
-            plastic bags. Use drop-off locations for proper recycling.
-          </li>
-        </ul>
-        <p>
-          Learn more about recycling best practices from the{" "}
-          <a
-            href="https://www.epa.gov/recycle"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            EPA Recycling Page
-          </a>
-          .
-        </p>
+        <div className="green-box">
+          <h2>Common Recycling Mistakes</h2>
+          <p>
+            Misunderstanding recycling rules can lead to contamination, making
+            entire batches of recyclables unusable. Avoid these common mistakes:
+          </p>
+          <ul>
+            <li>
+              <strong>Wishful Recycling:</strong> Placing non-recyclable items in
+              the recycling bin, hoping they’ll get recycled anyway.
+            </li>
+            <li>
+              <strong>Dirty Containers:</strong> Recycling dirty food containers
+              can contaminate other recyclables.
+            </li>
+            <li>
+              <strong>Plastic Bags:</strong> Most recycling programs don’t accept
+              plastic bags. Use drop-off locations for proper recycling.
+            </li>
+          </ul>
+          <p>
+            Learn more about recycling best practices from the{" "}
+            <a
+              href="https://www.epa.gov/recycle"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              EPA Recycling Page
+            </a>
+            .
+          </p>
+        </div>
       </section>
 
       <section className="quiz-section">
-      <div className="white-box">
-        {isCompleted ? (
-  <div>
-    {progress === 100 ? (
-      <>
-        <h2>Congratulations!</h2>
-        <p>You’ve completed the Waste Module!</p>
-        <p>
-          Apply these tips to reduce your carbon footprint and make your dorm
-          more sustainable.
-        </p>
-        <button onClick={() => navigate("/educational")}>
-          Back to Educational Resources
-        </button>
-      </>
-    ) : (
-      <>
-        <h2>Oops!</h2>
-        <p>
-          It seems like you didn’t get all the answers right. Try again to
-          complete the module!
-        </p>
-        <button onClick={() =>  navigate("/educational")}>
-          Back to Educational Resources
-        </button>
-      </>
-    )}
-  </div>
-) : (
-  <>
-    <h2>Quick Quiz</h2>
-    <p>{questions[currentQuestion].question}</p>
-    <form onSubmit={handleQuizSubmit}>
-      {questions[currentQuestion].answers.map((answer, index) => (
-        <label key={index}>
-          <input
-            type="radio"
-            name="answer"
-            value={answer}
-            onChange={() => handleAnswerChange(answer)}
-            checked={quizAnswers[questions[currentQuestion].id] === answer}
-          />
-          {answer}
-        </label>
-      ))}
-      <div className="navigation-buttons">
-        <button
-          type="button"
-          onClick={handlePrevious}
-          disabled={currentQuestion === 0}
-        >
-          Previous
-        </button>
-        <button
-          type="submit"
-          disabled={!quizAnswers[questions[currentQuestion].id]}
-        >
-          Submit
-        </button>
-        <button
-          type="button"
-          onClick={handleNext}
-          disabled={!quizFeedback}
-        >
-          Next
-        </button>
-      </div>
-    </form>
-    {quizFeedback && <p className="quiz-feedback">{quizFeedback}</p>}
-  </>
-)}
-         
+        <div className="white-box">
+          {isCompleted ? (
+            <div>
+              {progress === 100 ? (
+                <>
+                  <h2>Congratulations!</h2>
+                  <p>You’ve completed the Waste Module!</p>
+                  <button onClick={() => navigate("/educational")}>
+                    Back to Educational Resources
+                  </button>
+                </>
+              ) : (
+                <>
+                  <h2>Oops!</h2>
+                  <p>
+                    It seems like you didn’t get all the answers right. Try again to
+                    complete the module!
+                  </p>
+                  <button onClick={() => navigate("/educational")}>
+                    Back to Educational Resources
+                  </button>
+                </>
+              )}
+            </div>
+          ) : (
+            <>
+              <h2>Quick Quiz</h2>
+              <p>{questions[currentQuestion].question}</p>
+              <form onSubmit={handleQuizSubmit}>
+                {questions[currentQuestion].answers.map((answer, index) => (
+                  <label key={index}>
+                    <input
+                      type="radio"
+                      name="answer"
+                      value={answer}
+                      onChange={() => handleAnswerChange(answer)}
+                      checked={quizAnswers[questions[currentQuestion].id] === answer}
+                    />
+                    {answer}
+                  </label>
+                ))}
+                <div className="navigation-buttons">
+                  <button type="button" onClick={handlePrevious} disabled={currentQuestion === 0}>
+                    Previous
+                  </button>
+                  <button type="submit" disabled={!quizAnswers[questions[currentQuestion].id]}>
+                    Submit
+                  </button>
+                  <button type="button" onClick={handleNext} disabled={!quizFeedback}>
+                    Next
+                  </button>
+                </div>
+              </form>
+              {quizFeedback && <p className="quiz-feedback">{quizFeedback}</p>}
+            </>
+          )}
         </div>
-                  
       </section>
-       {/* Progress Bar */}
-       <section className="progress-section">
-                <h2>Your Progress</h2>
-                <ProgressBar points={progress} />
-              </section>
+
+      <section className="progress-section">
+        <h2>Your Progress</h2>
+        <ProgressBar points={progress} />
+      </section>
     </div>
   );
 };
 
 export default WasteModule;
-
-
-
-

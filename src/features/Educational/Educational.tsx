@@ -2,6 +2,7 @@ import React from 'react';
 import { useNavigate } from 'react-router-dom';
 import Map from '@features/Map/Map';
 import './Educational.css';
+import Footer from '@components/Footer/Footer';
 
 const Educational: React.FC = () => {
   const navigate = useNavigate();
@@ -121,6 +122,7 @@ const Educational: React.FC = () => {
      
         <Map />
       </section>
+      <Footer/>
     </div>
   );
 };
