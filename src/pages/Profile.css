@@ -246,11 +246,12 @@ h1, h2, h3, h4, h5, p, label, button, button:hover, button:active, input, input:
 
 .expand-popup-button {
   cursor:text;
-  transition: transform 0.6s ease;
+  transition: transform 0.5s ease;
 }
 
 .expand-popup-button:hover {
   transform: translateX(8px);
+  transition: transform 0.5s ease;
 }
 
 .expand-popup-button:active {
@@ -267,12 +268,14 @@ h1, h2, h3, h4, h5, p, label, button, button:hover, button:active, input, input:
   
   width: 24px;
   height: 24px;
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 }
 
 .close-popup-button:active {
   
   width: 22px;
   height: 22px;
+  transition: width 0.3s ease-in-out, height 0.3s ease-in-out;
 }
 
 .edit-button {
