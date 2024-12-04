@@ -72,17 +72,19 @@ function Chatbot() {
       {isVisible ? (
         <div className={`chat-container ${isExpanded ? "expanded" : ""}`}>
           <div className="top-bar">
-            <button
-              className="close-button"
-              onClick={() => setIsVisible(false)}
-            >
-              ✖
+            <button onClick={() => setIsExpanded(!isExpanded)}>
+              <img
+                src="/icons/arrow_green.png"
+                alt="expand"
+                className={`expand-button ${isExpanded ? "expanded" : ""}`}
+              />
             </button>
-            <button
-              className="expand-button"
-              onClick={() => setIsExpanded(!isExpanded)}
-            >
-              {isExpanded ? "🔽" : "🔼"}
+            <button onClick={() => setIsVisible(false)}>
+              <img
+                src="/icons/close.png"
+                alt="close"
+                className="close-button"
+              />
             </button>
           </div>
           <div className={`chat-history ${isExpanded ? "expanded" : ""}`}>
@@ -103,6 +105,7 @@ function Chatbot() {
               ))
             )}
           </div>
+
           <div className="message-input">
             <input
               type="text"
@@ -116,13 +119,13 @@ function Chatbot() {
               onClick={() => handleSend()}
               disabled={isRequestPending}
             >
-              ➤
+              <img src="/icons/arrow.png" alt="chat" width="16px" />
             </button>
           </div>
         </div>
       ) : (
         <button className="open-chat-button" onClick={() => setIsVisible(true)}>
-          💬
+          <img src="/icons/chat.png" alt="chat" width="24px" />
         </button>
       )}
     </div>
