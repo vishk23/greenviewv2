@@ -172,30 +172,35 @@ const Profile: React.FC = () => {
         <div className="popup">
           <div className="popup-title">
             <h2>Read Me</h2>
-            <button
-              onClick={() => setFlippedIndex(null)}
-              className="close-button"
-            >
-              <img src="/icons/close.png" className="close-button" alt="" />
+            <button onClick={() => setFlippedIndex(null)}>
+              <img
+                src="/icons/close.png"
+                alt=""
+                className="close-popup-button"
+                width="24px"
+              />
             </button>
           </div>
-          <p>{renderDescription(flippedIndex)}</p>
+          <div className="popup-description">
+            <p>{renderDescription(flippedIndex)}</p>
+          </div>
         </div>
       )}
       <div className="profile-page">
         <div className="profile-info">
           <div className="profile-title">
-            {isEditing ? (
-              <input
-                type="text"
-                value={name}
-                onChange={(e) => setName(e.target.value)}
-              />
-            ) : (
-              <h2>{profileData?.name || "Not set"}</h2>
-            )}
+            <>
+              {isEditing ? (
+                <input
+                  type="text"
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                />
+              ) : (
+                <h2>{profileData?.name || "Not set"}</h2>
+              )}
+            </>
             <button
-              className="edit-button"
               onClick={() => {
                 if (isEditing) {
                   handleSaveProfile();
@@ -291,19 +296,17 @@ const Profile: React.FC = () => {
             History{" "}
             {showHistory ? (
               <button
-                className="expand-button"
                 onClick={() => setShowHistory(false)}
+                className="expand-popup-button"
               >
-                {" "}
-                &lt;{" "}
+                &lt;
               </button>
             ) : (
               <button
-                className="expand-button"
                 onClick={() => setShowHistory(true)}
+                className="expand-popup-button"
               >
-                {" "}
-                &gt;{" "}
+                &gt;
               </button>
             )}
           </h2>

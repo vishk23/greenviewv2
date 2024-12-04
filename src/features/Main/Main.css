@@ -209,15 +209,5 @@
 .slick-next:hover {
     background-color: #F06D3C;
 }
-
-input[type="text"], input[type="phone"] {
-    background-color: #9FC37B;
-    color: rgba(255, 248, 235, 0.8);
-    border: 1px solid #FFF8EB !important;
-}
-
-input[type="text"]::placeholder, input[type="phone"]::placeholder {
-    color: rgba(255, 248, 235, 0.6);
-}
   
 
