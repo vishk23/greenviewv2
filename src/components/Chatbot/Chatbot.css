@@ -1,7 +1,3 @@
-h1, h2, h3, h4, h5, p, label, button, button:hover, button:active, input, input:focus{
-  all:unset;
-}
-
 .chat-container {
   display: flex;
   flex-direction: column;
@@ -156,11 +152,9 @@ h1, h2, h3, h4, h5, p, label, button, button:hover, button:active, input, input:
 }
 
 .message-input input{
-  width: calc(100% - 36px)
-}
-
-.message-input input:focus{
-  width: calc(100% - 36px)
+  width: calc(100% - 36px);
+  border: transparent;
+  outline: none;
 }
 
 .send-button {

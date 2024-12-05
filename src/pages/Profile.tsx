@@ -312,7 +312,7 @@ const Profile: React.FC = () => {
           </h2>
         </div>
         {showHistory ? (
-          <ResponsiveContainer width="80%" height="30%" minHeight="160px">
+          <ResponsiveContainer width="80%" height="30%" minHeight="240px">
             <LineChart
               width={500}
               height={300}
