@@ -9,7 +9,6 @@ import Leaderboard from "@features/Leaderboard/Leaderboard";
 import CollapsibleBox from "@components/CollapsibleBox/CollapsibleBox";
 import { generateAISummary } from "../../utils/aiUtils";
 import { saveUserScore } from "../../utils/scoreUtils";
-import "./Score.css";
 import { motion, AnimatePresence } from "framer-motion";
 
 interface ScoreProps {
