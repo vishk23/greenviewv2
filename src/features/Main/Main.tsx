@@ -4,13 +4,11 @@ import { db } from '@services/firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import Slider from 'react-slick';
 import './Main.css';
-import { sliderSettings } from './SliderSetting';
 import EventCard from './EventCard';
 import './EventCard.css';
-import  {EventSliderSettings} from './EventSliderSettings';
 import Footer from '@components/Footer/Footer';
 import Map from '@features/Map/Map';
-
+import CustomArrow from './arrow';
 
 interface Event {
   id: string;
@@ -38,36 +36,34 @@ const MainPage: React.FC = () => {
       title: "In the past 12 months, CDS averaged 42.13 tons of waste...",
       description: "Curious about your individual impact on the environment?",
       imageUrl: "/assets/CDS.gif"
-  },
-    {
-        title: "In the past 12 months, Warren Towers averaged 253.35 tons of waste...",
-        description: "Curious about your individual impact on the environment?",
-        imageUrl: "/assets/warren.gif"
     },
     {
-        title: "In the past 12 months, Stuvi averaged 266.8 tons of waste...",
-        description: "Curious about your individual impact on the environment?",
-        imageUrl: "/assets/StuVi_1.gif"
+      title: "In the past 12 months, Warren Towers averaged 253.35 tons of waste...",
+      description: "Curious about your individual impact on the environment?",
+      imageUrl: "/assets/warren.gif"
     },
     {
-        title: "In the past 12 months, West averaged 254.52 tons of waste...",
-        description: "Curious about your individual impact on the environment?",
-        imageUrl: "/assets/west.gif"
+      title: "In the past 12 months, Stuvi averaged 266.8 tons of waste...",
+      description: "Curious about your individual impact on the environment?",
+      imageUrl: "/assets/StuVi_1.gif"
     },
-], []);
+    {
+      title: "In the past 12 months, West averaged 254.52 tons of waste...",
+      description: "Curious about your individual impact on the environment?",
+      imageUrl: "/assets/west.gif"
+    },
+  ], []);
 
-useEffect(() => {
-  heroSlides.forEach((slide) => {
-    const img = new Image();
-    img.src = slide.imageUrl;
-  });
-}, [heroSlides]);
+  useEffect(() => {
+    heroSlides.forEach((slide) => {
+      const img = new Image();
+      img.src = slide.imageUrl;
+    });
+  }, [heroSlides]);
 
-const handleBeforeChange = (current: number, next: number) => {
-  setActiveSlide(next); // Update active slide index
-};
-
-
+  const handleBeforeChange = (current: number, next: number) => {
+    setActiveSlide(next); // Update active slide index
+  };
 
   useEffect(() => {
     const fetchEvents = async () => {
@@ -102,12 +98,33 @@ const handleBeforeChange = (current: number, next: number) => {
     fetchEvents();
   }, []);
 
-
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: true, // Disable default arrows
+    prevArrow: <CustomArrow direction="left" />,
+    nextArrow: <CustomArrow direction="right" />,
+  };
+  
+  const eventSliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    arrows: false, // Disable default arrows
+    prevArrow: <CustomArrow direction="left" />,
+    nextArrow: <CustomArrow direction="right" />,
+  };
+  
 
   return (
     <div className="main-page">
       <div className="hero-slider">
-      <Slider
+        <Slider
           {...sliderSettings}
           ref={sliderRef}
           beforeChange={handleBeforeChange}
@@ -117,7 +134,7 @@ const handleBeforeChange = (current: number, next: number) => {
               <div className="text-container">
                 <h1>{slide.title}</h1>
                 <p>{slide.description}</p>
-                <button 
+                <button
                   className="take-quiz-button"
                   onClick={() => navigate('/score')}
                 >
@@ -140,19 +157,19 @@ const handleBeforeChange = (current: number, next: number) => {
 
       <div className="events-section">
         <h2 className="events-title">Upcoming Events on Campus</h2>
-        <Slider {...EventSliderSettings}>
-  {events.map((event) => (
-    <EventCard
-      key={event.id}
-      date={event.start.toLocaleDateString([], { day: 'numeric' })}
-      weekday={event.start.toLocaleDateString([], { weekday: 'long' })}
-      title={event.title}
-      location={event.location}
-      time={`${event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - 
-             ${event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
-    />
-  ))}
-</Slider>
+        <Slider {...eventSliderSettings}>
+          {events.map((event) => (
+            <EventCard
+              key={event.id}
+              date={event.start.toLocaleDateString([], { day: 'numeric' })}
+              weekday={event.start.toLocaleDateString([], { weekday: 'long' })}
+              title={event.title}
+              location={event.location}
+              time={`${event.start.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })} - 
+                    ${event.end.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}`}
+            />
+          ))}
+        </Slider>
 
         <p className="calendar-text">Take a look at our calendar for more events happening around you!</p>
         <button onClick={() => navigate('/calendar')} className="calendar-button">
@@ -160,11 +177,9 @@ const handleBeforeChange = (current: number, next: number) => {
         </button>
       </div>
 
-      <Footer/>
+      <Footer />
 
     </div>
-
-    
   );
 };
 

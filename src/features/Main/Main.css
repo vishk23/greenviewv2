@@ -185,29 +185,30 @@
     top: 50%;
     transform: translateY(-50%);
     z-index: 2;
-    width: 30px;
-    height: 30px;
-    background-color: #F06D3C;
-    color: white;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    color: #9FC37B; /* Correct green color */
+    font-size: 60px; /* Adjust arrow size */
     cursor: pointer;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.2);
+    background: none; /* Remove background circle */
+    border: none; /* Remove any border */
+    box-shadow: none; /* Remove shadow */
+    display: block; /* Ensure the arrows are visible */
+}
+
+/* Remove default arrows from react-slick */
+.slick-prev:before,
+.slick-next:before {
+    content: none !important; /* Ensure no default arrows are shown */
 }
 
 .slick-prev {
-    left: -40px; /* Adjust left arrow position */
+    left: 20px; /* Position the left arrow */
 }
 
 .slick-next {
-    right: -40px; /* Adjust right arrow position */
+    right: 20px; /* Position the right arrow */
 }
 
 .slick-prev:hover,
 .slick-next:hover {
-    background-color: #F06D3C;
+    color: #9FC37B; /* Slightly darker green on hover */
 }
-  
-
