@@ -1,30 +1,37 @@
 @import url('https://fonts.googleapis.com/css2?family=Glacial+Indifference:wght@400;700&display=swap');
 
+.edu-page {
+  background-color: #FFF8EB;
+  min-height: 100vh;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .educational-page {
-  padding: 40px;
+  padding: 40px 20px;
   max-width: 1200px;
   margin: 0 auto;
 }
 
 .educational-header {
   text-align: center;
-  margin-bottom: 10px;
+  color: #545F48;
+  margin-bottom: 60px;
 }
 
 .educational-header h1 {
-  color: rgba(159, 195, 123, 1);
-  font-size: 2.5rem;
+  font-size: 3.5rem;
+  font-weight: 600;
   margin-bottom: 20px;
-  font-weight: 500;
+  color: #3a5a40;
 }
 
 .educational-header p {
-  color: #444;
-  font-size: 1.2rem;
+  font-size: 1.4rem;
   line-height: 1.6;
   max-width: 800px;
   margin: 0 auto;
-  padding: 0 20px;
+  color: #545F48;
 }
 
 .modules-container {
@@ -43,19 +50,19 @@
   justify-content: center;
   margin: 0 auto 60px;
   max-width: 1200px;
+  padding: 0 20px;
 }
 
 .module-card {
   background: white;
   border: 2px solid rgba(159, 195, 123, 0.3);
-  border-radius: 10px;
-  padding: 20px;
-  text-align: center;
-  transition: all 0.3s ease;
+  border-radius: 12px;
+  padding: 30px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  height: 100%;
+  gap: 20px;
+  transition: transform 0.3s ease;
 }
 
 .module-card:hover {
@@ -150,10 +157,11 @@
 }
 
 .modules-section-header h2 {
-  color: rgba(159, 195, 123, 1);
-  font-size: 2rem;
-  font-weight: normal;
-  margin-bottom: 20px;
+  font-size: 2.8rem;
+  font-weight: 500;
+  color: #3a5a40;
+  text-align: center;
+  margin-bottom: 40px;
 }
 
 .modules-grid {
@@ -163,6 +171,7 @@
   justify-content: center;
   margin: 0 auto 60px;
   max-width: 1200px;
+  padding: 0 20px;
 }
 
 .module-card {
@@ -219,4 +228,53 @@
 
 .featured-video-section {
   margin-top: 20px;
+}
+
+.module-title h3 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  color: #3a5a40;
+  margin: 15px 0;
+}
+
+.module-description {
+  font-size: 1.2rem;
+  line-height: 1.5;
+  color: #545F48;
+}
+
+@media (max-width: 768px) {
+  .educational-header h1 {
+    font-size: 2.8rem;
+  }
+  
+  .modules-section-header h2 {
+    font-size: 2.2rem;
+  }
+  
+  .module-title h3 {
+    font-size: 1.6rem;
+  }
+
+  .modules-grid {
+    gap: 40px; /* Increased gap between cards on mobile */
+    padding: 0 16px;
+  }
+
+  .module-card {
+    margin: 20px 0; /* Add vertical spacing */
+  }
+}
+
+/* Remove double box around map */
+.map-section {
+  margin: 40px 0;
+  padding: 0 20px;
+}
+
+.map-section iframe {
+  border: none;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
 }

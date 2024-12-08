@@ -2,7 +2,7 @@
 import React, { useEffect, useState, PureComponent } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@services/firebase";
-import { doc, getDoc, updateDoc } from "firebase/firestore";
+import { doc, getDoc, updateDoc, setDoc } from "firebase/firestore";
 import "./Profile.css";
 import {
   LineChart,
@@ -13,6 +13,7 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { getFirestore } from "firebase/firestore";
+import { loginWithEmail, registerWithEmail, logout } from "@services/authService";
 
 interface ScoreEntry {
   score: number;
@@ -57,9 +58,13 @@ const Profile: React.FC = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [flippedIndex, setFlippedIndex] = useState<number | null>(null);
 
+  // Auth states
+  const [isSignUp, setIsSignUp] = useState(false);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [displayName, setDisplayName] = useState("");
-  const [bio, setBio] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   // Fetch Profile Data
   useEffect(() => {
@@ -72,7 +77,6 @@ const Profile: React.FC = () => {
           console.log(data);
           setProfileData(data);
           setDisplayName(data.displayName || "");
-          setBio(data.bio || "");
           setPhoneNumber(data.phoneNumber || "");
           setNotificationsEnabled(data.notificationsEnabled || false);
         }
@@ -142,16 +146,105 @@ const Profile: React.FC = () => {
       const userDocRef = doc(db, "users", user.uid);
       await updateDoc(userDocRef, {
         displayName,
-        bio,
         phoneNumber,
         email: profileData.email,
         notificationsEnabled: profileData.notificationsEnabled || false,
       });
 
-      setProfileData({ ...profileData, displayName, bio, phoneNumber });
+      setProfileData({ ...profileData, displayName,  phoneNumber });
       setIsEditing(false);
     }
   };
+
+  const handleLogin = async () => {
+    try {
+      await loginWithEmail(email, password);
+      setErrorMessage("");
+    } catch (error) {
+      setErrorMessage("Login failed. Please try again.");
+    }
+  };
+
+  const handleSignUp = async () => {
+    try {
+      const user = await registerWithEmail(email, password, displayName, phoneNumber);
+  
+      if (user) {
+        await setDoc(doc(db, "users", user.uid), {
+          displayName,
+          email,
+          phoneNumber,
+          notificationsEnabled: false,
+          bio: "",
+        });
+        setErrorMessage("");
+      } else {
+        setErrorMessage("Sign-up failed. Please try again.");
+      }
+    } catch (error) {
+      setErrorMessage("Sign-up failed. Please try again.");
+      console.error("Sign-up error:", error);
+    }
+  };
+
+  if (!user) {
+    return (
+      <div className="auth-container">
+        <div className="auth-box">
+          <h2>{isSignUp ? "Create Account" : "Login"}</h2>
+          {errorMessage && <p className="error-message">{errorMessage}</p>}
+          
+          {isSignUp && (
+            <>
+              <input
+                type="text"
+                value={displayName}
+                onChange={(e) => setDisplayName(e.target.value)}
+                placeholder="Display Name"
+                className="auth-input"
+              />
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) => setPhoneNumber(e.target.value)}
+                placeholder="Phone Number"
+                className="auth-input"
+              />
+            </>
+          )}
+          
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="Email"
+            className="auth-input"
+          />
+          <input
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="Password"
+            className="auth-input"
+          />
+          
+          <button 
+            onClick={isSignUp ? handleSignUp : handleLogin}
+            className="auth-button"
+          >
+            {isSignUp ? "Sign Up" : "Login"}
+          </button>
+          
+          <button 
+            onClick={() => setIsSignUp(!isSignUp)}
+            className="auth-toggle"
+          >
+            {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="background123">
@@ -171,7 +264,11 @@ const Profile: React.FC = () => {
       {flippedIndex !== null && (
         <div className="popup">
           <div className="popup-title">
-            <h2>Read Me</h2>
+            <h2>
+              {flippedIndex < 100 
+                ? scoreData?.structuredSummary.strengths[flippedIndex].area
+                : scoreData?.structuredSummary.improvement[flippedIndex - 100].area}
+            </h2>
             <button onClick={() => setFlippedIndex(null)}>
               <img
                 src="/icons/close.png"
@@ -188,8 +285,8 @@ const Profile: React.FC = () => {
       )}
       <div className="profile-page">
         <div className="profile-info">
-          <div className="profile-title">
-            <>
+          <div className="profile-header">
+            <div className="profile-title">
               {isEditing ? (
                 <input
                   type="text"
@@ -199,16 +296,19 @@ const Profile: React.FC = () => {
               ) : (
                 <h2>{profileData?.displayName || "Not set"}</h2>
               )}
-            </>
-            <button
-              onClick={() => {
-                if (isEditing) {
-                  handleSaveProfile();
-                }
-                setIsEditing((prev) => !prev);
-              }}
-            >
-              <img className="edit-button" src="/icons/edit.png" alt="Edit" />
+              <button
+                onClick={() => {
+                  if (isEditing) {
+                    handleSaveProfile();
+                  }
+                  setIsEditing((prev) => !prev);
+                }}
+              >
+                <img className="edit-button" src="/icons/edit.png" alt="Edit" />
+              </button>
+            </div>
+            <button onClick={logout} className="logout-button">
+              Logout
             </button>
           </div>
           <p style={isEditing ? { marginTop: 8 } : {}}>

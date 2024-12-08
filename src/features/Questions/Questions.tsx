@@ -242,17 +242,15 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
     const previousAnswerIndex = previousAnswers[currentQuestion];
 
     // Log the actual choices
-    console.log("Current choice index:", answerIndex);
-    console.log("Previous answer index:", previousAnswerIndex);
 
     if (previousAnswerIndex !== undefined) {
       if (answerIndex < previousAnswerIndex) {
         // Pulse green (better choice - lower index means better answer)
-        console.log("green");
+
         setPulseColor("green");
       } else if (answerIndex > previousAnswerIndex) {
         // Pulse red (worse choice - higher index means worse answer)
-        console.log("red");
+
         setPulseColor("red");
       } else {
         setPulseColor(null);
@@ -389,14 +387,12 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                 >
                   {isSignUp ? "Sign Up" : "Login"}
                 </button>
-                <button
+                <span 
                   onClick={() => setIsSignUp(!isSignUp)}
                   className="auth-toggle"
                 >
-                  {isSignUp
-                    ? "Already have an account? Login"
-                    : "Don't have an account? Sign Up"}
-                </button>
+                  {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+                </span>
               </div>
             )}
           </motion.div>

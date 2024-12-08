@@ -1,3 +1,27 @@
+@font-face {
+  font-family: 'Glacial Indifference';
+  src: url('/public/fonts/GlacialIndifference-Regular.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: 'Glacial Indifference';
+  src: url('/public/fonts/GlacialIndifference-Bold.otf') format('opentype');
+  font-weight: bold;
+  font-style: normal;
+}
+
+/* Apply the font to all elements */
+* {
+  font-family: 'Glacial Indifference', sans-serif;
+}
+
+html, body {
+  max-width: 100%;
+  overflow-x: hidden;
+}
+
 .background123 {
   display: flex;
   justify-content: flex-end; /* Push child elements to the right */
@@ -19,6 +43,7 @@
   width: 60%;
   background-color: #fff8eb;
   z-index: 10;
+  overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
 .profile-info, .statement, .badges {
@@ -33,16 +58,19 @@
 }
 
 .profile-info h2 {
-  margin: 0%;
-  padding: 0%;
-  font-size: 36px;
-  font-weight: 500;
+  margin: 0;
+  padding: 0;
+  font-size: 42px;
+  font-weight: 600;
   color: #9FC37B;
+  letter-spacing: 0.5px;
 }
 
 .profile-info p {
-  font-size: 16px;
-  margin: 0;
+  font-size: 18px;
+  margin: 8px 0;
+  color: #545F48;
+  line-height: 1.6;
 }
 
 .profile-title {
@@ -53,20 +81,21 @@
 }
 
 .profile-info input {
-  font-size: 24px; /* Match font size of .profile-info h2 */
-  font-weight: 500; /* Match font weight of .profile-info h2 */
-  color: #9FC37B; /* Match text color */
-  border: 1px solid #ccc; /* Optional: add a border for inputs */
-  border-radius: 4px; /* Optional: rounded corners */
-  padding: 5px 10px; /* Add padding for a better look */
+  font-size: 28px;
+  font-weight: 500;
+  color: #9FC37B;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 16px;
   margin-top: 20px;
-  width: 25%; /* Adjust width to fit nicely */
-  outline: none; /* Remove default focus outline */
+  width: 25%;
+  outline: none;
+  transition: all 0.3s ease;
 }
 
 .profile-info input:focus {
-  border-color: #9FC37B; /* Highlight border on focus */
-  box-shadow: 0 0 4px rgba(159, 195, 123, 0.5); /* Add subtle shadow */
+  border-color: #9FC37B;
+  box-shadow: 0 0 0 3px rgba(159, 195, 123, 0.2);
 }
 
 .profile-info p input {
@@ -100,9 +129,12 @@
 }
 
 .statement h2 {
-  font-size: 36px;
+  font-size: 42px;
   font-weight: 700;
   color: #9FC37B;
+  text-align: center;
+  margin: 30px 0;
+  letter-spacing: 0.5px;
 }
 
 .area {
@@ -120,9 +152,11 @@
 }
 
 .area-section h2, .badges h2 {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: #9FC37B;
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
 }
 
 .card-section {
@@ -186,9 +220,11 @@
 }
 
 .history h2 {
-  font-size: 24px;
+  font-size: 28px;
   font-weight: 700;
   color: #9FC37B;
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
 }
 
 .popup {
@@ -293,37 +329,37 @@
 }
 
 .notification {
-  display: inline-flex; /* Use flexbox for centering */
-  justify-content: center; /* Center content horizontally */
-  align-items: center; /* Center content vertically */
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
   width: 200px;
   height: 20px;
-  padding: 10px 10px; /* Adjust padding for button size */
-  font-size: 16px; /* Set font size */
-  border: none; /* Remove default border */
-  border-radius: 5px; /* Optional: rounded corners */
-  background-color: #9FC37B; /* Button background color */
-  color: white; /* Text color */
-  cursor: pointer; /* Pointer cursor on hover */
-  transition: background-color 0.3s ease; /* Smooth background transition */
+  padding: 10px 10px;
+  font-size: 18px;
+  border: none;
+  border-radius: 5px;
+  background-color: #9FC37B;
+  color: white;
+  cursor: pointer;
+  transition: all 0.3s ease;
 }
 
 .notification:hover {
   width: 200px;
   height: 20px;
-  background-color: #545F48; /* Darker blue on hover */
+  background-color: #8baf67;
 }
 
 .notification:active {
   width: 196px;
   height: 16px;
   margin: 2px;
-  background-color: #545F48; /* Darker blue on hover */
+  background-color: #8baf67;
 }
 
 .notification p {
-  color: white; /* Text color */
-  margin: 0; /* Remove default margin from <p> */
+  color: white;
+  margin: 0;
 }
 
 @media (max-width: 768px) {
@@ -378,4 +414,289 @@
   .profile-info input {
     width: 65%;
   }
+}
+
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  padding: 20px;
+  background: url('/public/questions_background.gif') center/cover no-repeat;
+  position: relative;
+}
+
+.auth-container::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(8px);
+}
+
+.auth-box {
+  position: relative;
+  background: rgba(255, 255, 255, 0.95);
+  padding: 2.5rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+  text-align: center;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.auth-box h2 {
+  color: #9FC37B;
+  margin-bottom: 1.5rem;
+  font-size: 1.8rem;
+  font-weight: 600;
+}
+
+.auth-input {
+  width: 100%;
+  padding: 12px 16px;
+  margin: 10px 0;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 16px;
+  transition: all 0.3s ease;
+  background: rgba(255, 255, 255, 0.9);
+  text-align: center;
+  box-sizing: border-box;
+}
+
+.auth-input::placeholder {
+  text-align: center;
+  color: #999;
+  transition: color 0.3s ease;
+}
+
+.auth-input:focus::placeholder {
+  color: #bbb;
+}
+
+.auth-input:focus {
+  border-color: #9FC37B;
+  outline: none;
+  box-shadow: 0 0 0 3px rgba(159, 195, 123, 0.2);
+}
+
+.auth-button {
+  width: 200px; /* Fixed width */
+  padding: 14px;
+  margin: 20px auto; /* Center horizontally */
+  background-color: #9FC37B;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  transition: all 0.3s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  display: block; /* Ensures block-level */
+}
+
+.auth-button:hover {
+  background-color: #8baf67;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(159, 195, 123, 0.2);
+}
+
+.auth-button:active {
+  transform: translateY(0);
+}
+
+.auth-toggle {
+  background: none;
+  border: none;
+  color: #666;
+  cursor: pointer;
+  font-size: 14px;
+  padding: 8px 16px;
+  margin-top: 10px;
+  transition: all 0.3s ease;
+  text-decoration: none;
+  position: relative;
+}
+
+.auth-toggle:hover {
+  color: #9FC37B;
+}
+
+.auth-toggle::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: 0;
+  left: 50%;
+  background-color: #9FC37B;
+  transition: all 0.3s ease;
+}
+
+.auth-toggle:hover::after {
+  width: 80%;
+  left: 10%;
+}
+
+.error-message {
+  color: #e74c3c;
+  background: rgba(231, 76, 60, 0.1);
+  padding: 12px 16px;
+  border-radius: 8px;
+  margin: 10px auto;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  max-width: 90%;
+  text-align: center;
+  border: 1px solid rgba(231, 76, 60, 0.2);
+}
+
+.error-message::before {
+  content: '⚠️';
+  margin-right: 8px;
+  font-size: 16px;
+}
+
+.profile-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: calc(100% - 120px); /* Subtract padding from total width */
+  margin-bottom: 20px;
+  padding-right: 60px; /* Match the padding-left from parent */
+}
+
+.profile-title {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.profile-info h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 42px;
+  font-weight: 600;
+  color: #9FC37B;
+  letter-spacing: 0.5px;
+}
+
+.profile-info p {
+  font-size: 18px;
+  margin: 8px 0;
+  color: #545F48;
+  line-height: 1.6;
+}
+
+.profile-info p strong {
+  color: #9FC37B;
+  font-weight: 600;
+}
+
+.logout-button {
+  padding: 12px 24px;
+  background-color: #F06D3C;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  transition: all 0.3s ease;
+  margin-right: 0; /* Reset any margin */
+}
+
+.logout-button:hover {
+  background-color: #e85d2c;
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(240, 109, 60, 0.2);
+}
+
+.logout-button:active {
+  transform: translateY(0);
+}
+
+.statement h2 {
+  font-size: 42px;
+  font-weight: 700;
+  color: #9FC37B;
+  text-align: center;
+  margin: 30px 0;
+  letter-spacing: 0.5px;
+}
+
+.area h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #9FC37B;
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
+}
+
+.badges h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #9FC37B;
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
+}
+
+.history h2 {
+  font-size: 28px;
+  font-weight: 700;
+  color: #9FC37B;
+  margin-bottom: 16px;
+  letter-spacing: 0.3px;
+}
+
+/* Enhance input styling */
+.profile-info input {
+  font-size: 28px;
+  font-weight: 500;
+  color: #9FC37B;
+  border: 2px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 8px 16px;
+  margin-top: 20px;
+  width: 25%;
+  outline: none;
+  transition: all 0.3s ease;
+}
+
+.profile-info input:focus {
+  border-color: #9FC37B;
+  box-shadow: 0 0 0 3px rgba(159, 195, 123, 0.2);
+}
+
+/* Media query for mobile responsiveness */
+@media (max-width: 768px) {
+  .profile-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 16px;
+  }
+
+  .logout-button {
+    align-self: flex-end;
+  }
+
+  .profile-info input {
+    width: 100%;
+  }
+}
+
+.popup-description p {
+  font-size: 18px;
+  line-height: 1.6;
 }

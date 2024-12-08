@@ -3,14 +3,14 @@ import { Calendar as BigCalendar, dateFnsLocalizer } from "react-big-calendar";
 import { format, parse, startOfWeek, getDay } from "date-fns";
 import { enUS } from "date-fns/locale/en-US";
 import "react-big-calendar/lib/css/react-big-calendar.css";
+import "./Calendar.css";
 import CustomToolbar from "./CustomToolbar";
 import EventDetails from "./EventDetails";
 import { MyEvent } from "./Events";
 import { db } from "@services/firebase";
 import { collection, getDocs } from "firebase/firestore";
-import CalendarStyles from "./CalendarStyles";
-import { generateICS } from "../../utils/icsUtils";
 import Footer from "@components/Footer/Footer";
+import { generateICS } from "../../utils/icsUtils";
 
 const locales = { "en-US": enUS };
 const localizer = dateFnsLocalizer({
@@ -68,37 +68,33 @@ const MyCalendar: React.FC = () => {
   };
 
   return (
-    <div style={CalendarStyles.pageContainer}>
-      <header style={CalendarStyles.header}>
-        <h1 style={CalendarStyles.headerText}>Events Calendar</h1>
+    <div className="calendar-page">
+      <header className="calendar-header">
+        <h1>Events Calendar</h1>
       </header>
-      <div style={CalendarStyles.container}>
-        <div style={CalendarStyles.calendarContainer}>
+      <div className="calendar-container">
+        <div className="calendar-main">
           <BigCalendar
             localizer={localizer}
             events={events}
             startAccessor="start"
             endAccessor="end"
-            style={{ height: "100%" }}
+            style={{ height: 800 }}
             onSelectEvent={handleEventClick}
             eventPropGetter={eventPropGetter}
             views={["month"]}
             defaultView="month"
             components={{ toolbar: CustomToolbar }}
-            toolbar={true}
-            popup={false}
           />
-          <div style={CalendarStyles.buttonContainer}>
-            <button
-              onClick={() => generateICS(events)}
-              style={CalendarStyles.button}
-            >
-              Download Calendar
-            </button>
-          </div>
+          <button 
+            className="download-button"
+            onClick={() => generateICS(events)}
+          >
+            Download Calendar
+          </button>
         </div>
         {selectedEvent && (
-          <div style={CalendarStyles.eventDetailsContainer}>
+          <div className="event-details-panel">
             <EventDetails
               event={selectedEvent}
               onClose={() => setSelectedEvent(null)}

@@ -126,9 +126,12 @@ const Educational: React.FC = () => {
       </section>
 
       <section className="map-section">
-      <h1 style={{ fontSize:'30px',fontWeight: 'normal',textAlign: 'center' }}>Have your own water bottle but don't know where to refill it?</h1>
-      <p style={{fontSize: '20px',textAlign:'center'}}>Use the map below to explore BU's refill stations!</p>
-     
+        <h1 style={{ fontSize:'30px', fontWeight: 'normal', textAlign: 'center' }}>
+          Have your own water bottle but don't know where to refill it?
+        </h1>
+        <p style={{fontSize: '20px', textAlign:'center'}}>
+          Use the map below to explore BU's refill stations!
+        </p>
         <Map />
       </section>
       

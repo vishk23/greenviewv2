@@ -1,0 +1,160 @@
+.calendar-page {
+  background-color: #FFF8EB;
+  min-height: 100vh;
+  padding: 40px 20px;
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.calendar-header {
+  text-align: center;
+  margin-bottom: 40px;
+}
+
+.calendar-header h1 {
+  font-size: 2.8rem;
+  color: #3a5a40;
+  font-weight: 500;
+}
+
+.calendar-container {
+  max-width: 1400px;
+  margin: 0 auto;
+  background: white;
+  padding: 30px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  margin-bottom: 60px;
+  flex: 1;
+  display: flex;
+  gap: 20px;
+}
+
+.calendar-main {
+  flex: 3;
+  min-width: 0;
+  width: 100%;
+}
+
+/* Override react-big-calendar styles */
+.rbc-calendar {
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  height: 800px !important;
+}
+
+.rbc-event {
+  background-color: #9FC37B !important;
+  border: none !important;
+  border-radius: 4px !important;
+  color: white !important;
+}
+
+.rbc-event.rbc-selected {
+  background-color: #F15824 !important;
+}
+
+.rbc-today {
+  background-color: rgba(159, 195, 123, 0.1) !important;
+}
+
+.rbc-header {
+  padding: 10px !important;
+  font-weight: 500 !important;
+  color: #3a5a40 !important;
+}
+
+.rbc-button-link {
+  color: #545F48 !important;
+}
+
+.download-button {
+  display: block;
+  margin: 30px auto;
+  background-color: #9FC37B;
+  color: white;
+  border: none;
+  padding: 12px 24px;
+  border-radius: 6px;
+  font-size: 1.1rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.download-button:hover {
+  background-color: #8baf69;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.event-details-panel {
+  flex: 1;
+  max-width: 350px;
+  background: white;
+  padding: 20px;
+  border-radius: 8px;
+  margin-top: 0;
+  align-self: flex-start;
+  position: sticky;
+  top: 20px;
+}
+
+.calendar-page .footer {
+  width: 100vw;
+  margin-left: calc(-50vw + 50%);
+  margin-right: calc(-50vw + 50%);
+}
+
+@media (max-width: 768px) {
+  .calendar-header h1 {
+    font-size: 2rem;
+  }
+  
+  .calendar-container {
+    flex-direction: column;
+    padding: 15px;
+    overflow-x: hidden;
+    width: 100%;
+  }
+  
+  .calendar-main {
+    width: 100%;
+    min-width: 100%;
+    overflow-x: hidden;
+  }
+
+  .rbc-calendar {
+    min-width: 0;
+    width: 100%;
+    overflow-x: hidden;
+  }
+
+  .rbc-toolbar {
+    flex-direction: column;
+    align-items: stretch;
+    gap: 10px;
+  }
+
+  .rbc-toolbar button {
+    padding: 6px 12px;
+  }
+
+  .event-details-panel {
+    max-width: 100%;
+    margin-top: 20px;
+    position: static;
+  }
+}
+
+@media (max-width: 1024px) {
+  .calendar-container {
+    flex-direction: column;
+  }
+
+  .event-details-panel {
+    max-width: 100%;
+    margin-top: 20px;
+  }
+}

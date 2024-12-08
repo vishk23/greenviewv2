@@ -73,7 +73,7 @@ export const generateAISummary = async (
         ],
       },
     ],
-    generationConfig: { maxOutputTokens: 500 },
+    generationConfig: { maxOutputTokens: 300 },
   });
 
   const summaryResult = await chat.sendMessage(JSON.stringify(qaPairs));
@@ -92,7 +92,7 @@ export const generateAISummary = async (
     .split("\n")
     .filter((q) => q.trim())
     .map((q) => q.substring(0, q.indexOf("?") + 1))
-    .slice(0, 3);
+    .slice(1, 4);
 
   return {
     summary,

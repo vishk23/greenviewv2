@@ -99,12 +99,13 @@ const MainPage: React.FC = () => {
   }, []);
 
   const sliderSettings = {
-    dots: true,
+    dots: false,
     infinite: true,
     speed: 500,
     slidesToShow: 1,
     slidesToScroll: 1,
     arrows: true, // Disable default arrows
+    button: false,
     prevArrow: <CustomArrow direction="left" />,
     nextArrow: <CustomArrow direction="right" />,
   };
@@ -151,6 +152,7 @@ const MainPage: React.FC = () => {
           ))}
         </Slider>
 
+        <h2 className="map-title">Campus Water Bottle Refill Stations</h2>
         <Map />
 
       </div>

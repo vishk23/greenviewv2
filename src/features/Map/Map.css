@@ -1,30 +1,47 @@
 .map-section {
-    padding: 30px 8%;
-    margin-top: 40px;
-    background-color: var(--background-color);
-    border: 1px solid #ddd;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-  }
-  
-  .map-title {
-    font-size: 1.8rem;
-    color: var(--primary-color);
-    margin-bottom: 15px;
-    font-weight: 600;
-    text-align: center;
-  }
-  
+  width: 100%;
+  padding: 20px 0;
+  overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+.map-container {
+  width: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+  box-sizing: border-box; /* Include padding in width calculation */
+}
+
+.map-frame {
+  width: 100%;
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+iframe {
+  width: 100%;
+  height: 500px;
+  border: none;
+  border-radius: 12px;
+  max-width: 100%; /* Ensure iframe doesn't exceed container width */
+}
+
+@media (max-width: 768px) {
   .map-container {
-    display: flex;
-    justify-content: center;
+    padding: 0 16px;
+    width: 100%;
+    overflow-x: hidden;
   }
   
   .map-frame {
-    border: 4px solid var(--primary-color);
-    border-radius: 10px;
-    overflow: hidden;
-    max-width: 1000px;
     width: 100%;
+    margin: 0 auto;
   }
   
+  iframe {
+    height: 400px;
+    width: 100%;
+  }
+}

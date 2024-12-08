@@ -129,15 +129,55 @@
 }
 
 .events-section {
-    padding: 60px 20px; /* Increased padding for more spacing */
-    text-align: center; /* Center-align the section */
+    padding: 40px 20px;
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
 .events-title {
-    color: rgba(159, 195, 123, 1);
-    font-size: 3rem; /* Increased font size for bold impact */
-    font-weight: bold; /* Make the title bold */
-    margin-bottom: 50px; /* Add more space below the title */
+    font-size: 2.5rem;
+    color: #3a5a40;
+    text-align: center;
+    margin-bottom: 40px;
+}
+
+/* Adjust slider spacing */
+.events-section .slick-slide {
+    padding: 0 10px; /* Reduce horizontal padding between slides */
+}
+
+.events-section .slick-track {
+    display: flex;
+    gap: 10px; /* Reduce gap between slides */
+}
+
+/* Mobile adjustments */
+@media (max-width: 768px) {
+    .events-section {
+        padding: 20px 10px;
+    }
+
+    .events-section .slick-slide {
+        padding: 0 5px; /* Even less padding on mobile */
+    }
+    
+    .events-title {
+        font-size: 2rem;
+        margin-bottom: 20px;
+    }
+
+    /* Override the slidesToShow setting for mobile */
+    .events-section .slick-track {
+        display: flex;
+        gap: 5px;
+    }
+}
+
+/* Ensure cards don't get too squished */
+@media (max-width: 480px) {
+    .events-section .slick-slide {
+        width: 280px !important; /* Force minimum width for cards */
+    }
 }
 
 .calendar-text {
@@ -148,16 +188,16 @@
 }
 
 .calendar-button {
-    display: inline-block;
+    display: block; /* Make it a block element */
+    margin: 0 auto; /* Center horizontally */
     background-color: rgba(159, 195, 123, 1);
     color: white;
     padding: 12px 24px;
-    font-size: 1.1rem; /* Slightly larger font for the button */
+    font-size: 1.1rem;
     border: none;
     border-radius: 5px;
     cursor: pointer;
     transition: background-color 0.3s ease, transform 0.3s ease;
-    margin-top: 20px; /* Space above the button */
 }
 
 .calendar-button:hover {
@@ -211,4 +251,34 @@
 .slick-prev:hover,
 .slick-next:hover {
     color: #9FC37B; /* Slightly darker green on hover */
+}
+
+.map-title {
+  font-size: 2.5rem;
+  color: #3a5a40;
+  text-align: center;
+  margin: 40px 0 20px;
+  font-weight: 500;
+}
+
+.hero-slider .map-container {
+  width: 100%;
+  max-width: 1400px; /* Bigger max-width */
+  margin: 0 auto;
+  padding: 40px 20px;
+}
+
+.hero-slider .map-frame iframe {
+  height: 700px; /* Taller map */
+}
+
+@media (max-width: 768px) {
+  .hero-slider .map-frame iframe {
+    height: 500px;
+  }
+  
+  .map-title {
+    font-size: 2rem;
+    padding: 0 16px;
+  }
 }

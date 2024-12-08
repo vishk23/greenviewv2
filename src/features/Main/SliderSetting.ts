@@ -1,5 +1,5 @@
 export const sliderSettings = {
-  dots: true,
+  dots: false,
   arrows: false,
   infinite: true,
   speed: 1000, // Longer animation time for smoothness
