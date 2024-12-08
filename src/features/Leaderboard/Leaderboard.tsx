@@ -42,7 +42,7 @@ const Leaderboard: React.FC = () => {
         <div className="header-item">RANK</div>
         <div className="header-item">NAME</div>
         <div className="header-item">SCORE</div>
-        <div className="header-item">BADGE/TIER</div>
+        <div className="header-item">STREAK 🔥</div>
       </div>
 
       <AnimatePresence>
@@ -53,12 +53,12 @@ const Leaderboard: React.FC = () => {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            transition={{ delay: showAll ? 0 : index * 0.1 }} // Delay staggered for each item
+            transition={{ delay: showAll ? 0 : index * 0.1 }}
           >
             <div className="row-item rank">#{entry.rank}</div>
             <div className="row-item name">{entry.name}</div>
             <div className="row-item score">{entry.score}</div>
-            <div className="row-item badge">{entry.badge}</div>
+            <div className="row-item streak">{entry.streak}</div>
           </motion.div>
         ))}
       </AnimatePresence>

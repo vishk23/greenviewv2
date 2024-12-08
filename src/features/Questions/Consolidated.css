@@ -836,3 +836,61 @@
   text-align: center;
   width: 100%;
 }
+
+.answer-option {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.answer-option.pulse-green {
+  animation: pulseGreen 0.5s;
+}
+
+.answer-option.pulse-red {
+  animation: pulseRed 0.5s;
+}
+
+@keyframes pulseGreen {
+  0% { 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+  50% { 
+    box-shadow: 0 0 50px rgba(76, 175, 80, 0.8);
+    background-color: rgba(76, 175, 80, 0.4);
+  }
+  100% { 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+}
+
+@keyframes pulseRed {
+  0% { 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+  50% { 
+    box-shadow: 0 0 50px rgba(255, 82, 82, 0.8);
+    background-color: rgba(255, 82, 82, 0.4);
+  }
+  100% { 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+}
+
+.white-box-score.pulse-green {
+  animation: pulseGreen 1.2s ease-in-out;
+}
+
+.white-box-score.pulse-red {
+  animation: pulseRed 1.2s ease-in-out;
+}
+
+.last-quiz-date {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
+}

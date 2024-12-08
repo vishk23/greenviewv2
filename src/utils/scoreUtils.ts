@@ -5,6 +5,7 @@ interface ScoreEntry {
   score: number;
   date: Date;
   answers: string[];
+  answerIndices: number[];
   questions: string[];
   structuredSummary?: any;
 }
@@ -12,6 +13,7 @@ interface ScoreEntry {
 interface SaveScoreResult {
   previousScore: number | null;
   message: string;
+  streak?: number;
 }
 
 /**
@@ -29,6 +31,7 @@ export const saveUserScore = async (
     score,
     date: new Date(),
     answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
+    answerIndices: answers,
     questions: questions.map((q) => q.question),
     structuredSummary,
   };
@@ -38,6 +41,26 @@ export const saveUserScore = async (
     if (userDoc.exists()) {
       const userData = userDoc.data();
       const previousScore = userData?.score ?? 0;
+      const currentStreak = userData?.streak ?? 0;
+      const lastQuizDate = userData?.lastUpdated?.toDate();
+      
+      // Calculate days since last quiz
+      const daysSinceLastQuiz = lastQuizDate 
+        ? Math.floor((new Date().getTime() - lastQuizDate.getTime()) / (1000 * 60 * 60 * 24))
+        : null;
+
+      // Determine new streak
+      let newStreak = currentStreak;
+      if (daysSinceLastQuiz === null) {
+        // First quiz
+        newStreak = 1;
+      } else if (daysSinceLastQuiz >= 6 && daysSinceLastQuiz <= 8) {
+        // Quiz taken within 6-8 day window
+        newStreak += 1;
+      } else {
+        // Reset streak if outside window
+        newStreak = 1;
+      }
 
       const updatedHistory = userData?.scoreHistory
         ? [...userData.scoreHistory, newScoreEntry]
@@ -48,27 +71,38 @@ export const saveUserScore = async (
         lastUpdated: new Date(),
         scoreHistory: updatedHistory,
         structuredSummary,
+        streak: newStreak
       });
 
-      const message = score > previousScore
+      let message = score > previousScore
         ? `Great Job! Your score improved by ${score - previousScore} points!`
         : score === previousScore
         ? "Your score remains the same. Keep going!"
         : "Keep going! You can improve your score!";
 
-      return { previousScore, message };
+      // Add streak message
+      if (newStreak > currentStreak) {
+        message += ` 🔥 Streak increased to ${newStreak}!`;
+      } else if (newStreak === 1 && currentStreak > 1) {
+        message += ` Streak reset. Take the quiz every 6-8 days to build your streak!`;
+      }
+
+      return { previousScore, message, streak: newStreak };
     } else {
+      // First time taking quiz
       await setDoc(userDocRef, {
         userId,
         score,
         lastUpdated: new Date(),
         scoreHistory: [newScoreEntry],
         structuredSummary,
+        streak: 1
       });
 
       return {
         previousScore: null,
-        message: "Great start! This is your first time taking the quiz.",
+        message: "Great start! This is your first time taking the quiz. Come back in 6-8 days to build your streak!",
+        streak: 1
       };
     }
   } catch (error) {
@@ -76,6 +110,7 @@ export const saveUserScore = async (
     return {
       previousScore: null,
       message: "Error saving score. Please try again.",
+      streak: 0
     };
   }
 }; 
