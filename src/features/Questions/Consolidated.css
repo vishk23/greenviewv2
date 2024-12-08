@@ -851,21 +851,46 @@
 }
 
 @keyframes pulseGreen {
-  0% { transform: scale(1); background-color: #ffffff; }
-  50% { transform: scale(1.02); background-color: rgba(76, 175, 80, 0.3); }
-  100% { transform: scale(1); background-color: #ffffff; }
+  0% { 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+  50% { 
+    box-shadow: 0 0 50px rgba(76, 175, 80, 0.8);
+    background-color: rgba(76, 175, 80, 0.4);
+  }
+  100% { 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+  }
 }
 
 @keyframes pulseRed {
-  0% { transform: scale(1); background-color: #ffffff; }
-  50% { transform: scale(1.02); background-color: rgba(255, 82, 82, 0.3); }
-  100% { transform: scale(1); background-color: #ffffff; }
+  0% { 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+  }
+  50% { 
+    box-shadow: 0 0 50px rgba(255, 82, 82, 0.8);
+    background-color: rgba(255, 82, 82, 0.4);
+  }
+  100% { 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    background-color: rgba(255, 255, 255, 0.65);
+  }
 }
 
-.pulse-green {
-  animation: pulseGreen 0.5s ease-in-out;
+.white-box-score.pulse-green {
+  animation: pulseGreen 1.2s ease-in-out;
 }
 
-.pulse-red {
-  animation: pulseRed 0.5s ease-in-out;
+.white-box-score.pulse-red {
+  animation: pulseRed 1.2s ease-in-out;
+}
+
+.last-quiz-date {
+  font-size: 1rem;
+  color: #666;
+  margin-top: 0.5rem;
+  margin-bottom: 1rem;
 }

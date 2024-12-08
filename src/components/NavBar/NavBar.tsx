@@ -3,7 +3,7 @@ import { NavLink } from "react-router-dom";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "@services/firebase";
 import { loginWithEmail, registerWithEmail, logout } from "@services/authService";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 import "./NavBar.css";
 
 const links = [
@@ -20,7 +20,7 @@ const NavBar: React.FC = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [showDropdown, setShowDropdown] = useState(false);
@@ -37,8 +37,13 @@ const NavBar: React.FC = () => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
-        const displayName = currentUser.displayName || currentUser.email?.split("@")[0] || "";
-        setUserName(displayName);
+        // Fetch user data from Firestore to get displayName
+        const userDocRef = doc(db, "users", currentUser.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const userData = userDoc.data();
+          setUserName(userData.displayName || "User");
+        }
       }
     });
 
@@ -60,12 +65,12 @@ const NavBar: React.FC = () => {
   const handleSignUp = async () => {
     try {
       // Pass all required arguments to registerWithEmail
-      const user = await registerWithEmail(email, password, username, phoneNumber);
+      const user = await registerWithEmail(email, password, displayName, phoneNumber);
   
       if (user) {
         // Save user data to Firestore if registration was successful
         await setDoc(doc(db, "users", user.uid), {
-          username,
+          username: displayName,
           email,
           phoneNumber,
           notificationsEnabled: false,
@@ -141,9 +146,9 @@ const NavBar: React.FC = () => {
               <>
                 <input
                   type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="Username"
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
+                  placeholder="Display Name"
                 />
                 <input
                   type="tel"

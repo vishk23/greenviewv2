@@ -5,15 +5,8 @@ export interface LeaderboardEntry {
   rank: number;
   name: string;
   score: number;
-  badge: string;
+  streak: number;
 }
-
-const calculateBadge = (score: number): string => {
-  if (score >= 90) return '★★★';
-  if (score >= 65) return '★★';
-  if (score >= 40) return '★';
-  return '☆';
-};
 
 // Function to fetch the user's name based on userId
 const fetchUserName = async (userId: string): Promise<string | null> => {
@@ -22,7 +15,7 @@ const fetchUserName = async (userId: string): Promise<string | null> => {
     const userDoc = await getDoc(userDocRef);
     if (userDoc.exists()) {
       const userData = userDoc.data();
-      return userData.name || null;
+      return userData.displayName || null;
     }
     return null;
   } catch (error) {
@@ -40,14 +33,14 @@ export const fetchLeaderboardData = async (): Promise<LeaderboardEntry[]> => {
     const fetchedData: LeaderboardEntry[] = await Promise.all(
       querySnapshot.docs.map(async (doc, index) => {
         const data = doc.data();
-        const userId = doc.id; // Assuming `userId` is the document ID
+        const userId = doc.id;
         const userName = await fetchUserName(userId);
         
         return {
           rank: index + 1,
-          name: userName || data.email, // Fallback to email if name is not found
+          name: userName || data.email,
           score: data.score,
-          badge: calculateBadge(data.score),
+          streak: data.streak || 0,
         };
       })
     );

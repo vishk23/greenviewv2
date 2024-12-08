@@ -10,7 +10,7 @@ export const registerWithEmail = async (email: string, password: string, usernam
     const user = result.user;
     // Create a user document in Firestore
     await setDoc(doc(db, "users", user.uid), {
-      name: username,
+      displayname: username,
       email,
       phoneNumber,
       bio: "",

@@ -22,7 +22,7 @@ interface ScoreEntry {
 }
 
 interface ProfileData {
-  name: string;
+  displayName: string;
   email: string;
   bio: string;
   phoneNumber?: string;
@@ -57,7 +57,7 @@ const Profile: React.FC = () => {
   const [showHistory, setShowHistory] = useState(false);
   const [flippedIndex, setFlippedIndex] = useState<number | null>(null);
 
-  const [name, setName] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [bio, setBio] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
 
@@ -71,7 +71,7 @@ const Profile: React.FC = () => {
           const data = userDoc.data() as ProfileData;
           console.log(data);
           setProfileData(data);
-          setName(data.name || "");
+          setDisplayName(data.displayName || "");
           setBio(data.bio || "");
           setPhoneNumber(data.phoneNumber || "");
           setNotificationsEnabled(data.notificationsEnabled || false);
@@ -141,14 +141,14 @@ const Profile: React.FC = () => {
     if (user && profileData) {
       const userDocRef = doc(db, "users", user.uid);
       await updateDoc(userDocRef, {
-        name,
+        displayName,
         bio,
         phoneNumber,
         email: profileData.email,
         notificationsEnabled: profileData.notificationsEnabled || false,
       });
 
-      setProfileData({ ...profileData, name, bio, phoneNumber });
+      setProfileData({ ...profileData, displayName, bio, phoneNumber });
       setIsEditing(false);
     }
   };
@@ -193,11 +193,11 @@ const Profile: React.FC = () => {
               {isEditing ? (
                 <input
                   type="text"
-                  value={name}
-                  onChange={(e) => setName(e.target.value)}
+                  value={displayName}
+                  onChange={(e) => setDisplayName(e.target.value)}
                 />
               ) : (
-                <h2>{profileData?.name || "Not set"}</h2>
+                <h2>{profileData?.displayName || "Not set"}</h2>
               )}
             </>
             <button

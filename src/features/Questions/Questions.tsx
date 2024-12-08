@@ -24,11 +24,13 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [username, setUsername] = useState("");
+  const [displayName, setDisplayName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
   const [previousAnswers, setPreviousAnswers] = useState<number[]>([]);
   const [pulseColor, setPulseColor] = useState<string | null>(null);
+  const [lastQuizDate, setLastQuizDate] = useState<string | null>(null);
+  const [previousScore, setPreviousScore] = useState<number | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -50,8 +52,17 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
           const data = userDoc.data();
           if (data.scoreHistory && data.scoreHistory.length > 0) {
             const lastScoreHistory = data.scoreHistory[data.scoreHistory.length - 1];
-            console.log(lastScoreHistory.answerIndices);
             setPreviousAnswers(lastScoreHistory.answerIndices || []);
+            setPreviousScore(lastScoreHistory.score || null);
+            
+            const date = lastScoreHistory.date?.toDate().toLocaleDateString('en-US', {
+              year: 'numeric',
+              month: 'long',
+              day: 'numeric',
+              hour: '2-digit',
+              minute: '2-digit'
+            });
+            setLastQuizDate(date);
           }
         }
       }
@@ -76,12 +87,12 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
       const user = await registerWithEmail(
         email,
         password,
-        username,
+        displayName,
         phoneNumber
       );
       if (user) {
         await setDoc(doc(db, "users", user.uid), {
-          username,
+          displayName,
           email,
           phoneNumber,
           notificationsEnabled: false,
@@ -286,6 +297,15 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
     }
   }, [currentQuestion]);
 
+  const getStatusText = (previousScore: number | null) => {
+    if (previousScore === null) return "Curious about your impact\non the environment\naround you?";
+    if (previousScore >= 80) return "Your GreenView is Clear!";
+    if (previousScore >= 60) return "Your GreenView is Clouded";
+    if (previousScore >= 40) return "Your GreenView is Hazy";
+    if (previousScore >= 20) return "Your GreenView is Smoky";
+    return "Your GreenView is Polluted";
+  };
+
   return (
     <>
       {!hasStarted ? (
@@ -301,21 +321,32 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
             {!showAuthForm ? (
               <>
                 <h1>
-                  Curious about your impact
-                  <br />
-                  on the environment
-                  <br />
-                  around you?
+                  {getStatusText(previousScore)}
                 </h1>
-                <p>Take our quiz to find your sustainability score!</p>
-                <button
-                  className="start-button"
-                  onClick={() =>
-                    user ? setHasStarted(true) : setShowAuthForm(true)
-                  }
-                >
-                  {user ? "START QUIZ" : "LOG IN TO START QUIZ"}
-                </button>
+                {previousAnswers.length > 0 ? (
+                  <>
+                    <p>See if your sustainability habits have changed!</p>
+                    <p className="last-quiz-date">
+                      You last took the quiz on {lastQuizDate}
+                    </p>
+                    <button 
+                      className="start-button"
+                      onClick={() => user ? setHasStarted(true) : setShowAuthForm(true)}
+                    >
+                      RETAKE QUIZ
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <p>Take our quiz to find your sustainability score!</p>
+                    <button 
+                      className="start-button"
+                      onClick={() => user ? setHasStarted(true) : setShowAuthForm(true)}
+                    >
+                      START QUIZ
+                    </button>
+                  </>
+                )}
               </>
             ) : (
               <div className="auth-form">
@@ -327,9 +358,9 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                   <>
                     <input
                       type="text"
-                      value={username}
-                      onChange={(e) => setUsername(e.target.value)}
-                      placeholder="Username"
+                      value={displayName}
+                      onChange={(e) => setDisplayName(e.target.value)}
+                      placeholder="Display Name"
                     />
                     <input
                       type="tel"
@@ -372,12 +403,10 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
         </div>
       ) : score === null ? (
         <div className="questions-container">
-          <motion.div
-            className="white-box-score"
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.5 }}
-          >
+          <div className={`white-box-score ${
+            pulseColor === "green" ? "pulse-green" : 
+            pulseColor === "red" ? "pulse-red" : ""
+          }`}>
             <p className="question-number">
               Question {currentQuestion + 1} of {questions.length}
             </p>
@@ -422,7 +451,7 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                 {currentQuestion === questions.length - 1 ? "Submit" : "Next"}
               </button>
             </div>
-          </motion.div>
+          </div>
         </div>
       ) : (
         <Score
