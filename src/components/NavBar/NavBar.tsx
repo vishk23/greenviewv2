@@ -2,8 +2,7 @@ import React, { useEffect, useState } from "react";
 import { NavLink } from "react-router-dom";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "@services/firebase";
-import { loginWithEmail, registerWithEmail, logout } from "@services/authService";
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 import "./NavBar.css";
 
 const links = [
