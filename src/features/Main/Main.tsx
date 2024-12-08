@@ -113,7 +113,7 @@ const MainPage: React.FC = () => {
     dots: true,
     infinite: true,
     speed: 500,
-    slidesToShow: 1,
+    slidesToShow: 3,
     slidesToScroll: 1,
     arrows: false, // Disable default arrows
     prevArrow: <CustomArrow direction="left" />,
