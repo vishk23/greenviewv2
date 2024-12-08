@@ -429,6 +429,7 @@ const Score: React.FC<ScoreProps> = ({
     };
 
     checkAndSendNotification();
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
