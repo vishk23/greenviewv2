@@ -6,6 +6,7 @@ interface AnswerButtonProps {
   onClick: () => void; // Function to handle click event
   isSelected?: boolean; // Optional prop to indicate if the button is selected
   disabled?: boolean; // Optional prop to disable the button
+  className?: string; // Add this line
 }
 
 const AnswerButton: React.FC<AnswerButtonProps> = ({ text, onClick, isSelected = false, disabled = false }) => {

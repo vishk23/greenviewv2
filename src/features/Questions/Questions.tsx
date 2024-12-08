@@ -7,7 +7,7 @@ import "./Consolidated.css";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { auth, db } from "@services/firebase";
 import { loginWithEmail, registerWithEmail } from "@services/authService";
-import { doc, setDoc } from "firebase/firestore";
+import { doc, setDoc, getDoc } from "firebase/firestore";
 
 interface QuestionsProps {
   spawnObject: (group: number) => void;
@@ -27,6 +27,8 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
   const [username, setUsername] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [previousAnswers, setPreviousAnswers] = useState<number[]>([]);
+  const [pulseColor, setPulseColor] = useState<string | null>(null);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -38,6 +40,25 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
 
     return unsubscribe;
   }, []);
+
+  useEffect(() => {
+    const fetchPreviousAnswers = async () => {
+      if (user) {
+        const userDocRef = doc(db, "scores", user.uid);
+        const userDoc = await getDoc(userDocRef);
+        if (userDoc.exists()) {
+          const data = userDoc.data();
+          if (data.scoreHistory && data.scoreHistory.length > 0) {
+            const lastScoreHistory = data.scoreHistory[data.scoreHistory.length - 1];
+            console.log(lastScoreHistory.answerIndices);
+            setPreviousAnswers(lastScoreHistory.answerIndices || []);
+          }
+        }
+      }
+    };
+
+    fetchPreviousAnswers();
+  }, [user]);
 
   const handleLogin = async () => {
     try {
@@ -205,6 +226,28 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
     const updatedAnswers = [...answers];
     updatedAnswers[currentQuestion] = answerIndex;
     setAnswers(updatedAnswers);
+
+    // Get previous answer index directly
+    const previousAnswerIndex = previousAnswers[currentQuestion];
+
+    // Log the actual choices
+    console.log("Current choice index:", answerIndex);
+    console.log("Previous answer index:", previousAnswerIndex);
+
+    if (previousAnswerIndex !== undefined) {
+      if (answerIndex < previousAnswerIndex) {
+        // Pulse green (better choice - lower index means better answer)
+        console.log("green");
+        setPulseColor("green");
+      } else if (answerIndex > previousAnswerIndex) {
+        // Pulse red (worse choice - higher index means worse answer)
+        console.log("red");
+        setPulseColor("red");
+      } else {
+        setPulseColor(null);
+      }
+    }
+
     setIsAnimation(questions[currentQuestion].animations[answerIndex]);
   };
 
@@ -330,7 +373,7 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
       ) : score === null ? (
         <div className="questions-container">
           <motion.div
-            className="white-box"
+            className="white-box-score"
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.5 }}
@@ -354,6 +397,10 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                       text={answer}
                       onClick={() => handleAnswerSelect(index)}
                       isSelected={answers[currentQuestion] === index}
+                      className={`answer-option ${
+                        pulseColor === "green" ? "pulse-green" : 
+                        pulseColor === "red" ? "pulse-red" : ""
+                      }`}
                     />
                   ))}
                 </div>

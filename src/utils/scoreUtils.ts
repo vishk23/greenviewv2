@@ -5,6 +5,7 @@ interface ScoreEntry {
   score: number;
   date: Date;
   answers: string[];
+  answerIndices: number[];
   questions: string[];
   structuredSummary?: any;
 }
@@ -29,6 +30,7 @@ export const saveUserScore = async (
     score,
     date: new Date(),
     answers: answers.map((answerIndex, i) => questions[i].answers[answerIndex]),
+    answerIndices: answers,
     questions: questions.map((q) => q.question),
     structuredSummary,
   };

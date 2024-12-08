@@ -836,3 +836,36 @@
   text-align: center;
   width: 100%;
 }
+
+.answer-option {
+  position: relative;
+  transition: transform 0.3s ease;
+}
+
+.answer-option.pulse-green {
+  animation: pulseGreen 0.5s;
+}
+
+.answer-option.pulse-red {
+  animation: pulseRed 0.5s;
+}
+
+@keyframes pulseGreen {
+  0% { transform: scale(1); background-color: #ffffff; }
+  50% { transform: scale(1.02); background-color: rgba(76, 175, 80, 0.3); }
+  100% { transform: scale(1); background-color: #ffffff; }
+}
+
+@keyframes pulseRed {
+  0% { transform: scale(1); background-color: #ffffff; }
+  50% { transform: scale(1.02); background-color: rgba(255, 82, 82, 0.3); }
+  100% { transform: scale(1); background-color: #ffffff; }
+}
+
+.pulse-green {
+  animation: pulseGreen 0.5s ease-in-out;
+}
+
+.pulse-red {
+  animation: pulseRed 0.5s ease-in-out;
+}
