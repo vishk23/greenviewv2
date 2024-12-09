@@ -135,13 +135,20 @@ const MainPage: React.FC = () => {
               <div className="text-container">
                 <h1>{slide.title}</h1>
                 <p>{slide.description}</p>
-                <button
-                  className="take-quiz-button"
-                  onClick={() => navigate('/score')}
-                >
-                  Take Quiz
-                </button>
+                <div style={{ position: 'relative', display: 'inline-block' }}>
+                  <button
+                    className="take-quiz-button"
+                    onClick={() => navigate('/score')}
+                  >
+                    Take Quiz
+                  </button>
+                  {/* Arrow positioned relative to the button */}
+                  <div className="orange-arrow">
+                    <img src="/orange-arrow.svg" alt="Arrow" />
+                  </div>
+                </div>
               </div>
+
               <div className="image-container">
                 <img
                   src={slide.imageUrl}
@@ -151,9 +158,13 @@ const MainPage: React.FC = () => {
             </div>
           ))}
         </Slider>
-
-       
+        
+        {/* Fixed orange arrow */}
+        <div className="orange-arrow">
+          <img src="orange-arrow.svg" alt="Arrow" />
+        </div>
       </div>
+
       <div className="map-container">
         <div className="map-layout">
           <div className="map-wrapper">
