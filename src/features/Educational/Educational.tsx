@@ -85,26 +85,22 @@ const Educational: React.FC = () => {
       </section>
 
       <section className="featured-video-section">
-      <h1 style={{ fontSize:'40px',fontWeight: 'normal',textAlign: 'center' }}>What is Sustainability?</h1>
-  
-      <div className="video-container">
-      <iframe
-        width="800"
-        height="515"
-        src="https://www.youtube.com/embed/zx04Kl8y4dE"
-        title="YouTube video player"
-        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-      ></iframe>
-    </div>
-
-      <p className="centered-text">
-        Want to explore more?{' '}
-        <span className="link" onClick={() => navigate('/video-library')}>
-          Check out our Video Library.
-        </span>
-      </p>
-
+        <h1>What is Sustainability?</h1>
+        <div className="video-container">
+          <iframe
+            src="https://www.youtube.com/embed/zx04Kl8y4dE"
+            title="What is Sustainability"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+          ></iframe>
+        </div>
+        <p className="centered-text">
+          Want to explore more?{' '}
+          <span className="link" onClick={() => navigate('/video-library')}>
+            Check out our Video Library.
+          </span>
+        </p>
       </section>
+
       <section className="contact-section">
         <br/><br/><br/>
       <h1 style={{ fontSize:'40px',fontWeight: 'normal',textAlign: 'center' }}>Get Involved at BU!</h1>
