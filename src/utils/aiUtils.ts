@@ -33,7 +33,9 @@ const generateStructuredSummary = async (qaPairs: any) => {
 
     // Remove any backticks and code block markers from the response
     if (structuredResponse.startsWith("```json")) {
-      structuredResponse = structuredResponse.replace(/```json|```/g, "").trim();
+      structuredResponse = structuredResponse
+        .replace(/```json|```/g, "")
+        .trim();
     }
 
     const parsedResponse = JSON.parse(structuredResponse);
@@ -88,6 +90,13 @@ export const generateAISummary = async (
   );
   const questionsText = await questionResult.response.text();
 
+  // const resourceResult = await chat.sendMessage(
+  //   "Based on the previous context, determine if the user should get more help/learn more in the following areas: Energy, Waste, Sustainbility, Water Consumption, Sutainability Event. Return the result as a boolean arrary in order (example: [true, true, false, false, true])"
+  // );
+  // const resourceText = await resourceResult.response.text();
+
+  // console.log("Hi:", resourceText);
+
   const suggestedQuestions = questionsText
     .split("\n")
     .filter((q) => q.trim())
@@ -99,4 +108,4 @@ export const generateAISummary = async (
     structuredSummary,
     suggestedQuestions,
   };
-}; 
+};
