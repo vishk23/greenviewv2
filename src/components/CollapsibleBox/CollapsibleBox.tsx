@@ -47,6 +47,8 @@ const CollapsibleBox: React.FC<CollapsibleBoxProps> = ({
         </div>
       );
     }
+
+    return children;
   };
 
   return (
