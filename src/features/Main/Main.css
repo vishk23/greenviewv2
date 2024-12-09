@@ -338,6 +338,40 @@
   .refill-message a:hover {
     text-decoration: underline; /* Add underline on hover */
   }
+
+  /* Make the Take Quiz button green */
+.take-quiz-button {
+    background-color: #9FC37B; /* Green background */
+    color: white; /* White text */
+    border: none; /* Remove border */
+    padding: 12px 24px; /* Adjust padding for size */
+    font-size: 1.1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, transform 0.3s ease;
+  }
+  
+  .take-quiz-button:hover {
+    background-color: #8BB366; /* Slightly darker green on hover */
+    transform: scale(1.05); /* Slightly enlarge button on hover */
+  }
+  
+    /* Orange arrow styling */
+    .orange-arrow {
+        position: absolute; /* Position relative to the nearest positioned ancestor */
+        top: 50%; /* Adjust vertical position near the button */
+        left: calc(110% + 10px); /* Place it slightly to the right of the button */
+        width: 20px; /* Reduce the width for a smaller arrow */
+        height: 20px; /* Reduce the height proportionally */
+        transform: translateY(-150%); /* Center vertically */
+    }
+    
+    .orange-arrow img {
+        width: 100%; /* Ensure the image fits the container */
+        height: auto; /* Maintain aspect ratio */
+    }
+  
+  
   
 
 
