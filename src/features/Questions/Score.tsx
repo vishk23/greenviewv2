@@ -227,7 +227,7 @@ const Score: React.FC<ScoreProps> = ({
 
   const handleNavigation = (path: string) => {
     navigate(path); // Navigate to the desired path
-    if (path == "/educational") {
+    if (path === "/educational") {
       window.scrollTo(0, 2000);
     } else {
       window.scrollTo(0, 0);
