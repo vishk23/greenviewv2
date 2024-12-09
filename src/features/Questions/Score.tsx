@@ -170,27 +170,31 @@ const Score: React.FC<ScoreProps> = ({
       <div className="summary-areas">
         <div className="summary-section">
           <h4>Strengths</h4>
-          {structuredSummary.strengths.map((item, index) => (
-            <div
-              key={index}
-              className="summary-item"
-              onClick={() => toggleFlip(index)}
-            >
-              <h5>{item.area}</h5>
-            </div>
-          ))}
+          <div className="items-section">
+            {structuredSummary.strengths.map((item, index) => (
+              <div
+                key={index}
+                className="summary-item"
+                onClick={() => toggleFlip(index)}
+              >
+                <h5>{item.area}</h5>
+              </div>
+            ))}
+          </div>
         </div>
         <div className="summary-section">
           <h4>Areas for Improvement</h4>
-          {structuredSummary.improvement.map((item, index) => (
-            <div
-              key={index}
-              className="summary-item"
-              onClick={() => toggleFlip(index + 100)}
-            >
-              <h5>{item.area}</h5>
-            </div>
-          ))}
+          <div className="items-section">
+            {structuredSummary.improvement.map((item, index) => (
+              <div
+                key={index}
+                className="summary-item"
+                onClick={() => toggleFlip(index + 100)}
+              >
+                <h5>{item.area}</h5>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
     );
@@ -608,7 +612,7 @@ const Score: React.FC<ScoreProps> = ({
               {renderStrengthsAndImprovements()}
               {flippedIndex !== null && (
                 <div className="description">
-                  <div className="popup-title">
+                  <div className="popup-title2">
                     <h2>{getTitle(flippedIndex)}</h2>
                     <button
                       onClick={() => setFlippedIndex(null)}

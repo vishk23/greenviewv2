@@ -57,7 +57,7 @@ const Leaderboard: React.FC = () => {
           >
             <div className="row-item rank">#{entry.rank}</div>
             <div className="row-item name">{entry.name}</div>
-            <div className="row-item score">{entry.score}</div>
+            <div className="row-item score">{Math.round(entry.score)}</div>
             <div className="row-item streak">{entry.streak}</div>
           </motion.div>
         ))}
