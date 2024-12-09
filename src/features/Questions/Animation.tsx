@@ -33,7 +33,7 @@ const Animation: React.FC<AnimationProps> = ({ objects }) => {
           <motion.div
             key={obj.id} // Added missing key prop
             initial={{
-              x: obj.x,
+              x: window.outerWidth / 2 - 350,
               y: obj.y,
               clipPath: "inset(100% 0% 0% 0%)",
               opacity: 1,
@@ -44,6 +44,7 @@ const Animation: React.FC<AnimationProps> = ({ objects }) => {
             }}
             transition={{ duration: 5, ease: "easeOut" }}
             style={{ position: "absolute", top: obj.y }}
+            className="floating-object"
           >
             <img
               src={obj.path}

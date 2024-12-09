@@ -432,17 +432,6 @@
   transform: translateY(-50%);
 }
 
-.summary-item::after {
-  content: "";
-  position: absolute;
-  top: 50%;
-  left: 0px;
-  border-left: 25px solid white;
-  border-top: 25px solid transparent;
-  border-bottom: 25px solid transparent;
-  transform: translateY(-50%);
-}
-
 .suggested-questions {
   margin-top: 2rem;
   padding-left: 16px;
