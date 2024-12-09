@@ -19,6 +19,7 @@ import { saveUserScore } from "../../utils/scoreUtils";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Score.css";
 import ReactMarkdown from "react-markdown";
+import { useNavigate } from "react-router-dom";
 
 interface ScoreProps {
   score: number;
@@ -47,6 +48,7 @@ const Score: React.FC<ScoreProps> = ({
   questions,
 }) => {
   // Auth state
+  const navigate = useNavigate();
   const [user] = useAuthState(auth);
 
   // Score and message state
@@ -218,6 +220,55 @@ const Score: React.FC<ScoreProps> = ({
               {question}
             </button>
           ))}
+        </div>
+      </div>
+    );
+  };
+
+  const handleNavigation = (path: string) => {
+    navigate(path); // Navigate to the desired path
+    if (path == "/educational") {
+      window.scrollTo(0, 2000);
+    } else {
+      window.scrollTo(0, 0);
+    } // Scroll to the top of the page
+  };
+
+  const renderNextStep = () => {
+    return (
+      <div className="suggested-questions">
+        <h4>Click to see how to Improve Your Score!</h4>
+        <div className="next-list">
+          <button
+            onClick={() => handleNavigation("/educational")}
+            className="next-button"
+          >
+            Refill Station
+          </button>
+          <button
+            onClick={() => handleNavigation("/module/1")}
+            className="next-button"
+          >
+            Sustainability
+          </button>
+          <button
+            onClick={() => handleNavigation("/module/2")}
+            className="next-button"
+          >
+            Energy Conservation
+          </button>
+          <button
+            onClick={() => handleNavigation("/module/3")}
+            className="next-button"
+          >
+            Waste Reduction
+          </button>
+          <button
+            onClick={() => handleNavigation("/calendar")}
+            className="next-button"
+          >
+            Event Calendar
+          </button>
         </div>
       </div>
     );
@@ -631,6 +682,7 @@ const Score: React.FC<ScoreProps> = ({
             </div>
           )}
           {renderSuggestedQuestions()}
+          {renderNextStep()}
           {aiResponse && (
             <div className="ai-response">
               <ReactMarkdown>{aiResponse}</ReactMarkdown>
