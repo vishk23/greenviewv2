@@ -62,4 +62,5 @@
   
   .show-more-button:hover {
     background-color: #F15824; /* Darker shade on hover */
+    text-align: center;
   }

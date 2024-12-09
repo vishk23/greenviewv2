@@ -2,7 +2,14 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { auth, db } from "@services/firebase";
-import { doc, updateDoc, getDoc, addDoc, collection, onSnapshot } from "firebase/firestore";
+import {
+  doc,
+  updateDoc,
+  getDoc,
+  addDoc,
+  collection,
+  onSnapshot,
+} from "firebase/firestore";
 import ProgressBar from "@components/ProgressBar/ProgressBar";
 import { useChatContext } from "@contexts/ChatContext";
 import Leaderboard from "@features/Leaderboard/Leaderboard";
@@ -11,7 +18,7 @@ import { generateAISummary } from "../../utils/aiUtils";
 import { saveUserScore } from "../../utils/scoreUtils";
 import { motion, AnimatePresence } from "framer-motion";
 import "./Score.css";
-import ReactMarkdown from 'react-markdown';
+import ReactMarkdown from "react-markdown";
 
 interface ScoreProps {
   score: number;
@@ -39,8 +46,6 @@ const Score: React.FC<ScoreProps> = ({
   answers,
   questions,
 }) => {
-
-
   // Auth state
   const [user] = useAuthState(auth);
 
@@ -111,7 +116,6 @@ const Score: React.FC<ScoreProps> = ({
         setAiResponse(aiResult.summary);
         setStructuredSummary(aiResult.structuredSummary);
         setPotentialQuestions(aiResult.suggestedQuestions);
-
 
         const scoreResult = await saveUserScore(
           user.uid,
@@ -287,30 +291,33 @@ const Score: React.FC<ScoreProps> = ({
   // Add function to find the relevant quiz date
   const findRelevantQuizDate = async (userId: string): Promise<Date> => {
     try {
-      const userScoreRef = doc(db, 'scores', userId);
+      const userScoreRef = doc(db, "scores", userId);
       const scoreDoc = await getDoc(userScoreRef);
-      
+
       if (scoreDoc.exists()) {
         const scoreData = scoreDoc.data();
         const scoreHistory = scoreData.scoreHistory || [];
         const now = new Date();
-        const eightDaysAgo = new Date(now.getTime() - (8 * 24 * 60 * 60 * 1000));
-        
+        const eightDaysAgo = new Date(now.getTime() - 8 * 24 * 60 * 60 * 1000);
+
         // Filter scores within last 8 days and sort by date
         const recentScores = scoreHistory
           .filter((score: any) => score.date.toDate() > eightDaysAgo)
-          .sort((a: any, b: any) => a.date.toDate().getTime() - b.date.toDate().getTime());
+          .sort(
+            (a: any, b: any) =>
+              a.date.toDate().getTime() - b.date.toDate().getTime()
+          );
 
         if (recentScores.length > 0) {
           // Return the oldest quiz date within the 8-day window
           return recentScores[0].date.toDate();
         }
       }
-      
+
       // If no relevant quiz found, use current time
       return new Date();
     } catch (error) {
-      console.error('Error finding relevant quiz date:', error);
+      console.error("Error finding relevant quiz date:", error);
       return new Date();
     }
   };
@@ -319,10 +326,10 @@ const Score: React.FC<ScoreProps> = ({
   const handleNotifyMe = async () => {
     if (user) {
       try {
-        setNotificationStatus('PENDING');
+        setNotificationStatus("PENDING");
 
         // Enable notifications for the user
-        const userDocRef = doc(db, 'users', user.uid);
+        const userDocRef = doc(db, "users", user.uid);
         await updateDoc(userDocRef, { notificationsEnabled: true });
 
         // Get user's phone number
@@ -330,13 +337,13 @@ const Score: React.FC<ScoreProps> = ({
         const phoneNumber = userDoc.data()?.phoneNumber;
 
         if (!phoneNumber) {
-          setNotificationStatus('ERROR');
+          setNotificationStatus("ERROR");
           return;
         }
 
         // Get the relevant quiz date
         const relevantQuizDate = await findRelevantQuizDate(user.uid);
-        
+
         // Calculate dates based on the relevant quiz date
         const nextQuizDate = new Date(relevantQuizDate);
         nextQuizDate.setDate(nextQuizDate.getDate() + 6);
@@ -347,35 +354,36 @@ const Score: React.FC<ScoreProps> = ({
         const now = new Date();
         if (now > endWindow) {
           // If past window, set new window starting from now
-          nextQuizDate.setTime(now.getTime() + (6 * 24 * 60 * 60 * 1000));
-          endWindow.setTime(now.getTime() + (8 * 24 * 60 * 60 * 1000));
+          nextQuizDate.setTime(now.getTime() + 6 * 24 * 60 * 60 * 1000);
+          endWindow.setTime(now.getTime() + 8 * 24 * 60 * 60 * 1000);
         }
 
         const formatDate = (date: Date) => {
-          return date.toLocaleDateString('en-US', {
-            month: 'numeric',
-            day: 'numeric',
-            hour: '2-digit',
-            minute: '2-digit'
+          return date.toLocaleDateString("en-US", {
+            month: "numeric",
+            day: "numeric",
+            hour: "2-digit",
+            minute: "2-digit",
           });
         };
 
-        const message = `${getFeedback()}! Retake between ${formatDate(nextQuizDate)} - ${formatDate(endWindow)} to build your streak!`;
+        const message = `${getFeedback()}! Retake between ${formatDate(
+          nextQuizDate
+        )} - ${formatDate(endWindow)} to build your streak!`;
 
         // Send message and store the reference
-        const messageRef = await addDoc(collection(db, 'messages'), {
+        const messageRef = await addDoc(collection(db, "messages"), {
           to: phoneNumber,
           body: message,
           scheduling: {
-            sendAt: nextQuizDate.toISOString()
-          }
+            sendAt: nextQuizDate.toISOString(),
+          },
         });
 
         setMessageId(messageRef.id);
-
       } catch (error) {
-        console.error('Error sending notification:', error);
-        setNotificationStatus('ERROR');
+        console.error("Error sending notification:", error);
+        setNotificationStatus("ERROR");
       }
     }
   };
@@ -384,7 +392,7 @@ const Score: React.FC<ScoreProps> = ({
   useEffect(() => {
     const updateCountdown = async () => {
       if (!user) return;
-      
+
       const relevantQuizDate = await findRelevantQuizDate(user.uid);
       setLastQuizDate(relevantQuizDate);
     };
@@ -393,7 +401,9 @@ const Score: React.FC<ScoreProps> = ({
   }, [user]);
 
   // Update the state type to match Twilio's status
-  const [notificationStatus, setNotificationStatus] = useState<'PENDING' | 'SUCCESS' | 'ERROR' | null>(null);
+  const [notificationStatus, setNotificationStatus] = useState<
+    "PENDING" | "SUCCESS" | "ERROR" | null
+  >(null);
 
   // Add state for the message ID to track
   const [messageId, setMessageId] = useState<string | null>(null);
@@ -402,13 +412,13 @@ const Score: React.FC<ScoreProps> = ({
   useEffect(() => {
     if (!messageId) return;
 
-    const unsubscribe = onSnapshot(doc(db, 'messages', messageId), (doc) => {
+    const unsubscribe = onSnapshot(doc(db, "messages", messageId), (doc) => {
       if (doc.exists()) {
         const data = doc.data();
-        if (data.delivery?.state === 'SUCCESS') {
-          setNotificationStatus('SUCCESS');
-        } else if (data.delivery?.state === 'ERROR') {
-          setNotificationStatus('ERROR');
+        if (data.delivery?.state === "SUCCESS") {
+          setNotificationStatus("SUCCESS");
+        } else if (data.delivery?.state === "ERROR") {
+          setNotificationStatus("ERROR");
         }
       }
     });
@@ -420,7 +430,7 @@ const Score: React.FC<ScoreProps> = ({
   useEffect(() => {
     const checkAndSendNotification = async () => {
       if (user) {
-        const userDocRef = doc(db, 'users', user.uid);
+        const userDocRef = doc(db, "users", user.uid);
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists() && userDoc.data()?.notificationsEnabled) {
           handleNotifyMe();
@@ -429,12 +439,12 @@ const Score: React.FC<ScoreProps> = ({
     };
 
     checkAndSendNotification();
-  // eslint-disable-next-line react-hooks/exhaustive-deps
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user]);
 
   useEffect(() => {
-    console.log('Current notification status:', notificationStatus);
-    console.log('Current message ID:', messageId);
+    console.log("Current notification status:", notificationStatus);
+    console.log("Current message ID:", messageId);
   }, [notificationStatus, messageId]);
 
   useEffect(() => {
@@ -445,19 +455,21 @@ const Score: React.FC<ScoreProps> = ({
   useEffect(() => {
     const calculateTimeLeft = () => {
       if (!lastQuizDate) return "";
-      
+
       const nextQuizDate = new Date(lastQuizDate);
       nextQuizDate.setDate(nextQuizDate.getDate() + 6);
-      
+
       const now = new Date();
       const difference = nextQuizDate.getTime() - now.getTime();
-      
+
       const days = Math.floor(difference / (1000 * 60 * 60 * 24));
       const hours = Math.floor((difference / (1000 * 60 * 60)) % 24);
       const minutes = Math.floor((difference / 1000 / 60) % 60);
       const seconds = Math.floor((difference / 1000) % 60);
 
-      return `${days}:${hours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+      return `${days}:${hours.toString().padStart(2, "0")}:${minutes
+        .toString()
+        .padStart(2, "0")}:${seconds.toString().padStart(2, "0")}`;
     };
 
     const timer = setInterval(() => {
@@ -488,8 +500,32 @@ const Score: React.FC<ScoreProps> = ({
     }
   };
 
+  const getSource = () => {
+    if (percentageScore == null) return "";
+    if (percentageScore >= 80) return "/statement/Clear.gif";
+    if (percentageScore >= 60) return "/statement/Clouded.gif";
+    if (percentageScore >= 40) return "/statement/Hazy.gif";
+    if (percentageScore >= 20) return "/statement/Smoky.gif";
+    return "/statement/Polluted.gif";
+  };
+
   return (
     <div className="score-container">
+      <div className="animation-cover">
+        <img
+          src={getSource()}
+          alt=""
+          style={{
+            position: "absolute",
+            top: 0,
+            left: 0,
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            pointerEvents: "none",
+          }}
+        />
+      </div>
       <motion.div
         className="score-box"
         initial={{ opacity: 0, y: -50 }}
@@ -510,12 +546,8 @@ const Score: React.FC<ScoreProps> = ({
           />
           <p>{percentageScore.toFixed(2)}/100 points</p>
         </div>
-        <div className="score-status-message">
-          {getFeedback()}
-        </div>
-        <div className="score-improvement-message">
-          {message}
-        </div>
+        <div className="score-status-message">{getFeedback()}</div>
+        <div className="score-improvement-message">{message}</div>
         <div className="notification-section">
           <div className="retake-countdown">
             Retake quiz in {countdown} to build a streak
@@ -525,17 +557,16 @@ const Score: React.FC<ScoreProps> = ({
               Retake Quiz
             </button>
             {!notificationStatus ? (
-              <button 
-                onClick={handleNotifyMe}
-                className="notify-button"
-              >
+              <button onClick={handleNotifyMe} className="notify-button">
                 Notify Me
               </button>
             ) : (
-              <div className={`notification-status ${notificationStatus.toLowerCase()}`}>
-                {notificationStatus === 'PENDING' && 'Processing...'}
-                {notificationStatus === 'SUCCESS' && 'Notification sent!'}
-                {notificationStatus === 'ERROR' && 'Failed to send'}
+              <div
+                className={`notification-status ${notificationStatus.toLowerCase()}`}
+              >
+                {notificationStatus === "PENDING" && "Processing..."}
+                {notificationStatus === "SUCCESS" && "Notification sent!"}
+                {notificationStatus === "ERROR" && "Failed to send"}
               </div>
             )}
           </div>
