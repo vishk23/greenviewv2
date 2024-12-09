@@ -5,7 +5,7 @@ import { auth, db } from "@services/firebase";
 import { doc, setDoc, getDoc, updateDoc } from "firebase/firestore";
 import { motion, AnimatePresence } from "framer-motion";
 import ProgressBar from "@components/ProgressBar/ProgressBar";
-import "./Energy.css";
+import "./Module.css";
 
 interface Section {
   title: string;
@@ -146,7 +146,7 @@ const EnergyModule: React.FC = () => {
   }, [progress, user, isCompleted]);
 
   return (
-    <div className="energy-container">
+    <div className="module-container">
       <div className="progress-container">
         <ProgressBar points={progress} />
       </div>
