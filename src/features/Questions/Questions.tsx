@@ -51,17 +51,20 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
         if (userDoc.exists()) {
           const data = userDoc.data();
           if (data.scoreHistory && data.scoreHistory.length > 0) {
-            const lastScoreHistory = data.scoreHistory[data.scoreHistory.length - 1];
+            const lastScoreHistory =
+              data.scoreHistory[data.scoreHistory.length - 1];
             setPreviousAnswers(lastScoreHistory.answerIndices || []);
             setPreviousScore(lastScoreHistory.score || null);
-            
-            const date = lastScoreHistory.date?.toDate().toLocaleDateString('en-US', {
-              year: 'numeric',
-              month: 'long',
-              day: 'numeric',
-              hour: '2-digit',
-              minute: '2-digit'
-            });
+
+            const date = lastScoreHistory.date
+              ?.toDate()
+              .toLocaleDateString("en-US", {
+                year: "numeric",
+                month: "long",
+                day: "numeric",
+                hour: "2-digit",
+                minute: "2-digit",
+              });
             setLastQuizDate(date);
           }
         }
@@ -296,7 +299,8 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
   }, [currentQuestion]);
 
   const getStatusText = (previousScore: number | null) => {
-    if (previousScore === null) return "Curious about your impact\non the environment\naround you?";
+    if (previousScore === null)
+      return "Curious about your impact\non the environment\naround you?";
     if (previousScore >= 80) return "Your GreenView is Clear!";
     if (previousScore >= 60) return "Your GreenView is Clouded";
     if (previousScore >= 40) return "Your GreenView is Hazy";
@@ -318,18 +322,18 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
           >
             {!showAuthForm ? (
               <>
-                <h1>
-                  {getStatusText(previousScore)}
-                </h1>
+                <h1>{getStatusText(previousScore)}</h1>
                 {previousAnswers.length > 0 ? (
                   <>
                     <p>See if your sustainability habits have changed!</p>
                     <p className="last-quiz-date">
                       You last took the quiz on {lastQuizDate}
                     </p>
-                    <button 
+                    <button
                       className="start-button"
-                      onClick={() => user ? setHasStarted(true) : setShowAuthForm(true)}
+                      onClick={() =>
+                        user ? setHasStarted(true) : setShowAuthForm(true)
+                      }
                     >
                       RETAKE QUIZ
                     </button>
@@ -337,9 +341,11 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                 ) : (
                   <>
                     <p>Take our quiz to find your sustainability score!</p>
-                    <button 
+                    <button
                       className="start-button"
-                      onClick={() => user ? setHasStarted(true) : setShowAuthForm(true)}
+                      onClick={() =>
+                        user ? setHasStarted(true) : setShowAuthForm(true)
+                      }
                     >
                       START QUIZ
                     </button>
@@ -387,11 +393,13 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                 >
                   {isSignUp ? "Sign Up" : "Login"}
                 </button>
-                <span 
+                <span
                   onClick={() => setIsSignUp(!isSignUp)}
                   className="auth-toggle"
                 >
-                  {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+                  {isSignUp
+                    ? "Already have an account? Login"
+                    : "Don't have an account? Sign Up"}
                 </span>
               </div>
             )}
@@ -399,10 +407,15 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
         </div>
       ) : score === null ? (
         <div className="questions-container">
-          <div className={`white-box-score ${
-            pulseColor === "green" ? "pulse-green" : 
-            pulseColor === "red" ? "pulse-red" : ""
-          }`}>
+          <div
+            className={`white-box-score ${
+              pulseColor === "green"
+                ? "pulse-green"
+                : pulseColor === "red"
+                ? "pulse-red"
+                : ""
+            }`}
+          >
             <p className="question-number">
               Question {currentQuestion + 1} of {questions.length}
             </p>
@@ -423,8 +436,11 @@ const Questions: React.FC<QuestionsProps> = ({ spawnObject }) => {
                       onClick={() => handleAnswerSelect(index)}
                       isSelected={answers[currentQuestion] === index}
                       className={`answer-option ${
-                        pulseColor === "green" ? "pulse-green" : 
-                        pulseColor === "red" ? "pulse-red" : ""
+                        pulseColor === "green"
+                          ? "pulse-green"
+                          : pulseColor === "red"
+                          ? "pulse-red"
+                          : ""
                       }`}
                     />
                   ))}

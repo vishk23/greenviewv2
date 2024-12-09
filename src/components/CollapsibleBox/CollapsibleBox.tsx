@@ -8,7 +8,7 @@ interface CollapsibleBoxProps {
   defaultOpen?: boolean;
   isLoading?: boolean;
   hasError?: boolean;
-  type?: 'leaderboard' | 'summary';
+  type?: "leaderboard" | "summary";
 }
 
 /**
@@ -20,13 +20,13 @@ interface CollapsibleBoxProps {
  * @param hasError - Whether there was an error loading the content
  * @param type - The type of content (leaderboard or summary)
  */
-const CollapsibleBox: React.FC<CollapsibleBoxProps> = ({ 
-  title, 
-  children, 
+const CollapsibleBox: React.FC<CollapsibleBoxProps> = ({
+  title,
+  children,
   defaultOpen = false,
   isLoading = false,
   hasError = false,
-  type = 'summary'
+  type = "summary",
 }) => {
   const [isOpen, setIsOpen] = useState(defaultOpen);
 
@@ -38,7 +38,7 @@ const CollapsibleBox: React.FC<CollapsibleBoxProps> = ({
         </div>
       );
     }
-    
+
     if (isLoading) {
       return (
         <div className="loading-container">
@@ -47,18 +47,13 @@ const CollapsibleBox: React.FC<CollapsibleBoxProps> = ({
         </div>
       );
     }
-
-    return children;
   };
 
   return (
-    <div className={`collapsible-box ${!isOpen ? 'collapsed' : ''} ${type}`}>
-      <button 
-        className="collapsible-header" 
-        onClick={() => setIsOpen(!isOpen)}
-      >
+    <div className={`collapsible-box ${!isOpen ? "collapsed" : ""} ${type}`}>
+      <button className="collapsible-header" onClick={() => setIsOpen(!isOpen)}>
         <h3>{title}</h3>
-        <span>{isOpen ? '▼' : '▶'}</span>
+        <span>{isOpen ? "▼" : "▶"}</span>
       </button>
       <AnimatePresence>
         {isOpen && (
@@ -77,4 +72,4 @@ const CollapsibleBox: React.FC<CollapsibleBoxProps> = ({
   );
 };
 
-export default CollapsibleBox; 
+export default CollapsibleBox;
