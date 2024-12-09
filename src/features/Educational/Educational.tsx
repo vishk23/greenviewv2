@@ -35,7 +35,7 @@ const Educational: React.FC = () => {
   ];
   const contact = [
     { 
-      id: '1', 
+      id: '4', 
       title: 'Get Involved: BU Sustainability Programs', 
       },
   ];
