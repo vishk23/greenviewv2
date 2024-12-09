@@ -152,10 +152,23 @@ const MainPage: React.FC = () => {
           ))}
         </Slider>
 
-        <h2 className="map-title">Campus Water Bottle Refill Stations</h2>
-        <Map />
-
+       
       </div>
+      <div className="map-container">
+        <div className="map-layout">
+          <div className="map-wrapper">
+            <Map />
+          </div>
+          <div className="refill-message">
+            <h2>Refill Your Bottles on Campus</h2>
+            <hr className="divider" />
+            <p>Interested in learning more about our resources?</p>
+            <p> <a href="/educational">Click here</a> to learn more
+            </p>
+          </div>
+        </div>
+      </div>
+
 
       <div className="events-section">
         <h2 className="events-title">Upcoming Events on Campus</h2>

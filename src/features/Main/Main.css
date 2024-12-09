@@ -253,32 +253,111 @@
     color: #9FC37B; /* Slightly darker green on hover */
 }
 
-.map-title {
-  font-size: 2.5rem;
-  color: #3a5a40;
-  text-align: center;
-  margin: 40px 0 20px;
-  font-weight: 500;
-}
+/* Container for the entire section */
+.map-container {
+    width: 100%;
+    padding: 20px;
+    box-sizing: border-box; /* Includes padding in the total width */
+    display: flex;
+    flex-direction: column;
 
-.hero-slider .map-container {
-  width: 100%;
-  max-width: 1400px; /* Bigger max-width */
-  margin: 0 auto;
-  padding: 40px 20px;
-}
-
-.hero-slider .map-frame iframe {
-  height: 700px; /* Taller map */
-}
-
-@media (max-width: 768px) {
-  .hero-slider .map-frame iframe {
-    height: 500px;
   }
   
-  .map-title {
-    font-size: 2rem;
-    padding: 0 16px;
+ 
+ /* Layout for the map and refill message */
+.map-layout {
+    margin-top: 5%;
+    display: flex;
+    width: 100%;
+    max-width: 1200px; /* Optional: Set max width for better responsiveness */
+    height: 100%; /* Adjust the height as needed */
+    border: none; /* Optional: Add a border for layout visualization */
+    border-radius: 0; /* Optional: Add rounded corners */
+    overflow: hidden; /* Ensures child elements don’t overflow */
   }
-}
+  
+  /* Wrapper for the Map component */
+  .map-wrapper {
+    width: 60%; /* Takes 60% of the available width */
+    height: 100%;
+    background-color:transparent; /* Placeholder background (replace with your Map component) */
+    display: flex;
+    align-items: center;
+    justify-content: center; /* Center content if needed */
+  }
+  
+  /* Refill message styling */
+  .refill-message {
+    width: 40%; /* Takes 40% of the available width */
+    height: 100%;
+    padding: 10% 2%; /* Adjust top and left padding for spacing */
+    background-color: #9FC37B; /* Green background */
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    color: white; /* White text for contrast */
+    font-size: 18px; /* Base font size for content */
+    text-align: left;
+    align-items: flex-start; /* Align content to the top */
+    justify-content: flex-start;
+  }
+  
+  /* Styling for the title in the refill message */
+  .refill-message h2 {
+    font-size: 35px; /* Large font size for the title */
+    margin-bottom: 10px; /* Space below the title */
+  }
+  
+  /* Styling for the horizontal line */
+  .divider {
+    width: 90%; /* Line width */
+    height: 2px; /* Line thickness */
+    background-color: white; /* Line color */
+    border: none;
+    margin: 10px 0; /* Space above and below the line */
+  }
+  
+
+
+  /* Styling for the paragraph */
+.refill-message p {
+    font-size: 25px; /* Ensure the same font size for both the paragraph and link */
+    font-weight: 300; /* Make the text thinner */
+    margin-bottom: 10px; /* Add spacing below the paragraph */
+    color: white; /* Ensure consistent text color */
+  }
+  
+  /* Styling for the link */
+  .refill-message a {
+    font-size:25px;
+    color: #F06D3C; /* Orange text color for the link */
+    font-weight: 300; /* Make the link text thinner to match the paragraph */
+    text-decoration: none; /* Remove underline */
+  }
+
+
+  .refill-message a:hover {
+    text-decoration: underline; /* Add underline on hover */
+  }
+  
+
+
+@media (max-width: 768px) {
+      .map-wrapper {
+        width: 100%; /* Full width for mobile */
+        height: 300px; /* Adjust height for smaller screens */
+      }
+    
+      .refill-message {
+        width: 100%; /* Full width for mobile */
+        padding: 20px; /* Adjust padding for better spacing */
+      }
+    
+      .refill-message h2 {
+        font-size: 28px; /* Smaller title font size */
+      }
+    
+      .refill-message p,
+      .refill-message a {
+        font-size: 18px; /* Smaller text size for mobile */
+      }
+    }
