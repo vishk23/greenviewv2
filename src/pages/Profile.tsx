@@ -13,7 +13,11 @@ import {
   ResponsiveContainer,
 } from "recharts";
 import { getFirestore } from "firebase/firestore";
-import { loginWithEmail, registerWithEmail, logout } from "@services/authService";
+import {
+  loginWithEmail,
+  registerWithEmail,
+  logout,
+} from "@services/authService";
 
 interface ScoreEntry {
   score: number;
@@ -47,6 +51,16 @@ interface ScoreData {
   structuredSummary: StructuredSummary;
 }
 
+interface StreakData {
+  streak?: number;
+}
+
+interface ModuleData {
+  energyModule?: boolean;
+  wasteModule?: boolean;
+  sustainabilityBasicsModule: boolean;
+}
+
 const Profile: React.FC = () => {
   const [user] = useAuthState(auth);
   const [profileData, setProfileData] = useState<ProfileData | null>(null);
@@ -65,6 +79,10 @@ const Profile: React.FC = () => {
   const [displayName, setDisplayName] = useState("");
   const [phoneNumber, setPhoneNumber] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
+  const [streak, setStreak] = useState(0);
+  const [energy, setEnergy] = useState(false);
+  const [waste, setWaste] = useState(false);
+  const [sustainability, setSustainability] = useState(false);
 
   // Fetch Profile Data
   useEffect(() => {
@@ -74,11 +92,26 @@ const Profile: React.FC = () => {
         const userDoc = await getDoc(userDocRef);
         if (userDoc.exists()) {
           const data = userDoc.data() as ProfileData;
-          console.log(data);
           setProfileData(data);
           setDisplayName(data.displayName || "");
           setPhoneNumber(data.phoneNumber || "");
           setNotificationsEnabled(data.notificationsEnabled || false);
+        }
+
+        const scoresDocRef = doc(db, "scores", user.uid);
+        const scoreDoc = await getDoc(scoresDocRef);
+        if (scoreDoc.exists()) {
+          const data = scoreDoc.data() as StreakData;
+          setStreak(data.streak || 0);
+        }
+
+        const moduleDocRef = doc(db, "moduleCompletion", user.uid);
+        const moduleDoc = await getDoc(moduleDocRef);
+        if (moduleDoc.exists()) {
+          const data = moduleDoc.data() as ModuleData;
+          setEnergy(data.energyModule || false);
+          setWaste(data.wasteModule || false);
+          setSustainability(data.sustainabilityBasicsModule || false);
         }
       }
     };
@@ -151,7 +184,7 @@ const Profile: React.FC = () => {
         notificationsEnabled: profileData.notificationsEnabled || false,
       });
 
-      setProfileData({ ...profileData, displayName,  phoneNumber });
+      setProfileData({ ...profileData, displayName, phoneNumber });
       setIsEditing(false);
     }
   };
@@ -167,8 +200,13 @@ const Profile: React.FC = () => {
 
   const handleSignUp = async () => {
     try {
-      const user = await registerWithEmail(email, password, displayName, phoneNumber);
-  
+      const user = await registerWithEmail(
+        email,
+        password,
+        displayName,
+        phoneNumber
+      );
+
       if (user) {
         await setDoc(doc(db, "users", user.uid), {
           displayName,
@@ -193,7 +231,7 @@ const Profile: React.FC = () => {
         <div className="auth-box">
           <h2>{isSignUp ? "Create Account" : "Login"}</h2>
           {errorMessage && <p className="error-message">{errorMessage}</p>}
-          
+
           {isSignUp && (
             <>
               <input
@@ -212,7 +250,7 @@ const Profile: React.FC = () => {
               />
             </>
           )}
-          
+
           <input
             type="email"
             value={email}
@@ -227,19 +265,21 @@ const Profile: React.FC = () => {
             placeholder="Password"
             className="auth-input"
           />
-          
-          <button 
+
+          <button
             onClick={isSignUp ? handleSignUp : handleLogin}
             className="auth-button"
           >
             {isSignUp ? "Sign Up" : "Login"}
           </button>
-          
-          <button 
+
+          <button
             onClick={() => setIsSignUp(!isSignUp)}
             className="auth-toggle"
           >
-            {isSignUp ? "Already have an account? Login" : "Don't have an account? Sign Up"}
+            {isSignUp
+              ? "Already have an account? Login"
+              : "Don't have an account? Sign Up"}
           </button>
         </div>
       </div>
@@ -265,9 +305,10 @@ const Profile: React.FC = () => {
         <div className="popup">
           <div className="popup-title">
             <h2>
-              {flippedIndex < 100 
+              {flippedIndex < 100
                 ? scoreData?.structuredSummary.strengths[flippedIndex].area
-                : scoreData?.structuredSummary.improvement[flippedIndex - 100].area}
+                : scoreData?.structuredSummary.improvement[flippedIndex - 100]
+                    .area}
             </h2>
             <button onClick={() => setFlippedIndex(null)}>
               <img
@@ -387,9 +428,33 @@ const Profile: React.FC = () => {
             </div>
           </div>
         </div>
-        <div className="badges">
-          <h2>Badges</h2>
-          {/* ToDO: Add badges here */}
+        <div className="area">
+          <div className="badges">
+            <h2>Badges</h2>
+            <div className="badges-section">
+              {energy && (
+                <div className="badges-icon">
+                  <img src="/badges/energy.png" alt="" width="32px" />
+                </div>
+              )}
+              {waste && (
+                <div className="badges-icon">
+                  <img src="/badges/energy.png" alt="" width="32px" />
+                </div>
+              )}
+              {sustainability && (
+                <div className="badges-icon">
+                  <img src="/badges/energy.png" alt="" width="32px" />
+                </div>
+              )}
+            </div>
+          </div>
+          <div className="badges">
+            <h2>Weekly View</h2>
+            <div className="badges-section">
+              {streak !== 0 && <div className="badges-icon">{streak}</div>}
+            </div>
+          </div>
         </div>
         <div className="history">
           <h2>

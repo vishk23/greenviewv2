@@ -24,21 +24,22 @@ html, body {
 
 .background123 {
   display: flex;
-  justify-content: flex-end; /* Push child elements to the right */
-  align-items: flex-start;
-  height: 100vh; /* Full viewport height */
-  width: 100vw; /* Full viewport width */
+  min-height: 100vh;
+  height: auto;
+  width: 100vw;
   background-color: #545F48;
   background-image: url('/public/questions_background.gif');
-  background-size: cover;
-  background-position: center;
+  background-size: 100% auto;
+  background-position: top;
   background-repeat: no-repeat;
+  justify-content: flex-end; /* Push child elements to the right */
+  align-items: flex-start;
 }
 
 .profile-page {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
+  min-height: 100vh;
   height: auto;
   width: 60%;
   background-color: #fff8eb;
@@ -46,7 +47,7 @@ html, body {
   overflow-x: hidden; /* Prevent horizontal scroll */
 }
 
-.profile-info, .statement, .badges {
+.profile-info, .statement {
   padding-top: 16px;
   padding-left: 60px;
 }
@@ -144,7 +145,7 @@ html, body {
   padding-left: 60px;
 }
 
-.area-section {
+.area-section, .badges {
   display: flex;
   flex-direction: column;
   width: 40%;
@@ -362,6 +363,28 @@ html, body {
   margin: 0;
 }
 
+.badges-section {
+  display: flex;
+  flex-direction: row;
+  gap: 8px;
+  justify-content: start;
+  align-items: center;
+}
+
+.badges-icon {
+  background-color: #98c379;
+  border: none;
+  border-radius: 50%;
+  width: 64px;
+  height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color:white;
+  font-size: 32px;
+  font-weight: 700;
+}
+
 @media (max-width: 768px) {
   .profile-page {
     width: 100%;
@@ -372,6 +395,10 @@ html, body {
   .profile-info, .statement, .badges, .area, .history {
     flex-direction: column;
     padding-left: 20px;
+  }
+
+  .badges {
+    padding-left: 0;
   }
 
   .area {
@@ -568,6 +595,7 @@ html, body {
 
 .profile-header {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
   align-items: center;
   width: calc(100% - 120px); /* Subtract padding from total width */
@@ -593,7 +621,6 @@ html, body {
 .profile-info p {
   font-size: 18px;
   margin: 8px 0;
-  color: #545F48;
   line-height: 1.6;
 }
 
@@ -688,7 +715,7 @@ html, body {
   }
 
   .logout-button {
-    align-self: flex-end;
+    align-self: flex-start;
   }
 
   .profile-info input {
