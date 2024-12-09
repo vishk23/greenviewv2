@@ -174,7 +174,8 @@ const MainPage: React.FC = () => {
             <h2>Refill Your Bottles on Campus</h2>
             <hr className="divider" />
             <p>Interested in learning more about our resources?</p>
-            <p> <a href="/educational">Click here</a> to learn more
+            <p>
+              <a href="/educational">Click here</a> to learn more
             </p>
           </div>
         </div>

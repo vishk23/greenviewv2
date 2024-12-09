@@ -44,11 +44,12 @@ const EventDetailsStyles: Record<string, CSSProperties> = {
   closeButton: {
     backgroundColor: '#6E9B56',
     color: '#FFF8EB',
-    padding: '10px 20px',
+    padding: '10px 15px',
     borderRadius: '5px',
     fontSize: '16px',
     marginTop: '20px',
-    width: '100%',
+    width: 'auto',
+    alignSelf: 'center',
   },
 };
 

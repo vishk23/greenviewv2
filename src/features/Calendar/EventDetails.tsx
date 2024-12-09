@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { db } from '@services/firebase';
-import { doc, updateDoc, setDoc, getDoc } from 'firebase/firestore';
+import { doc, updateDoc, setDoc, getDoc, collection, addDoc } from 'firebase/firestore';
 import { useAuthState } from 'react-firebase-hooks/auth';
 import { auth } from '@services/firebase';
 import { MyEvent } from './Events';
@@ -30,7 +30,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event, onClose }) => {
         const userDocSnap = await getDoc(userDocRef);
         if (userDocSnap.exists()) {
           const data = userDocSnap.data();
-          setUserDetails({ name: data.name, phoneNumber: data.phoneNumber });
+          setUserDetails({ name: data.displayName, phoneNumber: data.phoneNumber });
         } else {
           console.error('User details not found in Firebase.');
         }
@@ -65,39 +65,56 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event, onClose }) => {
   };
 
   const handleConfirmNotifications = async () => {
-    if (event && user && userDetails) {
-      const eventDocRef = doc(db, 'events', event.id);
-      const notifDocRef = doc(db, 'calendarnotifs', event.id);
+    if (!event || !user) {
+      console.error('Missing event or user data');
+      alert('Unable to save notifications. Please try again.');
+      return;
+    }
 
-      const calculatedTimes = calculateNotificationTimes();
+    if (!userDetails?.name || !userDetails?.phoneNumber) {
+      console.error('Missing user details:', userDetails);
+      alert('Please ensure your profile is complete with name and phone number.');
+      return;
+    }
 
-      try {
-        // Update `events` collection
-        await updateDoc(eventDocRef, {
-          [`notifications.${user.uid}`]: {
+    const eventDocRef = doc(db, 'events', event.id);
+    const notifDocRef = doc(db, 'calendarnotifs', event.id);
+    const calculatedTimes = calculateNotificationTimes();
+
+    try {
+      // Update collections (existing code)
+      await updateDoc(eventDocRef, {
+        [`notifications.${user.uid}`]: {
+          preferences: notificationTimes,
+          calculatedTimes,
+        },
+      });
+
+      // Only proceed with notification setup if we have valid user details
+      await setDoc(
+        notifDocRef,
+        {
+          [user.uid]: {
+            name: userDetails.name,
+            phoneNumber: userDetails.phoneNumber,
             preferences: notificationTimes,
             calculatedTimes,
           },
-        });
+        },
+        { merge: true }
+      );
 
-        // Add to `calendarnotifs` collection under event ID
-        await setDoc(
-          notifDocRef,
-          {
-            [user.uid]: {
-              name: userDetails.name,
-              phoneNumber: userDetails.phoneNumber,
-              preferences: notificationTimes,
-              calculatedTimes,
-            },
-          },
-          { merge: true } // Merge to avoid overwriting other users' data
-        );
+      // Add a single immediate confirmation message
+      const messagesRef = collection(db, 'messages');
+      await addDoc(messagesRef, {
+        to: userDetails.phoneNumber,
+        body: `Hi ${userDetails.name}, ${event.title} is on ${event.start.toLocaleDateString()}. Stay tuned for updates!`,
+      });
 
-        alert('Notification preferences saved!');
-      } catch (error) {
-        console.error('Error saving notifications: ', error);
-      }
+      alert('Notification preferences saved!');
+    } catch (error) {
+      console.error('Error saving notifications:', error);
+      alert('There was an error saving your preferences. Please ensure your profile is complete.');
     }
     setShowNotifyOptions(false);
   };

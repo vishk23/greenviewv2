@@ -390,7 +390,7 @@ const Score: React.FC<ScoreProps> = ({
         // Get user's phone number
         const userDoc = await getDoc(userDocRef);
         const phoneNumber = userDoc.data()?.phoneNumber;
-
+        const displayName = userDoc.data()?.displayName;
         if (!phoneNumber) {
           setNotificationStatus("ERROR");
           return;
@@ -422,7 +422,7 @@ const Score: React.FC<ScoreProps> = ({
           });
         };
 
-        const message = `${getFeedback()}! Retake between ${formatDate(
+        const message = `${displayName}, ${getFeedback()}! Retake between ${formatDate(
           nextQuizDate
         )} - ${formatDate(endWindow)} to build your streak!`;
 
