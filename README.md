@@ -8,6 +8,8 @@ This is a web application for the Boston University Spark! course XC475. GreenVi
 
 You can access the live application here: [GreenView Live](https://greenviewv2.web.app/).
 
+https://greenviewv2.web.app
+
 # Team
 
 | Name  | Role | Contact Info |
