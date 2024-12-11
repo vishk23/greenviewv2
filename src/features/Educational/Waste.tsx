@@ -170,7 +170,7 @@ const WasteModule: React.FC = () => {
           } else {
             await setDoc(userDocRef, {
               userId: user.uid,
-              energyModule: true,
+              wasteModule: true,
             });
           }
         } catch (error) {
