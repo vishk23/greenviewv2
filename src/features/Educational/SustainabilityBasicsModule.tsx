@@ -158,7 +158,7 @@ const SustainabilityBasicsModule: React.FC = () => {
           } else {
             await setDoc(userDocRef, {
               userId: user.uid,
-              energyModule: true,
+              sustainabilityBasicsModule: true,
             });
           }
         } catch (error) {
