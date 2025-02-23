@@ -14,11 +14,11 @@ https://greenviewv2.web.app
 
 | Name  | Role | Contact Info |
 | ------------- | ------------- | ------------- |
+| Vishnu Kchitti  | SWE, Tech Lead  | |
 | Maidha Salman  | Product Owner, UX/UI Lead  | |
 | Ana Ramirez Moreno  | Scrum Master, SWE  | |
 | Wesley Choi  | SWE  | |
 | Sadiq Alhumood  | SWE  | |
-| Vishnu Kchitti  | SWE  | |
 | Abdullah Alajmi  | SWE  | |
 
 # Tech Stack
